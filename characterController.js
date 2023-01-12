@@ -15,10 +15,6 @@ class CharacterController {
 
         this.gravity = 98;
 
-
-
-
-
         this.facingDirection = 0;
         this.state = 0;
         this.animationList = [];
@@ -33,10 +29,7 @@ class CharacterController {
         //Jump
         this.animationList[2] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 5, 1626, 189, 229, 9, 0.27, 1);
         this.game.addEntity(new Background(this.game));
-
     };
-
-
 
     update() {
         const MAXRUN = 200;
@@ -57,6 +50,7 @@ class CharacterController {
             this.velocity.x += 75;
             this.velocity.y -= 75;
         };
+
         //Big Jump
         if (this.game.keys["s"] && this.state != 2) {
             console.log("big jump");
@@ -64,10 +58,8 @@ class CharacterController {
             this.velocity.x += 75;
             this.velocity.y -= 150;
             //this.animationList[2] = new Animator(ASSET_MANAGER.getAsset(""),0,290,72,70,6,0.27,0);
-
-
-
         };
+
         //Right
         if (this.game.keys["d"] && this.state != 2) {
             this.state = 1;
@@ -99,7 +91,6 @@ class CharacterController {
         // reset keys
         this.keys = {};
     };
-
 
     draw(ctx) {
         this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y);
