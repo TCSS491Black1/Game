@@ -1,9 +1,11 @@
 var gameEngine = new GameEngine();
 
 const ASSET_MANAGER = new AssetManager();
-
-ASSET_MANAGER.queueDownload("")
-ASSET_MANAGER.queueDownload("")
+// queue all assets.
+[
+	"./assets/hornet.png",
+	"./assets/lava_7.png",
+].forEach(asset => ASSET_MANAGER.queueDownload(asset));
 
 ASSET_MANAGER.downloadAll(() => {
 	var canvas = document.getElementById("gameWorld");

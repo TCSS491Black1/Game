@@ -22,7 +22,7 @@ class Animator {
                     this.width*2,this.height*2)
             }
         }else {
-            
+            console.log("animator given:", this.spritesheet);
              ctx.drawImage(this.spritesheet,
                 this.xStart + this.width*frame, this.yStart,
                 this.width,this.height,

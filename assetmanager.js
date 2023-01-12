@@ -7,7 +7,7 @@ class AssetManager {
     };
 
     queueDownload(path) {
-        console.log("Queueing " + path);
+        console.log("Queueing '" + path + "'");
         this.downloadQueue.push(path);
     };
 
@@ -17,6 +17,7 @@ class AssetManager {
 
     downloadAll(callback) {
         if (this.downloadQueue.length === 0) setTimeout(callback, 10);
+        console.log("queue: ", this.downloadQueue);
         for (let i = 0; i < this.downloadQueue.length; i++) {
             const img = new Image();
 
