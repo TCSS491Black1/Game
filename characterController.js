@@ -16,7 +16,7 @@ class CharacterController {
         this.gravity = 98;
 
         this.facingDirection = 0;
-        this.state = 0;
+        this.state = 2;
         this.animationList = [];
         //this.animationWidth = 229;//96.75;
         //this.animationHeight = 189;//100;
@@ -85,7 +85,7 @@ class CharacterController {
 
         this.x += this.velocity.x * this.game.clockTick;
         this.y = Math.min(this.velocity.y, 200); // bottom out on the floor. TODO: bounding box collisions.
-        if (this.y == 200 && this.state == 2) {// were jumping/falling, but collision w/ ground detected.
+        if (this.y >= 200 && this.state == 2) {// were jumping/falling, but collision w/ ground detected.
             this.state = 0;
         }
         // reset keys
