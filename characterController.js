@@ -17,83 +17,84 @@ class CharacterController {
 
         this.facingDirection = 0;
         this.state = 2;
-        this.animationList = [];
-        //this.animationWidth = 229;//96.75;
-        //this.animationHeight = 189;//100;
+        this.animationList = {};
 
-        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration,loop){
-        //(Idle) // TODO: sprite locations, width, etc are off.
-        this.animationList[0] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 5, 954, 189, 229, 6, 0.4, 1);
-        //Walk
-        this.animationList[1] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 5, 145, 72, 72, 8, 0.4, 1);
+        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration,loop, spriteBorderWidth){
+        //(Idle)
+        this.animationList["IDLE"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 954, 184, 214, 6, 0.1, 1, 3);
+        //Walk/run
+        this.animationList["WALK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1191, 159, 191, 8, 0.1, 1, 3);
         //Jump
-        this.animationList[2] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 5, 1626, 189, 229, 9, 0.27, 1);
+        this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
         this.game.addEntity(new Background(this.game));
     };
 
     update() {
         const MAXRUN = 200;
-        console.log("mode: " + this.state)
-        console.log(this.gravity, this.velocity);
-        //Bottom border for testing.
-        /*if(this.y < 600) {
-            this.y=200;
-            this.velocity.y = 0;
-            //this.animationList[2] = new Animator(ASSET_MANAGER.getAsset(""),0,290,72,70,6,0.27,0);
-            this.state = 1;
-        };
-*/
+        
         //Small Jump
-        if (this.game.keys["w"] && this.state != 2) {
+        if (this.game.keys["w"] && this.state != "JUMP") {
             console.log("small jump");
-            this.state = 2;
+            this.state = "JUMP";
             this.velocity.x += 75;
             this.velocity.y -= 75;
         };
 
         //Big Jump
-        if (this.game.keys["s"] && this.state != 2) {
+        if (this.game.keys["s"] && this.state != "JUMP") {
             console.log("big jump");
-            this.state = 2;
+            this.state = "JUMP";
             this.velocity.x += 75;
             this.velocity.y -= 150;
-            //this.animationList[2] = new Animator(ASSET_MANAGER.getAsset(""),0,290,72,70,6,0.27,0);
-        };
+        }
 
+        /* TODO: why not be able to move left/right mid-air? */
         //Right
-        if (this.game.keys["d"] && this.state != 2) {
-            this.state = 1;
+        else if (this.game.keys["d"] && this.state != "JUMP") {
+            this.state = "WALK";
             if (this.velocity.x > MAXRUN) {
                 this.velocity.x = MAXRUN;
             } else {
                 this.velocity.x += 100 * this.game.clockTick
             };
-        };
+        }
 
         //Left
-        if (this.game.keys["a"] && this.state != 2) {
-            this.state = 0;
+        else if (this.game.keys["a"] && this.state != "JUMP") {
+            this.state = "WALK";
             if (this.velocity.x < (-1) * MAXRUN) {
                 this.velocity.x = (-1) * MAXRUN;
             } else {
                 this.velocity.x -= 100 * this.game.clockTick
             };
-            this.velocity.x = 0;
+            //this.velocity.x = 0;
         }
 
+        // IDLE: if no keys are being pressed, we stop and IDLE:
+        if (!Object.keys(this.game.keys).some(key => this.game.keys[key])) {
+            this.state = "IDLE";
+            this.velocity.x = 0;
+        } 
         this.velocity.y += this.gravity * this.game.clockTick;
 
         this.x += this.velocity.x * this.game.clockTick;
-        this.y = Math.min(this.velocity.y, 200); // bottom out on the floor. TODO: bounding box collisions.
-        if (this.y >= 200 && this.state == 2) {// were jumping/falling, but collision w/ ground detected.
-            this.state = 0;
+        this.y = Math.min(this.velocity.y, 500); // bottom out on the floor. TODO: bounding box collisions.
+        if (this.y >= 500 && this.state == "JUMP") {// were jumping/falling, but collision w/ ground detected.
+            if(this.game.keys["a"] || this.game.keys["d"])
+                this.state = "WALK";
+            else
+                this.state = "IDLE";
+                this.velocity.x = 0;
         }
-        // reset keys
-        this.keys = {};
+        if(this.game.keys["g"]) { // cheat/reset character location/state
+            this.velocity={x:0,y:0};
+            this.state = "IDLE";
+            this.x = 0
+            this.y = 200;
+        }
     };
 
     draw(ctx) {
         this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y);
-
     };
 }
