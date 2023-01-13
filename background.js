@@ -10,6 +10,6 @@ class Background{
     }
 
     draw(ctx){
-        ctx.drawImage(ASSET_MANAGER.getAsset(""), this.x-this.game.camera.x, this.y, 1920, 768,);
+        ctx.drawImage(ASSET_MANAGER.getAsset("./assets/lava_7.png"), this.x-this.game.camera.x, this.y, 1920, 768,);
     }
 }
