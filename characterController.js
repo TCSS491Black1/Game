@@ -15,8 +15,8 @@ class CharacterController {
 
         this.gravity = 98;
 
-        this.facingDirection = 0;
-        this.state = 2;
+        this.facingDirection = 0; // 1 is right, 0 is left? sprites happen to face left by default.
+        this.state = "WALK";
         this.animationList = {};
 
         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration,loop, spriteBorderWidth){
@@ -31,7 +31,12 @@ class CharacterController {
 
     update() {
         const MAXRUN = 200;
-        
+        if (this.game.keys["d"]) {
+            this.facingDirection = 1; 
+        }
+        else if (this.game.keys["a"]) {
+            this.facingDirection = 0;
+        }
         //Small Jump
         if (this.game.keys["w"] && this.state != "JUMP") {
             console.log("small jump");
@@ -95,6 +100,16 @@ class CharacterController {
     };
 
     draw(ctx) {
-        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y);
+        ctx.save();
+        let destX = (this.x - this.game.camera.x);
+        if(this.facingDirection) {// if facing right
+            ctx.scale(-1,1);
+            destX *= -1;
+            destX -= this.animationList[this.state].width;
+        }
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, 
+            destX, 
+            this.y);
+        ctx.restore();
     };
 }
