@@ -15,8 +15,8 @@ class CharacterController {
 
         this.gravity = 98;
 
-        this.facingDirection = 0;
-        this.state = 2;
+        this.facingDirection = 0; // 1 is right, 0 is left? sprites happen to face left by default.
+        this.state = "WALK";
         this.animationList = {};
 
         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration,loop, spriteBorderWidth){
@@ -31,27 +31,33 @@ class CharacterController {
 
     update() {
         const MAXRUN = 200;
-        
+        if (this.game.keys["d"]) {
+            this.facingDirection = 1;
+        }
+        else if (this.game.keys["a"]) {
+            this.facingDirection = 0;
+        }
         //Small Jump
         if (this.game.keys["w"] && this.state != "JUMP") {
             console.log("small jump");
             this.state = "JUMP";
-            this.velocity.x += 75;
+            //this.velocity.x += 75 * (this.facingDirection?-1:1);
             this.velocity.y -= 75;
-        };
+        }
 
         //Big Jump
-        if (this.game.keys["s"] && this.state != "JUMP") {
+        else if (this.game.keys["s"] && this.state != "JUMP") {
             console.log("big jump");
             this.state = "JUMP";
-            this.velocity.x += 75;
+            //this.velocity.x += 75 * (this.facingDirection?-1:1);
             this.velocity.y -= 150;
         }
 
         /* TODO: why not be able to move left/right mid-air? */
         //Right
-        else if (this.game.keys["d"] && this.state != "JUMP") {
-            this.state = "WALK";
+        else if (this.game.keys["d"]/* && this.state != "JUMP"*/) {
+            if(this.state == "IDLE") this.state = "WALK";
+    
             if (this.velocity.x > MAXRUN) {
                 this.velocity.x = MAXRUN;
             } else {
@@ -60,8 +66,8 @@ class CharacterController {
         }
 
         //Left
-        else if (this.game.keys["a"] && this.state != "JUMP") {
-            this.state = "WALK";
+        else if (this.game.keys["a"]/* && this.state != "JUMP"*/) {
+            if(this.state == "IDLE") this.state = "WALK";
             if (this.velocity.x < (-1) * MAXRUN) {
                 this.velocity.x = (-1) * MAXRUN;
             } else {
@@ -69,9 +75,9 @@ class CharacterController {
             };
             //this.velocity.x = 0;
         }
-
-        // IDLE: if no keys are being pressed, we stop and IDLE:
-        if (!Object.keys(this.game.keys).some(key => this.game.keys[key])) {
+        
+        // IDLE: if no keys are being pressed, and we aren't mid-air, we stop and IDLE:
+        if (!Object.keys(this.game.keys).some(key => this.game.keys[key]) && this.state != "JUMP") {
             this.state = "IDLE";
             this.velocity.x = 0;
         } 
@@ -82,9 +88,10 @@ class CharacterController {
         if (this.y >= 500 && this.state == "JUMP") {// were jumping/falling, but collision w/ ground detected.
             if(this.game.keys["a"] || this.game.keys["d"])
                 this.state = "WALK";
-            else
+            else{
                 this.state = "IDLE";
                 this.velocity.x = 0;
+            }
         }
         if(this.game.keys["g"]) { // cheat/reset character location/state
             this.velocity={x:0,y:0};
@@ -95,6 +102,16 @@ class CharacterController {
     };
 
     draw(ctx) {
-        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y);
+        ctx.save();
+        let destX = (this.x - this.game.camera.x);
+        if(this.facingDirection) {// if facing right
+            ctx.scale(-1,1);
+            destX *= -1;
+            destX -= this.animationList[this.state].width;
+        }
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, 
+            destX, 
+            this.y);
+        ctx.restore();
     };
 }
