@@ -10,6 +10,9 @@ class CharacterController {
         this.x = 0;
         this.y = 500;
 
+        this.jumpInitPosition = null;
+        this.jumpInitTime = null;
+        
         this.speed = 300;
         this.velocity = { x: 0, y: 0 };
 
@@ -40,60 +43,58 @@ class CharacterController {
     };
 
     update() {
-        const MAXRUN = 900;
-        if (this.game.keys["d"]) {
-            this.facingDirection = 1;
-        }
-        else if (this.game.keys["a"]) {
-            this.facingDirection = 0;
-        }
+        const MAXRUN = 600;
+        
         //Small Jump
         if (this.game.keys["w"] && this.state != "JUMP") {
             console.log("small jump");
             this.state = "JUMP";
-            this.velocity.y -= 75;
+            this.jumpInitTime = new Date();
+            this.jumpInitPosition = {x:this.x, y:this.y};
         }
 
-        //Big Jump
-        else if (this.game.keys["s"] && this.state != "JUMP") {
-            console.log("big jump");
-            this.state = "JUMP";
-            this.velocity.y -= 150;
+        if(this.jumpInitTime !== null && this.jumpInitPosition !== null) {
+            // credit for jump formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
+            // note: video assumes different coordinate system than canvas. 
+            const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
+            const t_h = 0.25;       // time to apex of jump in seconds.
+            const h = 200;          // desired height of jump (in pixels)
+            const v_0 = -2*h/t_h;   // initial velocity in the y axis
+            const g = 2*h/(t_h**2); // acceleration due to gravity.
+            
+            this.y = 0.5*g*t**2 + v_0*t + this.jumpInitPosition.y;
         }
 
-        /* TODO: why not be able to move left/right mid-air? */
-        //Right
-        else if (this.game.keys["d"]) {
-            if (this.state == "IDLE") this.state = "WALK";
-
-            if (this.velocity.x > MAXRUN) {
-                this.velocity.x = MAXRUN;
-            } else {
-                this.velocity.x += 100 * this.game.clockTick;
-            };
+        if (this.game.keys["d"]) {                                    // Move/accelerate character right
+            if(this.state != "JUMP") this.state = "WALK";             // walk if not mid-air
+            this.facingDirection = 1;                                 // facing the right
+            this.velocity.x = Math.min(this.velocity.x + 10, MAXRUN); // increase velocity by 10, up to MAXRUN
+            this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
-
-        //Left
-        else if (this.game.keys["a"]) {
-            if (this.state == "IDLE") this.state = "WALK";
-            if (this.velocity.x < (-1) * MAXRUN) {
-                this.velocity.x = (-1) * MAXRUN;
-            } else {
-                this.velocity.x -= 100 * this.game.clockTick;
-            };
+        else if (this.game.keys["a"]) {                               // Move/accelerate character left
+            if(this.state != "JUMP") this.state = "WALK";             // walk if not mid-air
+            this.facingDirection = 0;                                 // face left
+            this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
+            this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
-
+ 
         // IDLE: if no keys are being pressed, and we aren't mid-air, we stop and IDLE:
         if (!Object.keys(this.game.keys).some(key => this.game.keys[key]) && this.state != "JUMP") {
+            console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
         }
-        this.velocity.y += this.gravity * this.game.clockTick;
+        
+        // bottom out on the floor. TODO: use bounding boxes w/ floor tiles instead
+        this.y = Math.min(this.y, 500);  
+        // we were jumping/falling, but collision w/ ground detected:
+        // TODO: find solution to this race condition. If state == "JUMP" and y == 500 @ jump start
+        //          then we abort before we begin.
+        if (this.y >= 500 && this.state == "JUMP" && (new Date() - this.jumpInitTime)/1000 > 0.01) {
+            this.jumpInitTime = null;      // cleaning up jump data on landing
+            this.jumpInitPosition = null; 
 
-        this.x += this.velocity.x * this.game.clockTick;
-        this.y = Math.min(this.velocity.y, 500); // bottom out on the floor.
-        if (this.y >= 500 && this.state == "JUMP") {// were jumping/falling, but collision w/ ground detected.
-            if (this.game.keys["a"] || this.game.keys["d"])
+            if (this.game.keys["a"] || this.game.keys["d"]) // change animation after landing:
                 this.state = "WALK";
             else {
                 this.state = "IDLE";
