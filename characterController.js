@@ -10,13 +10,17 @@ class CharacterController {
         this.x = 0;
         this.y = 500;
 
-        this.speed = 100;
+        this.speed = 300;
         this.velocity = { x: 0, y: 0 };
 
-        this.gravity = 98;
+        this.gravity = 500;
 
         this.facingDirection = 0; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
+
+        this.dead = false;
+        //this.updateBB();
+
         this.animationList = {};
 
         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration,loop, spriteBorderWidth){
@@ -27,10 +31,33 @@ class CharacterController {
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
         this.game.addEntity(new Background(this.game));
+       
+    };
+
+    updateBB(){
+        this.lastBB = this.BB;
+
+        // let midpoint = (params.canvasWidth/2);
+
+        // if (this.x < this.BB.x - midpoint) {
+        //     this.x = this.BB.x - midpoint;
+        //     this.BB = new BoundingBox(this.x + 40 , this.y , 80, 215);
+
+        // }
+        
+        // else if ((this.game.keys["a"]) && (this.x < this.BB.x - (midpoint-1000))) { // -1000 because Hornet keeps sliding past the midpoint. 
+        //     this.x = this.BB.x - midpoint;
+        //     this.BB = new BoundingBox(this.x + 40 , this.y , 80, 215);
+        // }
+
+        this.BB = new BoundingBox(this.x + 40 , this.y , 80, 215);
+
+
+    
     };
 
     update() {
-        const MAXRUN = 200;
+        const MAXRUN = 900; // changed for testing purposes -Michael
         if (this.game.keys["d"]) {
             this.facingDirection = 1;
         }
@@ -42,7 +69,8 @@ class CharacterController {
             console.log("small jump");
             this.state = "JUMP";
             //this.velocity.x += 75 * (this.facingDirection?-1:1);
-            this.velocity.y -= 75;
+            this.velocity.y = 75; // was -= 75;, changed for testing purposes -Michael
+            ;
         }
 
         //Big Jump
@@ -61,7 +89,7 @@ class CharacterController {
             if (this.velocity.x > MAXRUN) {
                 this.velocity.x = MAXRUN;
             } else {
-                this.velocity.x += 100 * this.game.clockTick
+                this.velocity.x += 1000 * this.game.clockTick //changed for testing purposes -Michael
             };
         }
 
@@ -71,7 +99,7 @@ class CharacterController {
             if (this.velocity.x < (-1) * MAXRUN) {
                 this.velocity.x = (-1) * MAXRUN;
             } else {
-                this.velocity.x -= 100 * this.game.clockTick
+                this.velocity.x -= 1000 * this.game.clockTick //changed for testing purposes -Michael
             };
             //this.velocity.x = 0;
         }
@@ -96,13 +124,41 @@ class CharacterController {
         if(this.game.keys["g"]) { // cheat/reset character location/state
             this.velocity={x:0,y:0};
             this.state = "IDLE";
-            this.x = 0
+            this.x = 0;
             this.y = 200;
         }
+
+
+        this.updateBB();
+
+        // if (this.x < this.player.x - midpoint) {
+        //     this.x = this.player.x - midpoint;   
+        // }
+        // else if ((this.game.keys["a"]) && (this.x < this.player.x - (midpoint-1000))) { // -1000 because Hornet keeps sliding past the midpoint. 
+        //     this.x = this.player.x - midpoint;
+        // }
+     
+    
+        //Collisions
+        var that = this;
+        that.game.entities.forEach(function (entity) {    
+            if(that != entity && entity.BB && that.BB.collide(entity.BB)){
+                    if (entity instanceof Uoma){
+                        console.log("Hornet collided with Uoma")
+                    }
+                
+            
+            }
+        })
+        
     };
 
     draw(ctx) {
         ctx.save();
+        ctx.strokeStyle = 'Lime';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        
         let destX = (this.x - this.game.camera.x);
         if(this.facingDirection) {// if facing right
             ctx.scale(-1,1);
@@ -113,5 +169,10 @@ class CharacterController {
             destX, 
             this.y);
         ctx.restore();
+
+        if(this.dead === true){
+            this.game.addEntity(new SceneManager(gameEngine));
+        }
+
     };
 }
