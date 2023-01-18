@@ -31,33 +31,16 @@ class CharacterController {
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
         this.game.addEntity(new Background(this.game));
-       
+
     };
 
-    updateBB(){
+    updateBB() {
         this.lastBB = this.BB;
-
-        // let midpoint = (params.canvasWidth/2);
-
-        // if (this.x < this.BB.x - midpoint) {
-        //     this.x = this.BB.x - midpoint;
-        //     this.BB = new BoundingBox(this.x + 40 , this.y , 80, 215);
-
-        // }
-        
-        // else if ((this.game.keys["a"]) && (this.x < this.BB.x - (midpoint-1000))) { // -1000 because Hornet keeps sliding past the midpoint. 
-        //     this.x = this.BB.x - midpoint;
-        //     this.BB = new BoundingBox(this.x + 40 , this.y , 80, 215);
-        // }
-
-        this.BB = new BoundingBox(this.x + 40 , this.y , 80, 215);
-
-
-    
+        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215);
     };
 
     update() {
-        const MAXRUN = 900; // changed for testing purposes -Michael
+        const MAXRUN = 900;
         if (this.game.keys["d"]) {
             this.facingDirection = 1;
         }
@@ -68,61 +51,57 @@ class CharacterController {
         if (this.game.keys["w"] && this.state != "JUMP") {
             console.log("small jump");
             this.state = "JUMP";
-            //this.velocity.x += 75 * (this.facingDirection?-1:1);
-            this.velocity.y = 75; // was -= 75;, changed for testing purposes -Michael
-            ;
+            this.velocity.y -= 75;
         }
 
         //Big Jump
         else if (this.game.keys["s"] && this.state != "JUMP") {
             console.log("big jump");
             this.state = "JUMP";
-            //this.velocity.x += 75 * (this.facingDirection?-1:1);
             this.velocity.y -= 150;
         }
 
         /* TODO: why not be able to move left/right mid-air? */
         //Right
-        else if (this.game.keys["d"]/* && this.state != "JUMP"*/) {
-            if(this.state == "IDLE") this.state = "WALK";
-    
+        else if (this.game.keys["d"]) {
+            if (this.state == "IDLE") this.state = "WALK";
+
             if (this.velocity.x > MAXRUN) {
                 this.velocity.x = MAXRUN;
             } else {
-                this.velocity.x += 1000 * this.game.clockTick //changed for testing purposes -Michael
+                this.velocity.x += 100 * this.game.clockTick;
             };
         }
 
         //Left
-        else if (this.game.keys["a"]/* && this.state != "JUMP"*/) {
-            if(this.state == "IDLE") this.state = "WALK";
+        else if (this.game.keys["a"]) {
+            if (this.state == "IDLE") this.state = "WALK";
             if (this.velocity.x < (-1) * MAXRUN) {
                 this.velocity.x = (-1) * MAXRUN;
             } else {
-                this.velocity.x -= 1000 * this.game.clockTick //changed for testing purposes -Michael
+                this.velocity.x -= 100 * this.game.clockTick;
             };
-            //this.velocity.x = 0;
         }
-        
+
         // IDLE: if no keys are being pressed, and we aren't mid-air, we stop and IDLE:
         if (!Object.keys(this.game.keys).some(key => this.game.keys[key]) && this.state != "JUMP") {
             this.state = "IDLE";
             this.velocity.x = 0;
-        } 
+        }
         this.velocity.y += this.gravity * this.game.clockTick;
 
         this.x += this.velocity.x * this.game.clockTick;
-        this.y = Math.min(this.velocity.y, 500); // bottom out on the floor. TODO: bounding box collisions.
+        this.y = Math.min(this.velocity.y, 500); // bottom out on the floor.
         if (this.y >= 500 && this.state == "JUMP") {// were jumping/falling, but collision w/ ground detected.
-            if(this.game.keys["a"] || this.game.keys["d"])
+            if (this.game.keys["a"] || this.game.keys["d"])
                 this.state = "WALK";
-            else{
+            else {
                 this.state = "IDLE";
                 this.velocity.x = 0;
             }
         }
-        if(this.game.keys["g"]) { // cheat/reset character location/state
-            this.velocity={x:0,y:0};
+        if (this.game.keys["g"]) { // cheat/reset character location/state
+            this.velocity = { x: 0, y: 0 };
             this.state = "IDLE";
             this.x = 0;
             this.y = 200;
@@ -131,46 +110,39 @@ class CharacterController {
 
         this.updateBB();
 
-        // if (this.x < this.player.x - midpoint) {
-        //     this.x = this.player.x - midpoint;   
-        // }
-        // else if ((this.game.keys["a"]) && (this.x < this.player.x - (midpoint-1000))) { // -1000 because Hornet keeps sliding past the midpoint. 
-        //     this.x = this.player.x - midpoint;
-        // }
-     
-    
         //Collisions
         var that = this;
-        that.game.entities.forEach(function (entity) {    
-            if(that != entity && entity.BB && that.BB.collide(entity.BB)){
-                    if (entity instanceof Uoma){
-                        console.log("Hornet collided with Uoma")
-                    }
-                
-            
+        that.game.entities.forEach(function (entity) {
+            if (that != entity && entity.BB && that.BB.collide(entity.BB)) {
+                if (entity instanceof Uoma) {
+                    console.log("Hornet collided with Uoma")
+                }
             }
-        })
-        
+        }
+        );
     };
 
     draw(ctx) {
         ctx.save();
+        // draw the character's bounding box:
         ctx.strokeStyle = 'Lime';
         ctx.lineWidth = 3;
         ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
-        
+        // </boundingbox>
+
+        // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);
-        if(this.facingDirection) {// if facing right
-            ctx.scale(-1,1);
+        if (this.facingDirection) {// if facing right
+            ctx.scale(-1, 1);
             destX *= -1;
             destX -= this.animationList[this.state].width;
         }
-        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, 
-            destX, 
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
+            destX,
             this.y);
         ctx.restore();
 
-        if(this.dead === true){
+        if (this.dead === true) { // respawn character on death?
             this.game.addEntity(new SceneManager(gameEngine));
         }
 
