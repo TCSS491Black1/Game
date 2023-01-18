@@ -78,8 +78,9 @@ class CharacterController {
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
  
-        // IDLE: if no keys are being pressed, and we aren't mid-air, we stop and IDLE:
-        if (!Object.keys(this.game.keys).some(key => this.game.keys[key]) && this.state != "JUMP") {
+        // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
+        // game keys: a, d, w
+        if (!['a','d','w'].some(key => this.game.keys[key]) && this.state != "JUMP") {
             console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
