@@ -39,7 +39,7 @@ class CharacterController {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215);
+        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215, "lime");
     };
 
     update() {
@@ -127,9 +127,7 @@ class CharacterController {
     draw(ctx) {
         ctx.save();
         // draw the character's bounding box:
-        ctx.strokeStyle = 'Lime';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        this.BB.draw(ctx);
         // </boundingbox>
 
         // draw character sprite, based on camera and facing direction:
