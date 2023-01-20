@@ -65,7 +65,7 @@ class Uoma extends Enemy {
         if(this.state == "DEAD") { // we want to fade out on death.
             ctx.save();
             this.alpha -= 0.01; // time delay?
-            ctx.globalAlpha = this.alpha;
+            ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
             console.log(this.name + " alpha @ ", {ctx: ctx.globalAlpha, this:this.alpha})
         }
         super.draw(ctx);
