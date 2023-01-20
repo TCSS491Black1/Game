@@ -38,6 +38,7 @@ class Uoma extends Enemy {
         super(game, x, y);
         this.animationList["WALK"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
         this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4); // TODO: change/correct parameters.
+        this.alpha = 1;
         this.updateBB();
     }
 
@@ -60,7 +61,22 @@ class Uoma extends Enemy {
         this.updateBB();
         this.collisionChecks();
     }
-
+    draw(ctx) {
+        if(this.state == "DEAD") { // we want to fade out on death.
+            ctx.save();
+            this.alpha -= 0.01; // time delay?
+            ctx.globalAlpha = this.alpha;
+            console.log(this.name + " alpha @ ", {ctx: ctx.globalAlpha, this:this.alpha})
+        }
+        super.draw(ctx);
+        if(this.state == "DEAD") {
+            ctx.restore();
+        }
+        if(this.alpha <= 0) {
+            this.removeFromWorld = true;
+            console.log(this.name + " has been removed.")
+        }
+    }
     onCollision(entity) {
         if (entity instanceof CharacterController) {
             //entity.dead = true;
