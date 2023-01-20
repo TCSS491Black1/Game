@@ -9,11 +9,13 @@ class Enemy {
         // default values, probably overwritten for different subclasses
         this.health = 10; 
         this.speed = 100;
+        this.state = "WALK";
+        this.animationList = {}
     }
     draw(ctx) {
-        this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y)
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y)
         //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
-        this.BB.draw(ctx);
+        if(this.BB) this.BB.draw(ctx);
     };
     collisionChecks() {
         /* collision detection and resolution: */
@@ -34,10 +36,8 @@ class Uoma extends Enemy {
      */
     constructor(game, x, y) { // NOTE: why do we have "game" here, when that's always gameEngine in global scope?
         super(game, x, y);
-        this.animator = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
-        // this.paused = true;
-        // this.dead = false;
-        //this.velocity = { x:0, y:0};
+        this.animationList["WALK"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
+        this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4); // TODO: change/correct parameters.
         this.updateBB();
     }
 
@@ -47,6 +47,11 @@ class Uoma extends Enemy {
 
     update() {
         // mechanics for how / where the enemy moves:
+        if(this.state == "DEAD") {  // TODO: sound on death?
+            // we don't move on death, but after death animation, we need to set this.removeFromWorld
+            this.BB = undefined;
+            return;
+        }
         this.x -= (this.speed * this.game.clockTick);
         if (this.x < -200) this.x = 1500, this.y = 300;
         if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100;
@@ -58,7 +63,8 @@ class Uoma extends Enemy {
 
     onCollision(entity) {
         if (entity instanceof CharacterController) {
-            entity.dead = true;
+            //entity.dead = true;
+            this.state = "DEAD";
             console.log(this.name + " collision with Hornet = LOSS");
         }
         // Need to handle collision with walls?
@@ -128,7 +134,7 @@ class Flag_Block {
 
     draw(ctx) {
         this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y)
-        this.BB.draw();
+        this.BB.draw(ctx);
     };
 }
 
