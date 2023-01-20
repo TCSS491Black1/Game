@@ -42,10 +42,16 @@ class SceneManager{
         // However, this breaks with the bounding box. We need a separate class 
         // specifically for Hornet. Then we can make it work. I think. -Michael
 
-        // let midpoint = params.canvasWidth/2;
-        // if (this.x < this.player.x - midpoint) {
-        //     this.x = this.player.x - midpoint;
-        // }
+        let midpoint = params.canvasWidth/2;
+        
+        if( this.player.x < midpoint ){
+            this.x = 0;        
+        }else if (this.player.x > 7672-midpoint){
+            this.x = 7672 - params.canvasWidth;
+        }else{
+            this.x = this.player.x - midpoint;
+        }
+
         
         // else if ((this.game.keys["a"]) && (this.x < this.player.x - (midpoint-1000))) { // -1000 because Hornet keeps sliding past the midpoint. 
         //     this.x = this.player.x - midpoint;
