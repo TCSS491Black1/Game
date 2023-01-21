@@ -51,7 +51,6 @@ class SceneManager{
         const nowTime = this.game.timer.gameTime;
         if(this.game.keys['c'] && 0.5 < (nowTime - this.marker)) {
             this.marker = nowTime;
-            console.log("Spawning a new baddy!")
             this.game.addEntity(new Uoma(this.game));
         }
     };

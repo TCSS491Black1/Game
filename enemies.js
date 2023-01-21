@@ -62,22 +62,22 @@ class Uoma extends Enemy {
         this.collisionChecks();
     }
     draw(ctx) {
+        ctx.save();
         if(this.state == "DEAD") { // we want to fade out on death.
-            ctx.save();
-            this.alpha -= this.game.clockTick * 1; // time delay?
-            ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
+            this.alpha -= this.game.clockTick; // time delay?
         }
+        ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
         super.draw(ctx);
-        if(this.state == "DEAD") {
-            ctx.restore();
-        }
+        ctx.restore();
+
         if(this.alpha <= 0) {
             this.removeFromWorld = true;
-            console.log(this.name + " has been removed.")
+            console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
+            ctx.globalAlpha = 1;
         }
     }
     onCollision(entity) {
-        if (entity instanceof CharacterController) { // TODO: check for instanceof CharacterWeapon?
+        if (this.state != "DEAD" && entity instanceof CharacterController) { // TODO: check for instanceof CharacterWeapon?
             //entity.dead = true;
             this.state = "DEAD";
             console.log(this.name + " collision with Hornet = LOSS");
