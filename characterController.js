@@ -33,8 +33,6 @@ class CharacterController {
         this.animationList["WALK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1191, 159, 191, 8, 0.1, 1, 3);
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
-        this.game.addEntity(new Background(this.game));
-
     };
 
     updateBB() {
@@ -81,7 +79,7 @@ class CharacterController {
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
         // game keys: a, d, w
         if (!['a','d','w'].some(key => this.game.keys[key]) && this.state != "JUMP") {
-            console.log("Stopping.");
+            //console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
         }
