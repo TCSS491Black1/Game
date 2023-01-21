@@ -6,7 +6,7 @@ class SceneManager{
         this.score = 0;
         this.gameOver = false;
         this.player = new CharacterController(this.game,50,550);
-        this.loadLevel(50,550);
+        this.loadLevel(levelOne,50,550);
 
 
         //professor has a method "loadlevel1" that we should make and use instead.
@@ -21,7 +21,19 @@ class SceneManager{
         });
     };
 
-    loadLevel(x,y){
+    loadLevel(level, x, y){
+        
+        // This code is beginning to refactor loading with level.js due
+        // to the current music implementation. Here, the level 
+        // property can manage level-specific items. -Griffin
+        this.level = level;
+
+        // To change based on professor's "title" technique.
+        if(level.music) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.playAsset(level.music);
+        }
+        
         this.game.entities = [];
         this.x = 0;
         this.player.x = x;
@@ -35,6 +47,17 @@ class SceneManager{
         this.game.addEntity(new Uoma(this.game));
         this.game.addEntity(new Background(this.game));
     };
+
+    /**
+     * Adds audio context to sceneManager.
+     */
+    updateAudio() {
+        var mute = document.getElementById("mute").checked;
+        var volume = document.getElementById("volume").checked;
+
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    }
 
     update() {
 
