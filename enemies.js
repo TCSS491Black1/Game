@@ -49,7 +49,7 @@ class Uoma extends Enemy {
     update() {
         // mechanics for how / where the enemy moves:
         if(this.state == "DEAD") {  // TODO: sound on death?
-            // we don't move on death, but after death animation, we need to set this.removeFromWorld
+            // we don't move on death, and can't do any damage, so no BB.
             this.BB = undefined;
             return;
         }
@@ -64,9 +64,8 @@ class Uoma extends Enemy {
     draw(ctx) {
         if(this.state == "DEAD") { // we want to fade out on death.
             ctx.save();
-            this.alpha -= 0.01; // time delay?
+            this.alpha -= this.game.clockTick * 1; // time delay?
             ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
-            console.log(this.name + " alpha @ ", {ctx: ctx.globalAlpha, this:this.alpha})
         }
         super.draw(ctx);
         if(this.state == "DEAD") {
@@ -78,7 +77,7 @@ class Uoma extends Enemy {
         }
     }
     onCollision(entity) {
-        if (entity instanceof CharacterController) {
+        if (entity instanceof CharacterController) { // TODO: check for instanceof CharacterWeapon?
             //entity.dead = true;
             this.state = "DEAD";
             console.log(this.name + " collision with Hornet = LOSS");
