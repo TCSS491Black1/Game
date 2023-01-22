@@ -26,21 +26,33 @@ class CharacterController {
 
         this.animationList = {};
 
-        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration,loop, spriteBorderWidth){
+        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth){
         //(Idle)
         this.animationList["IDLE"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 954, 184, 214, 6, 0.1, 1, 3);
         //Walk/run
         this.animationList["WALK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1191, 159, 191, 8, 0.1, 1, 3);
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
-        this.game.addEntity(new Background(this.game));
+        //Attack
+        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8280, 349, 368, 1, 1, 0, 0);
+        //Death
+        this.animationList["DEATH"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 9922, 300, 225, 5, 0.1, 1, 3);
+        //Dead.
+        this.animationList["DEAD"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 912, 9922, 300, 225, 1, 0.5, 1, 3);
 
+        this.game.addEntity(new Background(this.game));
     };
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215);
+        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215);  
     };
+
+    updateAttackBB(){
+        this.lastAttackBB = this.attackBB;
+        this.y = 400;                                                                    // cant figure out how to get it to go back to original y-value after just one event
+        this.attackBB = new BoundingBox(this.x, this.y + 20, 339, 300);
+    }
 
     update() {
         const MAXRUN = 600;
@@ -77,10 +89,10 @@ class CharacterController {
             this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
- 
+
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
-        // game keys: a, d, w
-        if (!['a','d','w'].some(key => this.game.keys[key]) && this.state != "JUMP") {
+        // game keys: a, d, w, r
+        if (!['a','d','w','r'].some(key => this.game.keys[key]) && this.state != "JUMP") {                                //Michael- added r for attack
             console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
@@ -109,7 +121,23 @@ class CharacterController {
             this.y = 200;
         }
 
+        if (this.game.keys["r"]) { // attack key                                                        
+            console.log("attacking");
+            this.state = "ATTACK";
+            this.velocity.x = 200;
+            this.updateAttackBB();
+        }
 
+        if(this.dead === true) { // death state stays. timer before reset?
+            this.state = "DEAD";
+            console.log("dead");
+            this.velocity.x = 0;
+            this.velocity.y = 0; // stop moving dead body.
+            this.y = 580; //ground - ish
+        }
+
+
+        
         this.updateBB();
 
         //Collisions
@@ -117,9 +145,17 @@ class CharacterController {
         that.game.entities.forEach(function (entity) {
             if (that != entity && entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Uoma) {
-                    console.log("Hornet collided with Uoma")
+                    console.log("Hornet collided with Uoma");
+                    that.state = "DEATH";
+                    that.velocity.x = 0;
                 }
-            }
+            } 
+            // else if (that != entity && entity.BB && that.attackBB.collide(entity.BB)) {             // tried figuring out collision with attacking Uoma entity, not working. -Michael
+            //     if (entity instanceof Uoma) {
+            //         console.log("Hornet killed Uoma");
+            //         //entity.dead = true;
+            //     }
+            // }
         }
         );
     };
@@ -129,8 +165,13 @@ class CharacterController {
         // draw the character's bounding box:
         ctx.strokeStyle = 'Lime';
         ctx.lineWidth = 3;
-        ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        if(this.state == 'ATTACK') {
+            ctx.strokeRect(this.attackBB.x, this.attackBB.y, this.attackBB.width, this.attackBB.height);
+        } else {
+            ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
         // </boundingbox>
+        }
+        
 
         // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);
@@ -144,9 +185,9 @@ class CharacterController {
             this.y);
         ctx.restore();
 
-        if (this.dead === true) { // respawn character on death?
-            this.game.addEntity(new SceneManager(gameEngine));
-        }
+        // if (this.dead === true) { // respawn character on death?                     // commented out so that you can actually see the death animation. comment back in to fix
+        //     this.game.addEntity(new SceneManager(gameEngine));
+        // }
 
     };
 }
