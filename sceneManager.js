@@ -8,10 +8,13 @@ class SceneManager{
         this.player = new CharacterController(this.game,50,200);
 
         this.loadLevel(50,200);
+        this.player = new CharacterController(this.game,50,550);
+        
+        this.loadLevel(levelOne,50,550);
 
 
         //professor has a method "loadlevel1" that we should make and use instead.
-        let uoma = new Uoma(this.game, 12 * URLSearchParams.BLOCKWIDTH, 13 * URLSearchParams.BLOCKWIDTH);
+        let uoma = new Uoma(this.game);
         this.game.addEntity(uoma);
 
     };
@@ -22,16 +25,30 @@ class SceneManager{
         });
     };
 
-    loadLevel(x,y){
+    loadLevel(level, x, y){
+        
+        // This code is beginning to refactor loading with level.js due
+        // to the current music implementation. Here, the level 
+        // property can manage level-specific items. -Griffin
+        this.level = level;
+
         this.game.entities = [];
         this.x = 0;
         this.player.x = x;
         this.player.y = y;
         this.player.velocity = { x: 0, y: 0 };
+
+        // To change based on professor's "title" technique.
+        if(level.music) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.playAsset(level.music);
+        }
+        if (level.ground) {
+            this.game.addEntity(new Ground(this.game, level.ground.x, level.ground.y, level.ground.size));
+        }
         
        //this.player = (new CharacterController(gameEngine),50,550)
-
-        this.game.addEntity(this.player);
+        this.game.addEntity(new Background(this.game));
         
         
         this.game.addEntity(new Ground(this.game,32,47,736));
@@ -44,8 +61,18 @@ class SceneManager{
 
     };
 
-    update() {
+    /**
+     * Adds audio context to sceneManager.
+     */
+    updateAudio() {
+        var mute = document.getElementById("mute").checked;
+        var volume = document.getElementById("volume").checked;
 
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    }
+
+    update() {
         // This code is to ensure that once moving, Hornet maintains center.
         // However, this breaks with the bounding box. We need a separate class 
         // specifically for Hornet. Then we can make it work. I think. -Michael
@@ -64,9 +91,13 @@ class SceneManager{
         // else if ((this.game.keys["a"]) && (this.x < this.player.x - (midpoint-1000))) { // -1000 because Hornet keeps sliding past the midpoint. 
         //     this.x = this.player.x - midpoint;
         // }
-
-
-
+        
+        // spawn some more enemies for troubleshooting/dev purposes.
+        const nowTime = this.game.timer.gameTime;
+        if(this.game.keys['c'] && 0.5 < (nowTime - this.marker)) {
+            this.marker = nowTime;
+            this.game.addEntity(new Uoma(this.game));
+        }
     };
 
     draw(ctx){

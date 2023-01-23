@@ -39,7 +39,7 @@ class CharacterController {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215);
+        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215, "lime");
     };
 
     update() {
@@ -81,7 +81,7 @@ class CharacterController {
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
         // game keys: a, d, w
         if (!['a','d','w'].some(key => this.game.keys[key]) && this.state != "JUMP") {
-            console.log("Stopping.");
+            //console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
         }

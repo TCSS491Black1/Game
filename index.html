@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <title>Game Project Title Goes Here</title>
     <script type="text/javascript" src="./enemies.js"></script>
+    <script type="text/javascript" src="./tiles.js"></script>
     <script type="text/javascript" src="./background.js"></script>
+    <script type="text/javascript" src="./levels.js"></script>
     <script type="text/javascript" src="./characterController.js"></script>
     <script type="text/javascript" src="./animator.js"></script>
     <script type="text/javascript" src="./boundingBox.js"></script>
@@ -21,5 +23,10 @@
 </head>
 <body>
     <canvas id="gameWorld" width="1524" height="768" style="background: white; border: 1px solid black" tabindex="0" autofocus></canvas>
+
+    <div>
+        <br />
+        <input type="checkbox" id="debug"> Debug <input type="checkbox" id="mute"> Mute <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05"> Volume
+    </div>
 </body>
 </html>
