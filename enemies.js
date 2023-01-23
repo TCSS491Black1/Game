@@ -30,7 +30,7 @@ class Uoma {
         this.game.entities.forEach(function (entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof CharacterController) {
-                    entity.dead = true;
+                   // entity.dead = true;
                     console.log("Uoma collision with Hornet = LOSS");
                     
 

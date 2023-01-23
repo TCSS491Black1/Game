@@ -22,7 +22,7 @@ class CharacterController {
         this.state = "WALK";
 
         this.dead = false;
-        //this.updateBB();
+        this.updateBB();
 
         this.animationList = {};
 
@@ -33,7 +33,7 @@ class CharacterController {
         this.animationList["WALK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1191, 159, 191, 8, 0.1, 1, 3);
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
-        this.game.addEntity(new Background(this.game));
+        
 
     };
 
@@ -87,7 +87,7 @@ class CharacterController {
         }
         
         // bottom out on the floor. TODO: use bounding boxes w/ floor tiles instead
-        this.y = Math.min(this.y, 500);  
+        //this.y = Math.min(this.y, 500);  
         // we were jumping/falling, but collision w/ ground detected:
         // TODO: find solution to this race condition. If state == "JUMP" and y == 500 @ jump start
         //          then we abort before we begin.
@@ -108,7 +108,7 @@ class CharacterController {
             this.x = 0;
             this.y = 200;
         }
-
+        this.y += 9;
 
         this.updateBB();
 
@@ -118,10 +118,22 @@ class CharacterController {
             if (that != entity && entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Uoma) {
                     console.log("Hornet collided with Uoma")
+                    that.dead = true;
                 }
+
+                if (entity instanceof Ground && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.y = entity.BB.top - (that.BB.bottom-that.BB.top)-2;
+                    //console.log("Grouned")
+                    that.velocity.y === 0 ;
+                }
+
+
             }
         }
         );
+
+        this.updateBB();
+
     };
 
     draw(ctx) {
@@ -145,7 +157,10 @@ class CharacterController {
         ctx.restore();
 
         if (this.dead === true) { // respawn character on death?
-            this.game.addEntity(new SceneManager(gameEngine));
+            
+            this.game.camera.clearEntities();
+            this.game.addEntity(new ReplayScreen(this.game));
+            
         }
 
     };

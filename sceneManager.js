@@ -5,8 +5,9 @@ class SceneManager{
         this.x = 0;
         this.score = 0;
         this.gameOver = false;
-        this.player = new CharacterController(this.game,50,550);
-        this.loadLevel(50,550);
+        this.player = new CharacterController(this.game,50,200);
+
+        this.loadLevel(50,200);
 
 
         //professor has a method "loadlevel1" that we should make and use instead.
@@ -31,9 +32,16 @@ class SceneManager{
        //this.player = (new CharacterController(gameEngine),50,550)
 
         this.game.addEntity(this.player);
+        
+        
+        this.game.addEntity(new Ground(this.game,32,47,736));
+
         this.game.addEntity(new Flag_Block(this.game))
         this.game.addEntity(new Uoma(this.game));
         this.game.addEntity(new Background(this.game));
+
+
+
     };
 
     update() {
@@ -65,6 +73,9 @@ class SceneManager{
         //ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), this.x-this.game.camera.x ,this.y, 1920, 768,);
         //ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), this.x+1918-this.game.camera.x, this.y, 1920, 768,);
         //ctx.drawImage(ASSET_MANAGER.getAsset("./background.png"),0,0);
+
+
+        
     };
 
 };
