@@ -3,6 +3,7 @@ var gameEngine = new GameEngine();
 const ASSET_MANAGER = new AssetManager();
 // queue all assets.
 [
+	"./assets/block.png",
 	"./assets/hornet.png",
 	"./assets/Uoma.png",
 	"./assets/Dirt_Block.png",

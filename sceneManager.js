@@ -6,11 +6,12 @@ class SceneManager{
         this.score = 0;
         this.gameOver = false;
         this.player = new CharacterController(this.game,50,550);
+        
         this.loadLevel(levelOne,50,550);
 
 
         //professor has a method "loadlevel1" that we should make and use instead.
-        let uoma = new Uoma(this.game, 12 * URLSearchParams.BLOCKWIDTH, 13 * URLSearchParams.BLOCKWIDTH);
+        let uoma = new Uoma(this.game);
         this.game.addEntity(uoma);
 
     };
@@ -28,17 +29,23 @@ class SceneManager{
         // property can manage level-specific items. -Griffin
         this.level = level;
 
-        // To change based on professor's "title" technique.
-        if(level.music) {
-            ASSET_MANAGER.pauseBackgroundMusic();
-            ASSET_MANAGER.playAsset(level.music);
-        }
-        
         this.game.entities = [];
         this.x = 0;
         this.player.x = x;
         this.player.y = y;
         this.player.velocity = { x: 0, y: 0 };
+
+        // To change based on professor's "title" technique.
+        if(level.music) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.playAsset(level.music);
+        }
+        if (level.ground) {
+            for (var i = 0; i < level.ground.length; i++) {
+                let ground = level.ground[i];
+                this.game.addEntity(new Ground(this.game, ground.x * params.TILESIZE, ground.y * params.TILESIZE, ground.size * params.TILESIZE));
+            }
+        }
         
        //this.player = (new CharacterController(gameEngine),50,550)
 
