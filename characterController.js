@@ -33,13 +33,11 @@ class CharacterController {
         this.animationList["WALK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1191, 159, 191, 8, 0.1, 1, 3);
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
-        this.game.addEntity(new Background(this.game));
-
     };
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215);
+        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215, "lime");
     };
 
     update() {
@@ -81,7 +79,7 @@ class CharacterController {
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
         // game keys: a, d, w
         if (!['a','d','w'].some(key => this.game.keys[key]) && this.state != "JUMP") {
-            console.log("Stopping.");
+            //console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
         }
@@ -127,9 +125,7 @@ class CharacterController {
     draw(ctx) {
         ctx.save();
         // draw the character's bounding box:
-        ctx.strokeStyle = 'Lime';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        this.BB.draw(ctx);
         // </boundingbox>
 
         // draw character sprite, based on camera and facing direction:

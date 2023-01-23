@@ -16,7 +16,7 @@ ASSET_MANAGER.downloadAll(() => {
 	
 	params.canvasWidth = 1524; // adjusted for midpoint purposes
 	params.canvasHeight = 768;
-
+	canvas.focus();
 
 	gameEngine.init(ctx);
 
