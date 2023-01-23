@@ -1,5 +1,7 @@
 /** Global Parameters Object */
-const params = { };
+const params = { 
+    TILESIZE: 32,
+};
 
 /**
  * @param {Number} n
