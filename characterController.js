@@ -125,7 +125,9 @@ class CharacterController {
     draw(ctx) {
         ctx.save();
         // draw the character's bounding box:
-        this.BB.draw(ctx);
+        ctx.strokeStyle = 'Lime';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         // </boundingbox>
 
         // draw character sprite, based on camera and facing direction:
