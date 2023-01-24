@@ -13,7 +13,7 @@ class SceneManager{
         //professor has a method "loadlevel1" that we should make and use instead.
         let uoma = new Uoma(this.game);
         this.game.addEntity(uoma);
-
+        this.marker = 0;
     };
 
     clearEntities() {
@@ -48,14 +48,15 @@ class SceneManager{
         /// Comment out line to test the tiles version of map generation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (level.ground) {
             //this.game.addEntity(new Ground(this.game, level.ground.x, level.ground.y, level.ground.size));
-            this.game.addEntity(new Ground(this.game,32,47,736));
+            for(const entry of level.ground) {
+                console.log(entry);
+                this.game.addEntity(new Ground(this.game, entry.x, entry.y, entry.size));
+            }
         }
         
         this.game.addEntity(new Flag_Block(this.game))
         this.game.addEntity(new Uoma(this.game));
         this.game.addEntity(this.player);
-
-
         console.log('Done lvel 1')
     };
 
@@ -85,22 +86,16 @@ class SceneManager{
             this.x = this.player.x - midpoint;
         }
 
-        
-
-        
         // spawn some more enemies for troubleshooting/dev purposes.
         const nowTime = this.game.timer.gameTime;
-        if(this.game.keys['c'] && 0.5 < (nowTime - this.marker)) {
+        if(this.game.keys['c'] && 0.5 > (nowTime - this.marker)) {
             this.marker = nowTime;
             this.game.addEntity(new Uoma(this.game));
         }
     };
 
     draw(ctx){
-
-
-
-        
+       
     };
 
 };
