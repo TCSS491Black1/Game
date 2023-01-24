@@ -15,7 +15,7 @@ class Enemy {
         this.alpha = 1;
     }
     draw(ctx) {
-        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y)
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x-this.game.camera.x, this.y)
         //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
         if(this.BB) this.BB.draw(ctx);
     };
@@ -31,7 +31,7 @@ class Enemy {
         return this.health <= 0;
     }
     updateBB() {
-        this.BB = new BoundingBox(this.x + 45, this.y + 35, 70, 90, "red");
+        this.BB = new BoundingBox(this.x + 45-this.game.camera.x, this.y + 35, 70, 90, "red");
     }
 }
 class Uoma extends Enemy {

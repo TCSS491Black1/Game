@@ -18,21 +18,9 @@ class Ground {
             ctx.drawImage(this.spritesheet,
                 0, 0,
                 16,16,
-                i*32, params.canvasHeight-32,
+                i*32-this.game.camera.x, params.canvasHeight-32,
                 16*2,16*2);
-        
         }
-
-
-
-
-
-        //ctx.drawImage(this.spritesheet,this.x,this.y, 16,16);
-        for(let i = 0; i  <= 47; i++ ){
-
-
-        }
-
         ctx.strokeStyle = 'Red';
         ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
     };

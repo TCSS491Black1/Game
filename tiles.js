@@ -1,8 +1,8 @@
 /**
  * tile.js - Class to handle tile and tileset properties.
  * (ref: https://github.com/algorithm0r/SuperMarioBros/blob/master/bricks.js)
- 
-class Ground {
+ */
+class Grounds {
     constructor(game, x, y, w){
         Object.assign(this, {game, x, y, w});
         this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/ice-block.png"), 0, 0, 32, 32, 6, 0.2, 1, 4);
@@ -19,10 +19,10 @@ class Ground {
     }
 
     collisionChecks() {
-         collision detection and resolution: 
+         /*collision detection and resolution:*/ 
         this.game.entities.forEach((entity) => {
             if (entity.BB && this.BB.collide(entity.BB)) {
-                this.onCollision(entity); /* NOTE: Enemy requires onCollision() 
+                this.onCollision(entity); /* NOTE: Enemy requires onCollision() */
             }
         });
     }
@@ -49,7 +49,8 @@ class Ground {
                 this.game.player.y = this.y - params.TILESIZE;
                 console.log("Player touched a tile.");
             }
-        }   
+        } 
+        */  
     }
 
     draw(ctx) {
@@ -58,4 +59,3 @@ class Ground {
     }
 };
 
-*/

@@ -36,16 +36,20 @@ class SceneManager{
         this.player.velocity = { x: 0, y: 0 };
 
         // To change based on professor's "title" technique.
-        //if(level.music) {
-        //    ASSET_MANAGER.pauseBackgroundMusic();
-        //    ASSET_MANAGER.playAsset(level.music);
-      //  }
-       // if (level.ground) {
-        //    this.game.addEntity(new Ground(this.game, level.ground.x, level.ground.y, level.ground.size));
-       // }
-        
+        if(level.music) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+           // ASSET_MANAGER.playAsset(level.music);
+        }
+
+
         this.game.addEntity(new Background(this.game));
-        this.game.addEntity(new Ground(this.game,32,47,736));
+
+        /// Comment out line to test the tiles version of map generation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (level.ground) {
+            //this.game.addEntity(new Ground(this.game, level.ground.x, level.ground.y, level.ground.size));
+            this.game.addEntity(new Ground(this.game,32,47,736));
+        }
+        
         this.game.addEntity(new Flag_Block(this.game))
         this.game.addEntity(new Uoma(this.game));
         this.game.addEntity(this.player);
