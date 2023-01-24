@@ -58,7 +58,7 @@ class CharacterController {
             // note: video assumes different coordinate system than canvas. 
             const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
             const t_h = 0.25;       // time to apex of jump in seconds.
-            const h = 200;          // desired height of jump (in pixels)
+            const h = this.animationList["IDLE"].height;          // desired height of jump (in pixels)
             const v_0 = -2*h/t_h;   // initial velocity in the y axis
             const g = 2*h/(t_h**2); // acceleration due to gravity.
             
