@@ -35,11 +35,6 @@ class SceneManager{
         this.player.y = y;
         this.player.velocity = { x: 0, y: 0 };
         
-       //this.player = (new CharacterController(gameEngine),50,550)
-        this.game.addEntity(new Background(this.game));
-        this.game.addEntity(new Flag_Block(this.game))
-        this.game.addEntity(new Uoma(this.game));
-        this.game.addEntity(this.player);
 
         // To change based on professor's "title" technique.
         if(level.music) {
