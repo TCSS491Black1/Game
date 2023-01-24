@@ -1,6 +1,8 @@
 /** Global Parameters Object */
 const params = { 
     TILESIZE: 32,
+    canvasWidth : 1524, // adjusted for midpoint purposes
+	canvasHeight : 768,
 };
 
 /**
