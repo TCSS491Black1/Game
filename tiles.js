@@ -1,7 +1,7 @@
 /**
  * tile.js - Class to handle tile and tileset properties.
  * (ref: https://github.com/algorithm0r/SuperMarioBros/blob/master/bricks.js)
- */
+ 
 class Ground {
     constructor(game, x, y, w){
         Object.assign(this, {game, x, y, w});
@@ -19,10 +19,10 @@ class Ground {
     }
 
     collisionChecks() {
-        /* collision detection and resolution: */
+         collision detection and resolution: 
         this.game.entities.forEach((entity) => {
             if (entity.BB && this.BB.collide(entity.BB)) {
-                this.onCollision(entity); /* NOTE: Enemy requires onCollision() */
+                this.onCollision(entity); /* NOTE: Enemy requires onCollision() 
             }
         });
     }
@@ -49,7 +49,7 @@ class Ground {
                 this.game.player.y = this.y - params.TILESIZE;
                 console.log("Player touched a tile.");
             }
-        }   */
+        }   
     }
 
     draw(ctx) {
@@ -57,3 +57,5 @@ class Ground {
         this.BB.draw(ctx);
     }
 };
+
+*/
