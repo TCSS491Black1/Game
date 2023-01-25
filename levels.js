@@ -8,7 +8,7 @@ const levelOne = {
         {x:32*14, y:params.canvasHeight-32*9, size: 8 },
         {x:32*16, y:params.canvasHeight-32*13, size: 8 },
     ],
-    targetblock: [{x: 0, y: 32*7}],
+    targetblock: [{x: 2200, y: params.canvasHeight-32*4}],
     enemies: [
         {x: 1200, y:550},
         {x: 1200, y:450},
