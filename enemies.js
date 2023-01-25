@@ -152,20 +152,18 @@ class Hive_Knight extends Enemy {
 }
 
 class Flag_Block {
-    constructor(game, x, y) {
+    constructor(game, x=1400, y=600) {
         Object.assign(this, { game, x, y });
         this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Dirt_Block.png"),
             2, 2, 62, 62, 1, 1, 1, 1)
 
-        this.x = 1400;
-        this.y = 600;
         this.speed = 0;
         this.updateBB();
     }
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 64, 64, "blue");
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 64, 64, "blue");
     }
 
     update() {
@@ -182,7 +180,8 @@ class Flag_Block {
     }
 
     draw(ctx) {
-        this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y)
+        this.updateBB(); // race condition because camera moves fast enough to cause drift
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y)
         this.BB.draw(ctx);
     };
 }

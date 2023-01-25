@@ -20,8 +20,7 @@ ASSET_MANAGER.downloadAll(() => {
 	var canvas = document.getElementById("gameWorld");
 	var ctx = canvas.getContext("2d");
 	
-	params.canvasWidth = 1524; // adjusted for midpoint purposes
-	params.canvasHeight = 768;
+
 	canvas.focus();
 
 	gameEngine.init(ctx);

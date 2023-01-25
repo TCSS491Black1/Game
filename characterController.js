@@ -39,7 +39,7 @@ class CharacterController {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215, "lime");
+        this.BB = new BoundingBox(this.x + 40 - this.game.camera.x, this.y, 80, 215, "lime");
     };
 
     update() {
@@ -57,8 +57,8 @@ class CharacterController {
             // credit for jump formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
             // note: video assumes different coordinate system than canvas. 
             const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
-            const t_h = 0.25;       // time to apex of jump in seconds.
-            const h = 200;          // desired height of jump (in pixels)
+            const t_h = 0.25;       // time to apex of jump in seconds. jump duration = 0.5
+            const h = this.animationList["IDLE"].height;          // desired height of jump (in pixels)
             const v_0 = -2*h/t_h;   // initial velocity in the y axis
             const g = 2*h/(t_h**2); // acceleration due to gravity.
             
@@ -91,7 +91,9 @@ class CharacterController {
         // we were jumping/falling, but collision w/ ground detected:
         // TODO: find solution to this race condition. If state == "JUMP" and y == 500 @ jump start
         //          then we abort before we begin.
-        if (this.y >= 500 && this.state == "JUMP" && (new Date() - this.jumpInitTime)/1000 > 0.01) {
+        //  are we on solid ground?
+
+        if (this.state == "JUMP" && (new Date() - this.jumpInitTime)/1000 > 0.5) {
             this.jumpInitTime = null;      // cleaning up jump data on landing
             this.jumpInitPosition = null; 
 
@@ -122,26 +124,20 @@ class CharacterController {
                 }
 
                 if (entity instanceof Ground && (that.lastBB.bottom) <= entity.BB.top) {
-                    that.y = entity.BB.top - (that.BB.bottom-that.BB.top)-2;
+                    that.y = entity.BB.top - that.BB.height - 2;
                     //console.log("Grouned")
                     that.velocity.y === 0 ;
                 }
-
-
             }
         }
         );
-
-        this.updateBB();
-
+        that.updateBB(); // updating BB due to collision-based movement
     };
 
     draw(ctx) {
         ctx.save();
         // draw the character's bounding box:
-        ctx.strokeStyle = 'Lime';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        this.BB.draw(ctx);
         // </boundingbox>
 
         // draw character sprite, based on camera and facing direction:
@@ -162,6 +158,5 @@ class CharacterController {
             this.game.addEntity(new ReplayScreen(this.game));
             
         }
-
     };
 }
