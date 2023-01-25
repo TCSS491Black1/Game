@@ -34,6 +34,7 @@ class CharacterController {
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
         
+        this.onGround = true;
 
     };
 
@@ -86,14 +87,8 @@ class CharacterController {
             this.velocity.x = 0;
         }
         
-        // bottom out on the floor. TODO: use bounding boxes w/ floor tiles instead
-        //this.y = Math.min(this.y, 500);  
         // we were jumping/falling, but collision w/ ground detected:
-        // TODO: find solution to this race condition. If state == "JUMP" and y == 500 @ jump start
-        //          then we abort before we begin.
-        //  are we on solid ground?
-
-        if (this.state == "JUMP" && (new Date() - this.jumpInitTime)/1000 > 0.5) {
+        if (this.state == "JUMP" && this.onGround && !this.wasOnGround){
             this.jumpInitTime = null;      // cleaning up jump data on landing
             this.jumpInitPosition = null; 
 
@@ -110,12 +105,13 @@ class CharacterController {
             this.x = 0;
             this.y = 200;
         }
-        this.y += 9;
 
         this.updateBB();
 
         //Collisions
         var that = this;
+        this.wasOnGround = this.onGround;
+        this.onGround = false; 
         that.game.entities.forEach(function (entity) {
             if (that != entity && entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof Uoma) {
@@ -127,6 +123,7 @@ class CharacterController {
                     that.y = entity.BB.top - that.BB.height - 2;
                     //console.log("Grouned")
                     that.velocity.y === 0 ;
+                    that.onGround = true;
                 }
             }
         }
