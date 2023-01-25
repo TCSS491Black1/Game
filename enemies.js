@@ -152,13 +152,11 @@ class Hive_Knight extends Enemy {
 }
 
 class Flag_Block {
-    constructor(game, x, y) {
+    constructor(game, x=1400, y=600) {
         Object.assign(this, { game, x, y });
         this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Dirt_Block.png"),
             2, 2, 62, 62, 1, 1, 1, 1)
 
-        this.x = 1400;
-        this.y = 600;
         this.speed = 0;
         this.updateBB();
     }
