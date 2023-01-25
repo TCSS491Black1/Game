@@ -91,7 +91,9 @@ class CharacterController {
         // we were jumping/falling, but collision w/ ground detected:
         // TODO: find solution to this race condition. If state == "JUMP" and y == 500 @ jump start
         //          then we abort before we begin.
-        if (/*this.y >= 500 &&*/ this.state == "JUMP" && (new Date() - this.jumpInitTime)/1000 > 0.5) {
+        //  are we on solid ground?
+
+        if (this.state == "JUMP" && (new Date() - this.jumpInitTime)/1000 > 0.5) {
             this.jumpInitTime = null;      // cleaning up jump data on landing
             this.jumpInitPosition = null; 
 
@@ -122,7 +124,6 @@ class CharacterController {
                 }
 
                 if (entity instanceof Ground && (that.lastBB.bottom) <= entity.BB.top) {
-                    console.log([that.y, that.BB.height, entity.BB.top, entity.BB.top - that.BB.height]);
                     that.y = entity.BB.top - that.BB.height - 2;
                     //console.log("Grouned")
                     that.velocity.y === 0 ;
@@ -157,6 +158,5 @@ class CharacterController {
             this.game.addEntity(new ReplayScreen(this.game));
             
         }
-
     };
 }
