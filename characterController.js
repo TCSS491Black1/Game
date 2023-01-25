@@ -57,7 +57,7 @@ class CharacterController {
             // credit for jump formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
             // note: video assumes different coordinate system than canvas. 
             const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
-            const t_h = 0.25;       // time to apex of jump in seconds.
+            const t_h = 0.25;       // time to apex of jump in seconds. jump duration = 0.5
             const h = this.animationList["IDLE"].height;          // desired height of jump (in pixels)
             const v_0 = -2*h/t_h;   // initial velocity in the y axis
             const g = 2*h/(t_h**2); // acceleration due to gravity.
@@ -91,7 +91,7 @@ class CharacterController {
         // we were jumping/falling, but collision w/ ground detected:
         // TODO: find solution to this race condition. If state == "JUMP" and y == 500 @ jump start
         //          then we abort before we begin.
-        if (this.y >= 500 && this.state == "JUMP" && (new Date() - this.jumpInitTime)/1000 > 0.01) {
+        if (/*this.y >= 500 &&*/ this.state == "JUMP" && (new Date() - this.jumpInitTime)/1000 > 0.5) {
             this.jumpInitTime = null;      // cleaning up jump data on landing
             this.jumpInitPosition = null; 
 
@@ -122,15 +122,15 @@ class CharacterController {
                 }
 
                 if (entity instanceof Ground && (that.lastBB.bottom) <= entity.BB.top) {
-                    that.y = entity.BB.top - (that.BB.bottom-that.BB.top)-2;
+                    console.log([that.y, that.BB.height, entity.BB.top, entity.BB.top - that.BB.height]);
+                    that.y = entity.BB.top - that.BB.height - 2;
                     //console.log("Grouned")
                     that.velocity.y === 0 ;
-                    //this.updateBB(); // updating BB due to collision-based movement
                 }
             }
         }
         );
-        
+        that.updateBB(); // updating BB due to collision-based movement
     };
 
     draw(ctx) {
