@@ -11,8 +11,8 @@ class SceneManager{
 
 
         //professor has a method "loadlevel1" that we should make and use instead.
-        let uoma = new Uoma(this.game);
-        this.game.addEntity(uoma);
+        //let uoma = new Uoma(this.game);
+        //this.game.addEntity(uoma);
         this.marker = 0;
     };
 
@@ -45,17 +45,23 @@ class SceneManager{
 
         this.game.addEntity(new Background(this.game));
 
-        /// Comment out line to test the tiles version of map generation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (level.ground) {
+        // TODO: refactor/ generalize to handle more diverse blocks in the level design
+        //if (level.ground) {
             //this.game.addEntity(new Ground(this.game, level.ground.x, level.ground.y, level.ground.size));
-            for(const entry of level.ground) {
-                console.log(entry);
-                this.game.addEntity(new Ground(this.game, entry.x, entry.y, entry.size));
-            }
+        for(const entry of level.ground) {
+            console.log(entry);
+            this.game.addEntity(new Ground(this.game, entry.x, entry.y, entry.size));
         }
-        
-        this.game.addEntity(new Flag_Block(this.game))
-        this.game.addEntity(new Uoma(this.game));
+        //}
+        for(const entry of level.targetblock) {
+            this.game.addEntity(new Flag_Block(this.game, entry.x, entry.y));
+            console.log("added flagblock", [entry.x, entry.y, entry.size]);
+        }
+        for(const entry of level.enemies) {
+            this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
+        }
+        //this.game.addEntity(new Flag_Block(this.game))
+        //this.game.addEntity(new Uoma(this.game));
         this.game.addEntity(this.player);
         console.log('Done lvel 1')
     };
