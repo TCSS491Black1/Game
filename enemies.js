@@ -165,7 +165,7 @@ class Flag_Block {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 64, 64, "blue");
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 64, 64, "blue");
     }
 
     update() {
@@ -182,7 +182,8 @@ class Flag_Block {
     }
 
     draw(ctx) {
-        this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y)
+        this.updateBB(); // race condition because camera moves fast enough to cause drift
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y)
         this.BB.draw(ctx);
     };
 }

@@ -39,7 +39,7 @@ class CharacterController {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40, this.y, 80, 215, "lime");
+        this.BB = new BoundingBox(this.x + 40 - this.game.camera.x, this.y, 80, 215, "lime");
     };
 
     update() {
@@ -125,23 +125,18 @@ class CharacterController {
                     that.y = entity.BB.top - (that.BB.bottom-that.BB.top)-2;
                     //console.log("Grouned")
                     that.velocity.y === 0 ;
+                    //this.updateBB(); // updating BB due to collision-based movement
                 }
-
-
             }
         }
         );
-
-        this.updateBB();
-
+        
     };
 
     draw(ctx) {
         ctx.save();
         // draw the character's bounding box:
-        ctx.strokeStyle = 'Lime';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        this.BB.draw(ctx);
         // </boundingbox>
 
         // draw character sprite, based on camera and facing direction:

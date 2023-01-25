@@ -80,8 +80,9 @@ class SceneManager{
         
         if( this.player.x < midpoint ){
             this.x = 0;        
-        }else if (this.player.x > 7672-midpoint){
-            this.x = 7672 - params.canvasWidth;
+        //}else if (this.player.x > 7672-midpoint){
+        //else if()
+        //    this.x = 7672 - params.canvasWidth;
         }else{
             this.x = this.player.x - midpoint;
         }
