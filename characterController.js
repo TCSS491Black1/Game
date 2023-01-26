@@ -22,8 +22,7 @@ class CharacterController {
         this.state = "WALK";
 
         this.dead = false;
-        //this.updateBB();
-
+        
         this.animationList = {};
 
         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth){
@@ -34,11 +33,11 @@ class CharacterController {
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
         //Attack
-        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8280, 349, 368, 1, 1, 0, 0);
+        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8280, 349, 368, 1, 1, 0, 0, 0, 100);
         //Death
-        this.animationList["DEATH"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 9922, 300, 225, 5, 0.1, 1, 3);
+        this.animationList["DEATH"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 9922, 300, 225, 5, 0.1, 0, 3, 0,-10);
         //Dead.
-        this.animationList["DEAD"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 912, 9922, 300, 225, 1, 0.5, 1, 3);
+        this.animationList["DEAD"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 1216, 9922, 300, 225, 1, 0.5, 1, 3,0,-10);
 
         this.game.addEntity(new Background(this.game));
     };
@@ -49,9 +48,8 @@ class CharacterController {
     };
 
     updateAttackBB(){
-        this.lastAttackBB = this.attackBB;
-        this.y = 400;                                                                    // cant figure out how to get it to go back to original y-value after just one event
-        this.attackBB = new BoundingBox(this.x, this.y + 20, 339, 300);
+        this.lastAttackBB = this.attackBB;                                                                    
+        this.attackBB = new BoundingBox(this.x, this.y - 80, 339, 300);
     }
 
     update() {
@@ -92,7 +90,7 @@ class CharacterController {
 
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
         // game keys: a, d, w, r
-        if (!['a','d','w','r'].some(key => this.game.keys[key]) && this.state != "JUMP") {                                //Michael- added r for attack
+        if (!['a','d','w','r'].some(key => this.game.keys[key]) && this.state != "JUMP") {                              
             console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
@@ -124,15 +122,16 @@ class CharacterController {
         if (this.game.keys["r"]) { // attack key                                                        
             console.log("attacking");
             this.state = "ATTACK";
-            this.velocity.x = 200;
+            if(this.facingDirection == 1){
+                this.xoffset = -400;
+            }
             this.updateAttackBB();
         }
 
         if(this.dead === true) { // death state stays. timer before reset?
             this.state = "DEAD";
             console.log("dead");
-            this.velocity.x = 0;
-            this.velocity.y = 0; // stop moving dead body.
+            this.velocity = { x: null, y: null };
             this.y = 580; //ground - ish
         }
 
