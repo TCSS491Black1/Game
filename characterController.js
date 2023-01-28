@@ -12,7 +12,8 @@ class CharacterController {
 
         this.jumpInitPosition = null;
         this.jumpInitTime = null;
-        
+        this.v_0 = 0;
+
         this.speed = 300;
         this.velocity = { x: 0, y: 0 };
 
@@ -45,25 +46,34 @@ class CharacterController {
 
     update() {
         const MAXRUN = 600;
+        // some constants for jumping & falling physics:
+        const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
+        const t_h = 0.25;                           // time to apex of jump in seconds. jump duration = 0.5    
+        const g = 2*h/(t_h**2);                     // acceleration due to gravity.
         
         //Small Jump
         if (this.game.keys["w"] && this.state != "JUMP") {
             console.log("small jump");
             this.state = "JUMP";
+            this.v_0 = -2*h/t_h;                // initial velocity in the y axis
             this.jumpInitTime = new Date();
             this.jumpInitPosition = {x:this.x, y:this.y};
         }
 
-        if(this.jumpInitTime !== null && this.jumpInitPosition !== null) {
+        const gravY = (t, v_0) => {
+            // determines correct position given time, initial velocity, and initial position in the y axis
             // credit for jump formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
-            // note: video assumes different coordinate system than canvas. 
+            // note: video assumes different coordinate system than canvas.    
+            return Math.floor(0.5*g*t**2 + v_0*t + this.jumpInitPosition?.y);
+        }
+        if(!this.onGround && this.wasOnGround && this.jumpInitTime == null && this.jumpInitPosition == null) {
+            // did not jump, but still falling:
+            this.jumpInitTime = new Date();
+            this.jumpInitPosition = {x:this.x, y:this.y};
+        }
+        if(this.jumpInitTime !== null && this.jumpInitPosition !== null) {
             const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
-            const t_h = 0.25;       // time to apex of jump in seconds. jump duration = 0.5
-            const h = this.animationList["IDLE"].height;          // desired height of jump (in pixels)
-            const v_0 = -2*h/t_h;   // initial velocity in the y axis
-            const g = 2*h/(t_h**2); // acceleration due to gravity.
-            
-            this.y = 0.5*g*t**2 + v_0*t + this.jumpInitPosition.y;
+            this.y = gravY(t, this.v_0);
         }
 
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
@@ -88,9 +98,10 @@ class CharacterController {
         }
         
         // we were jumping/falling, but collision w/ ground detected:
-        if (this.state == "JUMP" && this.onGround && !this.wasOnGround){
+        if (this.onGround && !this.wasOnGround){
             this.jumpInitTime = null;      // cleaning up jump data on landing
-            this.jumpInitPosition = null; 
+            this.jumpInitPosition = null;
+            this.v_0 = 0;
 
             if (this.game.keys["a"] || this.game.keys["d"]) // change animation after landing:
                 this.state = "WALK";
@@ -109,26 +120,25 @@ class CharacterController {
         this.updateBB();
 
         //Collisions
-        var that = this;
         this.wasOnGround = this.onGround;
-        this.onGround = false; 
-        that.game.entities.forEach(function (entity) {
-            if (that != entity && entity.BB && that.BB.collide(entity.BB)) {
+        this.onGround = false; // assume not on ground until we detect collision w/ Ground block
+        this.game.entities.forEach((entity) => {
+            if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Uoma) {
                     console.log("Hornet collided with Uoma")
-                    that.dead = true;
+                    this.dead = true;
                 }
 
-                if (entity instanceof Ground && (that.lastBB.bottom) <= entity.BB.top) {
-                    that.y = entity.BB.top - that.BB.height - 2;
-                    //console.log("Grouned")
-                    that.velocity.y === 0 ;
-                    that.onGround = true;
+                if (entity instanceof Ground && (this.lastBB.bottom) <= entity.BB.top) {
+                    this.y = entity.BB.top - this.BB.height - 2;
+                    this.velocity.y = 0 ;
+                    this.onGround = true;
+                    this.updateBB(); // updating BB only required because we moved
                 }
             }
         }
         );
-        that.updateBB(); // updating BB due to collision-based movement
+        //that.updateBB(); // updating BB due to collision-based movement
     };
 
     draw(ctx) {
