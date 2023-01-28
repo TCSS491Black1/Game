@@ -8,7 +8,7 @@ class CharacterController {
         this.viewWidth = 1024;
         this.viewHeight = 768;
         this.x = 0;
-        this.y = 500;
+        this.y = 0;
 
         this.jumpInitPosition = null;
         this.jumpInitTime = null;
@@ -18,7 +18,7 @@ class CharacterController {
 
         this.gravity = 500;
 
-        this.facingDirection = 0; // 1 is right, 0 is left? sprites happen to face left by default.
+        this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
         this.dead = false;
@@ -26,7 +26,7 @@ class CharacterController {
 
         this.animationList = {};
 
-        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth){
+        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth, xoffset, yoffset){
         //(Idle)
         this.animationList["IDLE"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 954, 184, 214, 6, 0.1, 1, 3);
         //Walk/run
@@ -34,13 +34,12 @@ class CharacterController {
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
         //Attack
-        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8280, 349, 368, 1, 1, 0, 0, 0, 100);
+        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8270, 349, 368, 1, 1, 0, 0, 0, 100);
         //Death
         this.animationList["DEATH"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 9922, 300, 225, 5, 0.1, 0, 3, 0,-10);
         //Dead.
         this.animationList["DEAD"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 1216, 9922, 300, 225, 1, 0.5, 1, 3,0,-10);
 
-        this.game.addEntity(new Background(this.game));
     };
 
     updateBB() {
@@ -49,8 +48,12 @@ class CharacterController {
     };
 
     updateAttackBB(){
-        this.lastAttackBB = this.attackBB;                                                                    
-        this.attackBB = new BoundingBox(this.x, this.y - 80, 339, 300);
+        this.lastAttackBB = this.attackBB;     
+        if(this.facingDirection == 0){
+            this.attackBB = new BoundingBox(this.x - 200 - this.game.camera.x, this.y - 80, 339, 300, "yellow");
+        } else {
+            this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow"); 
+        }                                                               
     }
 
     update() {
@@ -135,15 +138,19 @@ class CharacterController {
             this.updateAttackBB();
         }
 
-        if(this.dead === true) { // death state stays. timer before reset?
+        if(this.y == 1500){ 
+            this.dead = true;
+        } // fall off the map and die
+
+        if(this.dead === true) { // death state makes Hornet stay dead. Should we keep Hornet on screen during reset popup? timer before reset?
             this.state = "DEAD";
             console.log("dead");
             this.velocity = { x: null, y: null };
             this.y = 580; //ground - ish
         }
 
+      
 
-        
         this.updateBB();
 
         //Collisions
@@ -159,18 +166,44 @@ class CharacterController {
 
                 if (entity instanceof Ground && (that.lastBB.bottom) <= entity.BB.top) {
                     that.y = entity.BB.top - that.BB.height - 2;
-                    //console.log("Grouned")
                     that.velocity.y === 0 ;
-
                 }
-            } 
-            // else if (that != entity && entity.BB && that.attackBB.collide(entity.BB)) {             // tried figuring out collision with attacking Uoma entity, not working. -Michael
+                if (entity instanceof UnderGround && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.y = entity.BB.top - that.BB.height - 2;
+                    that.velocity.y === 0 ;
+                }
+                if (entity instanceof IceGround && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.y = entity.BB.top - that.BB.height - 2;
+                    that.velocity.y === 0 ;
+                }
+                if (entity instanceof HellGround && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.y = entity.BB.top - that.BB.height - 2;
+                    that.velocity.y === 0 ;
+                }
+
+                //These will be for moving to the next level later.
+                if (entity instanceof Flag_Block && (that.lastBB.collide(entity.BB))) {
+                    that.game.camera.loadLevel(levelTwo,50,550);
+                } 
+                if (entity instanceof Flag_Block2 && (that.lastBB.collide(entity.BB))) {
+                    that.game.camera.loadLevel(levelThree,50,550);
+                } 
+                if (entity instanceof Flag_Block3 && (that.lastBB.collide(entity.BB))) {
+                    that.game.camera.loadLevel(levelFour,50,550);
+                } 
+                if (entity instanceof Flag_Block4 && (that.lastBB.collide(entity.BB))) {
+                    that.game.camera.loadLevel(levelFour,50,550);
+                } 
+                            
+            } }
+            
+            // tried figuring out collision with attacking Uoma entity, not working. -Michael
+            // else if (that != entity && entity.BB && that.attackBB.collide(entity.BB)) {             
             //     if (entity instanceof Uoma) {
             //         console.log("Hornet killed Uoma");
             //         //entity.dead = true;
             //     }
             // }
-        }
         );
         that.updateBB(); // updating BB due to collision-based movement
     };
@@ -178,17 +211,12 @@ class CharacterController {
     draw(ctx) {
         ctx.save();
         // draw the character's bounding box:
-        this.BB.draw(ctx);
-
+        if(this.state == 'ATTACK') {
+            this.attackBB.draw(ctx); 
+        } else {
+            this.BB.draw(ctx); 
+        }
         
-        // if(this.state == 'ATTACK') {
-        //     ctx.strokeRect(this.attackBB.x, this.attackBB.y, this.attackBB.width, this.attackBB.height);
-        // } else {
-        //     ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
-        // // </boundingbox>
-        // }
-        
-
         // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);
         if (this.facingDirection) {// if facing right

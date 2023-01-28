@@ -1,18 +1,137 @@
 const levelOne = {
     music: "./assets/sounds/music/intro.mp3",
     background: "./assets/Overworld_Level_1.png",
+
     ground: [
-        {x:0, y:params.canvasHeight-32, size: 736 }, // base flat ground
+        {x:0, y:params.canvasHeight-32, size: 300 }, // base flat ground
         {x:32*10, y:params.canvasHeight-32*1, size: 8 },
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },
         {x:32*14, y:params.canvasHeight-32*9, size: 8 },
         {x:32*16, y:params.canvasHeight-32*13, size: 8 },
     ],
-    targetblock: [{x: 2200, y: params.canvasHeight-32*4}],
+    targetblock: [{x: 700, y: params.canvasHeight-32*4}],
+    targetblock2: [],
+    targetblock3: [],
+    targetblock4: [],
     enemies: [
         {x: 1200, y:550},
         {x: 1200, y:450},
         {x: 1200, y:350},
+    ],
+
+}
+const levelTwo = {
+    //music: "./assets/sounds/music/intro.mp3",
+    background: "./assets/Underground_Level_2.png",
+    ground: [
+        {x:0, y:params.canvasHeight-32, size: 736 }, 
+        {x:32*12, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*24, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*46, y:params.canvasHeight-32*13, size: 8 },
+
+        {x:32*36, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*72, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*85, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*95, y:params.canvasHeight-32*12, size: 8 },
+
+        {x:32*200, y:params.canvasHeight-32*1, size: 8 },
+        {x:32*202, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*204, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*206, y:params.canvasHeight-32*13, size: 8 },
+
+        {x:32*226, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*246, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*276, y:params.canvasHeight-32*13, size: 8 },
+
+    // easily can add a "platform" or "obstacle" option here too
+    ],
+    targetblock: [],
+    targetblock2: [{x: 700, y: params.canvasHeight-32*4}],
+    targetblock3: [],
+    targetblock4: [],
+    enemies: [
+        {x: 1200, y:550},
+        {x: 2200, y:450},
+        {x: 3200, y:350},
+        {x: 4200, y:550},
+        {x: 5200, y:450},
+        {x: 6200, y:350},
+    ],
+
+}
+const levelThree = {
+    //music: "./assets/sounds/music/intro.mp3",
+    background: "./assets/IceLevel3.png",
+    ground: [
+        {x:0, y:params.canvasHeight-32, size: 736 }, 
+        {x:32*12, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*24, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*46, y:params.canvasHeight-32*13, size: 8 },
+
+        {x:32*36, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*72, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*85, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*95, y:params.canvasHeight-32*12, size: 8 },
+
+        {x:32*200, y:params.canvasHeight-32*1, size: 8 },
+        {x:32*202, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*204, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*206, y:params.canvasHeight-32*13, size: 8 },
+
+        {x:32*226, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*246, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*276, y:params.canvasHeight-32*13, size: 8 },
+
+    ],
+    targetblock: [],
+    targetblock2: [],
+    targetblock3: [{x: 700, y: params.canvasHeight-32*4}],
+    targetblock4: [],
+    enemies: [
+        {x: 1200, y:550},
+        {x: 2200, y:450},
+        {x: 3200, y:350},
+        {x: 4200, y:550},
+        {x: 5200, y:450},
+        {x: 6200, y:350},
+    ],
+
+}
+const levelFour = {
+    //music: "./assets/sounds/music/intro.mp3",
+    background: "./assets/HellLevel4.png",
+    ground: [
+        {x:0, y:params.canvasHeight-32, size: 736 }, 
+        {x:32*12, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*24, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*46, y:params.canvasHeight-32*13, size: 8 },
+
+        {x:32*36, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*72, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*85, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*95, y:params.canvasHeight-32*12, size: 8 },
+
+        {x:32*200, y:params.canvasHeight-32*1, size: 8 },
+        {x:32*202, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*204, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*206, y:params.canvasHeight-32*13, size: 8 },
+
+        {x:32*226, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*246, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*276, y:params.canvasHeight-32*13, size: 8 },
+
+    ],
+    targetblock: [],
+    targetblock2: [],
+    targetblock3: [],
+    targetblock4: [{x: 700, y: params.canvasHeight-32*4}],
+    enemies: [
+        {x: 1200, y:550},
+        {x: 2200, y:450},
+        {x: 3200, y:350},
+        {x: 4200, y:550},
+        {x: 5200, y:450},
+        {x: 6200, y:350},
     ],
 
 }

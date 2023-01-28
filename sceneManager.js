@@ -5,12 +5,18 @@ class SceneManager{
         this.x = 0;
         this.score = 0;
         this.gameOver = false;
-        this.player = new CharacterController(this.game,50,200);
+        this.player = new CharacterController(this.game,50,550);
   
-        this.loadLevel(levelOne,50,550);
 
+        
+        this.loadLevel(levelOne,50,200); 
+        //this.loadLevel(levelTwo,50,550); 
+        //this.loadLevel(levelThree,50,550)
+        //this.loadLevel(levelFour,50,550)
 
         //professor has a method "loadlevel1" that we should make and use instead.
+        //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
+
         //let uoma = new Uoma(this.game);
         //this.game.addEntity(uoma);
         this.marker = 0;
@@ -19,6 +25,7 @@ class SceneManager{
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
+
         });
     };
 
@@ -32,7 +39,10 @@ class SceneManager{
         this.game.entities = [];
         this.x = 0;
         this.player.x = x;
-        this.player.y = y;
+        this.player.y = 0; 
+        // Hi. I changed this from 'y' to '0' to make it look like the 
+        // character just falls out of the sky. More so that they fall 
+        // into the ground level 2 from above - Michael
         this.player.velocity = { x: 0, y: 0 };
         
 
@@ -43,27 +53,62 @@ class SceneManager{
         }
 
 
-        this.game.addEntity(new Background(this.game));
+        for(const entry of level.background) {
+            console.log(entry);
+            if(level == levelOne){
+                this.game.addEntity(new BackgroundLevel1(this.game));
+            }
+            if(level == levelTwo) {
+                this.game.addEntity(new BackgroundLevel2(this.game));
+            }
+            if(level == levelThree) {
+                this.game.addEntity(new BackgroundLevel3(this.game));
+            }
+            if(level == levelFour) {
+                this.game.addEntity(new BackgroundLevel4(this.game));
+            }
+        }
 
         // TODO: refactor/ generalize to handle more diverse blocks in the level design
         //if (level.ground) {
             //this.game.addEntity(new Ground(this.game, level.ground.x, level.ground.y, level.ground.size));
         for(const entry of level.ground) {
             console.log(entry);
-            this.game.addEntity(new Ground(this.game, entry.x, entry.y, entry.size));
+            if(level == levelOne){
+                this.game.addEntity(new Ground(this.game, entry.x, entry.y, entry.size));
+            }
+            if(level == levelTwo) {
+                this.game.addEntity(new UnderGround(this.game, entry.x, entry.y, entry.size));
+            }
+            if(level == levelThree) {
+                this.game.addEntity(new IceGround(this.game, entry.x, entry.y, entry.size));
+            }
+            if(level == levelFour) {
+                this.game.addEntity(new HellGround(this.game, entry.x, entry.y, entry.size));
+            }
         }
         //}
         for(const entry of level.targetblock) {
             this.game.addEntity(new Flag_Block(this.game, entry.x, entry.y));
             console.log("added flagblock", [entry.x, entry.y, entry.size]);
         }
+        for(const entry of level.targetblock2) {
+            this.game.addEntity(new Flag_Block2(this.game, entry.x, entry.y));
+            console.log("added flagblock2", [entry.x, entry.y, entry.size]);
+        }
+        for(const entry of level.targetblock3) {
+            this.game.addEntity(new Flag_Block3(this.game, entry.x, entry.y));
+            console.log("added flagblock3", [entry.x, entry.y, entry.size]);
+        }
+        for(const entry of level.targetblock4) {
+            this.game.addEntity(new Flag_Block4(this.game, entry.x, entry.y));
+            console.log("added flagblock4", [entry.x, entry.y, entry.size]);
+        }
         for(const entry of level.enemies) {
             this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
-        }
-        //this.game.addEntity(new Flag_Block(this.game))
-        //this.game.addEntity(new Uoma(this.game));
+        }      
         this.game.addEntity(this.player);
-        console.log('Done lvel 1')
+        console.log('Done lwvel 1')
     };
 
     /**
