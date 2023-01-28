@@ -34,7 +34,7 @@ class CharacterController {
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
         //Attack
-        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8280, 349, 368, 1, 1, 0, 0, -400, 100);
+        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8280, 349, 368, 1, 1, 0, 0, 0, 100);
         //Death
         this.animationList["DEATH"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 9922, 300, 225, 5, 0.1, 0, 3, 0,-10);
         //Dead.
@@ -127,9 +127,11 @@ class CharacterController {
         if (this.game.keys["r"]) { // attack key                                                        
             console.log("attacking");
             this.state = "ATTACK";
-            // if(this.facingDirection == 1){
-            //     this.x-this.xoffset = -400;
-            // }
+            if(this.facingDirection == 0){
+                this.animationList["ATTACK"].xoffset=200;
+            } else {
+                this.animationList["ATTACK"].xoffset=0; 
+            }
             this.updateAttackBB();
         }
 
