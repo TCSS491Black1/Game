@@ -6,7 +6,6 @@ class SceneManager{
         this.score = 0;
         this.gameOver = false;
         this.player = new CharacterController(this.game,50,550);
-  
 
         
         this.loadLevel(levelOne,50,200); 
@@ -35,8 +34,8 @@ class SceneManager{
         // to the current music implementation. Here, the level 
         // property can manage level-specific items. -Griffin
         this.level = level;
-
-        this.game.entities = [];
+        
+        this.game.entities = [this] // TODO: this does not clear/unload entities.
         this.x = 0;
         this.player.x = x;
         this.player.y = 0; 
@@ -53,8 +52,8 @@ class SceneManager{
         }
 
 
-        for(const entry of level.background) {
-            console.log(entry);
+        //for(const entry of level.background) {
+            //console.log(entry);
             if(level == levelOne){
                 this.game.addEntity(new BackgroundLevel1(this.game));
             }
@@ -67,7 +66,7 @@ class SceneManager{
             if(level == levelFour) {
                 this.game.addEntity(new BackgroundLevel4(this.game));
             }
-        }
+        //}
 
         // TODO: refactor/ generalize to handle more diverse blocks in the level design
         //if (level.ground) {
