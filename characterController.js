@@ -183,16 +183,16 @@ class CharacterController {
                     this.game.camera.loadNextLevel(50, 550);
                 }
             }
-        }
+        
 
             // tried figuring out collision with attacking Uoma entity, not working. -Michael
-            // else if (that != entity && entity.BB && that.attackBB.collide(entity.BB)) {             
-            //     if (entity instanceof Uoma) {
-            //         console.log("Hornet killed Uoma");
-            //         //entity.dead = true;
-            //     }
-            // }
-        );
+        if (this.state=="ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {             
+            if (entity instanceof Enemy) {
+                console.log("Hornet killed " + entity.constructor.name);
+                entity.state="DEAD";
+            }
+        }
+    });
         //that.updateBB(); // updating BB due to collision-based movement
     };
 
