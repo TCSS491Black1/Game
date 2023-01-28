@@ -139,6 +139,10 @@ class CharacterController {
             this.updateAttackBB();
         }
 
+        if(this.y == 1500){ 
+            this.dead = true;
+        } // fall off the map and die
+
         if(this.dead === true) { // death state makes Hornet stay dead. Should we keep Hornet on screen during reset popup? timer before reset?
             this.state = "DEAD";
             console.log("dead");
@@ -146,8 +150,8 @@ class CharacterController {
             this.y = 580; //ground - ish
         }
 
+      
 
-        
         this.updateBB();
 
         //Collisions
@@ -167,14 +171,25 @@ class CharacterController {
                     that.velocity.y === 0 ;
 
                 }
-            } 
-            // else if (that != entity && entity.BB && that.attackBB.collide(entity.BB)) {             // tried figuring out collision with attacking Uoma entity, not working. -Michael
+                if (entity instanceof UnderGround && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.y = entity.BB.top - that.BB.height - 2;
+
+                    that.velocity.y === 0 ;
+
+                }
+                if (entity instanceof Flag_Block && (that.lastBB.collide(entity.BB))) {
+                    that.game.camera.loadLevel(levelTwo,50,550);
+                } 
+                            
+            } }
+            
+            // tried figuring out collision with attacking Uoma entity, not working. -Michael
+            // else if (that != entity && entity.BB && that.attackBB.collide(entity.BB)) {             
             //     if (entity instanceof Uoma) {
             //         console.log("Hornet killed Uoma");
             //         //entity.dead = true;
             //     }
             // }
-        }
         );
         that.updateBB(); // updating BB due to collision-based movement
     };

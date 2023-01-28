@@ -57,8 +57,8 @@ class Uoma extends Enemy {
             return;
         }
         this.x -= (this.speed * this.game.clockTick);
-        if (this.x < -200) this.x = 1500, this.y = 300;
-        if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100;
+        // if (this.x < -200) this.x = 1500, this.y = 300;
+        // if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100; // spawning allocated in levels.js now
         // end of movement code
 
         this.updateBB();
