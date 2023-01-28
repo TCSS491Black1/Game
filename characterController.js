@@ -18,7 +18,7 @@ class CharacterController {
 
         this.gravity = 500;
 
-        this.facingDirection = 0; // 1 is right, 0 is left? sprites happen to face left by default.
+        this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
         this.dead = false;
@@ -49,8 +49,12 @@ class CharacterController {
     };
 
     updateAttackBB(){
-        this.lastAttackBB = this.attackBB;                                                                    
-        this.attackBB = new BoundingBox(this.x, this.y - 80, 339, 300);
+        this.lastAttackBB = this.attackBB;     
+        if(this.facingDirection == 0){
+            this.attackBB = new BoundingBox(this.x - 200 - this.game.camera.x, this.y - 80, 339, 300, "yellow");
+        } else {
+            this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow"); 
+        }                                                               
     }
 
     update() {
@@ -135,7 +139,7 @@ class CharacterController {
             this.updateAttackBB();
         }
 
-        if(this.dead === true) { // death state stays. timer before reset?
+        if(this.dead === true) { // death state makes Hornet stay dead. Should we keep Hornet on screen during reset popup? timer before reset?
             this.state = "DEAD";
             console.log("dead");
             this.velocity = { x: null, y: null };
@@ -178,17 +182,12 @@ class CharacterController {
     draw(ctx) {
         ctx.save();
         // draw the character's bounding box:
-        this.BB.draw(ctx);
-
+        if(this.state == 'ATTACK') {
+            this.attackBB.draw(ctx); 
+        } else {
+            this.BB.draw(ctx); 
+        }
         
-        // if(this.state == 'ATTACK') {
-        //     ctx.strokeRect(this.attackBB.x, this.attackBB.y, this.attackBB.width, this.attackBB.height);
-        // } else {
-        //     ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
-        // // </boundingbox>
-        // }
-        
-
         // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);
         if (this.facingDirection) {// if facing right

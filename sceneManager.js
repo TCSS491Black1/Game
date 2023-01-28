@@ -7,8 +7,8 @@ class SceneManager{
         this.gameOver = false;
         this.player = new CharacterController(this.game,50,200);
   
-        this.loadLevel(levelOne,50,550);
-
+       this.loadLevel(levelOne,50,550); // commented out so that I can run tests on level 2 quickly. 
+        //this.loadLevel(levelTwo,50,550); // running tests on level 2
 
         //professor has a method "loadlevel1" that we should make and use instead.
         //let uoma = new Uoma(this.game);
