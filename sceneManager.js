@@ -1,4 +1,5 @@
 class SceneManager{
+    levels = [levelOne, levelTwo, levelThree, levelFour];
     constructor(game){
         this.game = game;
         this.game.camera = this;
@@ -6,7 +7,7 @@ class SceneManager{
         this.score = 0;
         this.gameOver = false;
         this.player = new CharacterController(this.game,50,550);
-
+        this.levelNum = 0;
         
         this.loadLevel(levelOne,50,200); 
         //this.loadLevel(levelTwo,50,550); 
@@ -29,7 +30,6 @@ class SceneManager{
     };
 
     loadLevel(level , x, y){
-        
         // This code is beginning to refactor loading with level.js due
         // to the current music implementation. Here, the level 
         // property can manage level-specific items. -Griffin
@@ -51,65 +51,33 @@ class SceneManager{
            // ASSET_MANAGER.playAsset(level.music);
         }
 
-
-        //for(const entry of level.background) {
-            //console.log(entry);
-            if(level == levelOne){
-                this.game.addEntity(new BackgroundLevel1(this.game));
-            }
-            if(level == levelTwo) {
-                this.game.addEntity(new BackgroundLevel2(this.game));
-            }
-            if(level == levelThree) {
-                this.game.addEntity(new BackgroundLevel3(this.game));
-            }
-            if(level == levelFour) {
-                this.game.addEntity(new BackgroundLevel4(this.game));
-            }
-        //}
+        console.log({bg:level.background})
+        this.game.addEntity(new Background(this.game, level.background));
 
         // TODO: refactor/ generalize to handle more diverse blocks in the level design
-        //if (level.ground) {
-            //this.game.addEntity(new Ground(this.game, level.ground.x, level.ground.y, level.ground.size));
+        
         for(const entry of level.ground) {
-            console.log(entry);
-            if(level == levelOne){
-                this.game.addEntity(new Ground(this.game, entry.x, entry.y, entry.size));
-            }
-            if(level == levelTwo) {
-                this.game.addEntity(new UnderGround(this.game, entry.x, entry.y, entry.size));
-            }
-            if(level == levelThree) {
-                this.game.addEntity(new IceGround(this.game, entry.x, entry.y, entry.size));
-            }
-            if(level == levelFour) {
-                this.game.addEntity(new HellGround(this.game, entry.x, entry.y, entry.size));
-            }
+            // generate ground objects based on designated type in levels.js
+            this.game.addEntity(new level['groundType'](this.game, entry.x, entry.y, entry.size));
         }
-        //}
+        
         for(const entry of level.targetblock) {
             this.game.addEntity(new Flag_Block(this.game, entry.x, entry.y));
             console.log("added flagblock", [entry.x, entry.y, entry.size]);
         }
-        for(const entry of level.targetblock2) {
-            this.game.addEntity(new Flag_Block2(this.game, entry.x, entry.y));
-            console.log("added flagblock2", [entry.x, entry.y, entry.size]);
-        }
-        for(const entry of level.targetblock3) {
-            this.game.addEntity(new Flag_Block3(this.game, entry.x, entry.y));
-            console.log("added flagblock3", [entry.x, entry.y, entry.size]);
-        }
-        for(const entry of level.targetblock4) {
-            this.game.addEntity(new Flag_Block4(this.game, entry.x, entry.y));
-            console.log("added flagblock4", [entry.x, entry.y, entry.size]);
-        }
+
         for(const entry of level.enemies) {
             this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
         }      
         this.game.addEntity(this.player);
         console.log('Done lwvel 1')
     };
-
+    loadNextLevel(x, y) {
+        // it wraps for now, but we can change this later if we want.
+        this.levelNum = (this.levelNum + 1) % this.levels.length;
+        console.log(["loading level", this.levelNum, this.levels[this.levelNum]]);
+        this.loadLevel(this.levels[this.levelNum], x, y);
+    }
     /**
      * Adds audio context to sceneManager.
      */
@@ -122,17 +90,11 @@ class SceneManager{
     }
 
     update() {
-        // This code is to ensure that once moving, Hornet maintains center.
-        // However, this breaks with the bounding box. We need a separate class 
-        // specifically for Hornet. Then we can make it work. I think. -Michael
-
+        // This code is to ensure that once moving, Hornet maintains center -Michael
         let midpoint = params.canvasWidth/2;
         
         if( this.player.x < midpoint ){
             this.x = 0;        
-        //}else if (this.player.x > 7672-midpoint){
-        //else if()
-        //    this.x = 7672 - params.canvasWidth;
         }else{
             this.x = this.player.x - midpoint;
         }

@@ -1,7 +1,7 @@
 const levelOne = {
     music: "./assets/sounds/music/intro.mp3",
     background: "./assets/Overworld_Level_1.png",
-
+    groundType: GrassGround,
     ground: [
         {x:0, y:params.canvasHeight-32, size: 300 }, // base flat ground
         {x:32*10, y:params.canvasHeight-32*1, size: 8 },
@@ -10,9 +10,6 @@ const levelOne = {
         {x:32*16, y:params.canvasHeight-32*13, size: 8 },
     ],
     targetblock: [{x: 700, y: params.canvasHeight-32*4}],
-    targetblock2: [],
-    targetblock3: [],
-    targetblock4: [],
     enemies: [
         {x: 1200, y:550},
         {x: 1200, y:450},
@@ -23,6 +20,7 @@ const levelOne = {
 const levelTwo = {
     //music: "./assets/sounds/music/intro.mp3",
     background: "./assets/Underground_Level_2.png",
+    groundType: UnderGround,
     ground: [
         {x:0, y:params.canvasHeight-32, size: 736 }, 
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },
@@ -45,10 +43,7 @@ const levelTwo = {
 
     // easily can add a "platform" or "obstacle" option here too
     ],
-    targetblock: [],
-    targetblock2: [{x: 700, y: params.canvasHeight-32*4}],
-    targetblock3: [],
-    targetblock4: [],
+    targetblock: [{x: 700, y: params.canvasHeight-32*4}],
     enemies: [
         {x: 1200, y:550},
         {x: 2200, y:450},
@@ -62,6 +57,7 @@ const levelTwo = {
 const levelThree = {
     //music: "./assets/sounds/music/intro.mp3",
     background: "./assets/IceLevel3.png",
+    groundType: IceGround,
     ground: [
         {x:0, y:params.canvasHeight-32, size: 736 }, 
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },
@@ -83,10 +79,7 @@ const levelThree = {
         {x:32*276, y:params.canvasHeight-32*13, size: 8 },
 
     ],
-    targetblock: [],
-    targetblock2: [],
-    targetblock3: [{x: 700, y: params.canvasHeight-32*4}],
-    targetblock4: [],
+    targetblock: [{x: 700, y: params.canvasHeight-32*4}],
     enemies: [
         {x: 1200, y:550},
         {x: 2200, y:450},
@@ -100,6 +93,7 @@ const levelThree = {
 const levelFour = {
     //music: "./assets/sounds/music/intro.mp3",
     background: "./assets/HellLevel4.png",
+    groundType: HellGround,
     ground: [
         {x:0, y:params.canvasHeight-32, size: 736 }, 
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },
@@ -121,10 +115,7 @@ const levelFour = {
         {x:32*276, y:params.canvasHeight-32*13, size: 8 },
 
     ],
-    targetblock: [],
-    targetblock2: [],
-    targetblock3: [],
-    targetblock4: [{x: 700, y: params.canvasHeight-32*4}],
+    targetblock: [{x: 700, y: params.canvasHeight-32*4}],
     enemies: [
         {x: 1200, y:550},
         {x: 2200, y:450},
