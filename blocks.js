@@ -1,94 +1,47 @@
 class Ground {
+    // holds common collective functionality for ground / platforms.
     constructor(game, x, y, w) {
-        Object.assign(this, { game, x, y, w});
-        this.spritesheet = ASSET_MANAGER.getAsset("./assets/Environmental_Blocks.png",0,32,16,16);
-        this.BB = new BoundingBox(this.x, this.y, 32*w, 32, "orange");
+        Object.assign(this, { game, x, y, w });
+        this.spritesheet = ASSET_MANAGER.getAsset("./assets/Environmental_Blocks.png");
+        this.BB = new BoundingBox(this.x, this.y, 32 * w, 32, "orange");
     };
 
     update() {
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 32*this.w, 32, "orange");
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 32 * this.w, 32, "orange");
     };
 
-    draw(ctx){
+    draw(ctx) {
         for (var i = 0; i < this.w; i++) {
             ctx.drawImage(this.spritesheet,
-                0, 32,
-                16,16,
-                /*i*32-this.game.camera.x, params.canvasHeight-32,*/
-                this.x + i*32-this.game.camera.x, this.y,
-                16*2,16*2);
-                
+                this.spritex, this.spritey, 16, 16,
+                this.x + i * 32 - this.game.camera.x, this.y,
+                16 * 2, 16 * 2);
         }
         this.BB.draw(ctx);
     };
 }
-class UnderGround {
+class GrassGround extends Ground {
     constructor(game, x, y, w) {
-        Object.assign(this, { game, x, y, w});
-        this.spritesheet = ASSET_MANAGER.getAsset("./assets/Environmental_Blocks.png",32,96,16,16);
-        this.BB = new BoundingBox(this.x, this.y, 32*w, 32, "orange");
-    };
-
-    update() {
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 32*this.w, 32, "orange");
-    };
-
-    draw(ctx){
-        for (var i = 0; i < this.w; i++) {
-            ctx.drawImage(this.spritesheet,
-                32, 96,
-                16, 16,
-                this.x + i*32-this.game.camera.x, this.y,
-                16*2,16*2);
-                
-        }
-        this.BB.draw(ctx);
+        super(game, x, y, w);
+        Object.assign(this, {spritex:0, spritey:32});
+    }
+}
+class UnderGround extends Ground {
+    constructor(game, x, y, w) {
+        super(game, x, y, w)
+        Object.assign(this, {spritex:32, spritey:96});
     };
 }
-class IceGround {
+class IceGround extends Ground {
     constructor(game, x, y, w) {
-        Object.assign(this, { game, x, y, w});
-        this.spritesheet = ASSET_MANAGER.getAsset("./assets/Environmental_Blocks.png", 32, 96, 16, 16);
-        this.BB = new BoundingBox(this.x, this.y, 32*w, 32, "orange");
-    };
-
-    update() {
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 32*this.w, 32, "orange");
-    };
-
-    draw(ctx){
-        for (var i = 0; i < this.w; i++) {
-            ctx.drawImage(this.spritesheet,
-                112, 224,
-                16, 16,
-                this.x + i*32-this.game.camera.x, this.y,
-                16*2,16*2);
-                
-        }
-        this.BB.draw(ctx);
+        super(game, x, y, w);
+        Object.assign(this, {spritex:112, spritey:224});
     };
 }
-class HellGround {
+class HellGround extends Ground {
     constructor(game, x, y, w) {
-        Object.assign(this, { game, x, y, w});
-        this.spritesheet = ASSET_MANAGER.getAsset("./assets/Environmental_Blocks.png",368,192,16,16);
-        this.BB = new BoundingBox(this.x, this.y, 32*w, 32, "orange");
-    };
-
-    update() {
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 32*this.w, 32, "orange");
-    };
-
-    draw(ctx){
-        for (var i = 0; i < this.w; i++) {
-            ctx.drawImage(this.spritesheet,
-                368, 192,
-                16, 16,
-                this.x + i*32-this.game.camera.x, this.y,
-                16*2,16*2);
-                
-        }
-        this.BB.draw(ctx);
+        super(game, x, y, w);
+        Object.assign(this, {spritex:368, spritey:192});
     };
 }
 
