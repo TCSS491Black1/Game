@@ -12,6 +12,7 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Overworld_Level_1.png",
 	"./assets/Underground_Level_2.png",
 	"./assets/IceLevel3.png",
+	"./assets/HellLevel4.png",
 	"./assets/Environmental_Blocks.png",
 	"./assets/sounds/music/intro.mp3",
 	"./assets/sounds/sfx/trill.wav",

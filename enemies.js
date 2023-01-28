@@ -88,7 +88,6 @@ class Uoma extends Enemy {
         // Need to handle collision with walls?
     }
 };
-
 class Heavy_Sentry extends Enemy {
     constructor(game, x, y) {
         super(game, x, y);
@@ -135,7 +134,6 @@ class Heavy_Sentry extends Enemy {
         }
     }
 }
-
 class Hive_Knight extends Enemy {
     constructor(game, x, y) {
         super(game, x, y);
@@ -150,8 +148,109 @@ class Hive_Knight extends Enemy {
         }
     }
 }
-
 class Flag_Block {
+    constructor(game, x=1400, y=600) {
+        Object.assign(this, { game, x, y });
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Dirt_Block.png"),
+            2, 2, 62, 62, 1, 1, 1, 1)
+
+        this.speed = 0;
+        this.updateBB();
+    }
+
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 64, 64, "blue");
+    }
+
+    update() {
+        this.updateBB();
+        var that = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity.BB && that.BB.collide(entity.BB)) {
+                if (entity instanceof CharacterController) {
+                    //entity.dead = false;
+                    console.log("Block collision with Hornet = WIN")
+                }
+            }
+        });
+    }
+
+    draw(ctx) {
+        this.updateBB(); // race condition because camera moves fast enough to cause drift
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y)
+        this.BB.draw(ctx);
+    };
+}
+class Flag_Block2 {
+    constructor(game, x=1400, y=600) {
+        Object.assign(this, { game, x, y });
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Dirt_Block.png"),
+            2, 2, 62, 62, 1, 1, 1, 1)
+
+        this.speed = 0;
+        this.updateBB();
+    }
+
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 64, 64, "blue");
+    }
+
+    update() {
+        this.updateBB();
+        var that = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity.BB && that.BB.collide(entity.BB)) {
+                if (entity instanceof CharacterController) {
+                    //entity.dead = false;
+                    console.log("Block collision with Hornet = WIN")
+                }
+            }
+        });
+    }
+
+    draw(ctx) {
+        this.updateBB(); // race condition because camera moves fast enough to cause drift
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y)
+        this.BB.draw(ctx);
+    };
+}
+class Flag_Block3 {
+    constructor(game, x=1400, y=600) {
+        Object.assign(this, { game, x, y });
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Dirt_Block.png"),
+            2, 2, 62, 62, 1, 1, 1, 1)
+
+        this.speed = 0;
+        this.updateBB();
+    }
+
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 64, 64, "blue");
+    }
+
+    update() {
+        this.updateBB();
+        var that = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity.BB && that.BB.collide(entity.BB)) {
+                if (entity instanceof CharacterController) {
+                    //entity.dead = false;
+                    console.log("Block collision with Hornet = WIN")
+                }
+            }
+        });
+    }
+
+    draw(ctx) {
+        this.updateBB(); // race condition because camera moves fast enough to cause drift
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y)
+        this.BB.draw(ctx);
+    };
+}
+class Flag_Block4 {
     constructor(game, x=1400, y=600) {
         Object.assign(this, { game, x, y });
         this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Dirt_Block.png"),

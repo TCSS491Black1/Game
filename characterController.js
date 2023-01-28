@@ -8,7 +8,7 @@ class CharacterController {
         this.viewWidth = 1024;
         this.viewHeight = 768;
         this.x = 0;
-        this.y = 500;
+        this.y = 0;
 
         this.jumpInitPosition = null;
         this.jumpInitTime = null;
@@ -26,7 +26,7 @@ class CharacterController {
 
         this.animationList = {};
 
-        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth){
+        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth, xoffset, yoffset){
         //(Idle)
         this.animationList["IDLE"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 954, 184, 214, 6, 0.1, 1, 3);
         //Walk/run
@@ -34,13 +34,12 @@ class CharacterController {
         //Jump
         this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
         //Attack
-        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8280, 349, 368, 1, 1, 0, 0, 0, 100);
+        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8270, 349, 368, 1, 1, 0, 0, 0, 100);
         //Death
         this.animationList["DEATH"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 9922, 300, 225, 5, 0.1, 0, 3, 0,-10);
         //Dead.
         this.animationList["DEAD"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 1216, 9922, 300, 225, 1, 0.5, 1, 3,0,-10);
 
-        this.game.addEntity(new Background(this.game));
     };
 
     updateBB() {
@@ -167,18 +166,33 @@ class CharacterController {
 
                 if (entity instanceof Ground && (that.lastBB.bottom) <= entity.BB.top) {
                     that.y = entity.BB.top - that.BB.height - 2;
-                    //console.log("Grouned")
                     that.velocity.y === 0 ;
-
                 }
                 if (entity instanceof UnderGround && (that.lastBB.bottom) <= entity.BB.top) {
                     that.y = entity.BB.top - that.BB.height - 2;
-
                     that.velocity.y === 0 ;
-
                 }
+                if (entity instanceof IceGround && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.y = entity.BB.top - that.BB.height - 2;
+                    that.velocity.y === 0 ;
+                }
+                if (entity instanceof HellGround && (that.lastBB.bottom) <= entity.BB.top) {
+                    that.y = entity.BB.top - that.BB.height - 2;
+                    that.velocity.y === 0 ;
+                }
+
+                //These will be for moving to the next level later.
                 if (entity instanceof Flag_Block && (that.lastBB.collide(entity.BB))) {
                     that.game.camera.loadLevel(levelTwo,50,550);
+                } 
+                if (entity instanceof Flag_Block2 && (that.lastBB.collide(entity.BB))) {
+                    that.game.camera.loadLevel(levelThree,50,550);
+                } 
+                if (entity instanceof Flag_Block3 && (that.lastBB.collide(entity.BB))) {
+                    that.game.camera.loadLevel(levelFour,50,550);
+                } 
+                if (entity instanceof Flag_Block4 && (that.lastBB.collide(entity.BB))) {
+                    that.game.camera.loadLevel(levelFour,50,550);
                 } 
                             
             } }
