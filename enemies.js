@@ -57,8 +57,8 @@ class Uoma extends Enemy {
             return;
         }
         this.x -= (this.speed * this.game.clockTick);
-        if (this.x < -200) this.x = 1500, this.y = 300;
-        if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100;
+        // if (this.x < -200) this.x = 1500, this.y = 300;
+        // if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100; // spawning allocated in levels.js now
         // end of movement code
 
         this.updateBB();
@@ -88,7 +88,6 @@ class Uoma extends Enemy {
         // Need to handle collision with walls?
     }
 };
-
 class Heavy_Sentry extends Enemy {
     constructor(game, x, y) {
         super(game, x, y);
@@ -135,7 +134,6 @@ class Heavy_Sentry extends Enemy {
         }
     }
 }
-
 class Hive_Knight extends Enemy {
     constructor(game, x, y) {
         super(game, x, y);
@@ -150,7 +148,6 @@ class Hive_Knight extends Enemy {
         }
     }
 }
-
 class Flag_Block {
     constructor(game, x=1400, y=600) {
         Object.assign(this, { game, x, y });

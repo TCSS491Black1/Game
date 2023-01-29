@@ -1,19 +1,21 @@
-class Background{
-    constructor(game){
-        this.game = game;
+class Background {
+    constructor(game, img) {
         this.x = 0;
         this.y = 0;
+        this.game = game;
+        this.asset = ASSET_MANAGER.getAsset(img);
     }
 
-    update(){
-              
+    update() {
+
     }
 
-    draw(ctx){
-        ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), this.x-this.game.camera.x ,this.y, 1920, 768,);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), this.x+1918-this.game.camera.x, this.y, 1920, 768,);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), this.x+(2*1918)-this.game.camera.x, this.y, 1920, 768,);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), this.x+(3*1918)-this.game.camera.x, this.y, 1920, 768,);
-        ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), this.x+(4*1918)-this.game.camera.x, this.y, 1920, 768,); // loooong background
+    draw(ctx) {
+        for (var i = 0; i < 7; i++) {
+            ctx.drawImage(
+                this.asset,
+                this.x + (i * 1918) - this.game.camera.x, this.y, 1920, 768
+            );
+        }
     }
 }

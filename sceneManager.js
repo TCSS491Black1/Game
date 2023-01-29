@@ -1,16 +1,22 @@
 class SceneManager{
+    levels = [levelOne, levelTwo, levelThree, levelFour];
     constructor(game){
         this.game = game;
         this.game.camera = this;
         this.x = 0;
         this.score = 0;
         this.gameOver = false;
-        this.player = new CharacterController(this.game,50,200);
-  
-        this.loadLevel(levelOne,50,550);
-
+        this.player = new CharacterController(this.game,50,550);
+        this.levelNum = 0;
+        
+        this.loadLevel(levelOne,50,200); 
+        //this.loadLevel(levelTwo,50,550); 
+        //this.loadLevel(levelThree,50,550)
+        //this.loadLevel(levelFour,50,550)
 
         //professor has a method "loadlevel1" that we should make and use instead.
+        //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
+
         //let uoma = new Uoma(this.game);
         //this.game.addEntity(uoma);
         this.marker = 0;
@@ -19,20 +25,23 @@ class SceneManager{
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
+
         });
     };
 
     loadLevel(level , x, y){
-        
         // This code is beginning to refactor loading with level.js due
         // to the current music implementation. Here, the level 
         // property can manage level-specific items. -Griffin
         this.level = level;
-
-        this.game.entities = [];
+        
+        this.game.entities = [this] // TODO: this does not clear/unload entities.
         this.x = 0;
         this.player.x = x;
-        this.player.y = y;
+        this.player.y = 0; 
+        // Hi. I changed this from 'y' to '0' to make it look like the 
+        // character just falls out of the sky. More so that they fall 
+        // into the ground level 2 from above - Michael
         this.player.velocity = { x: 0, y: 0 };
         
 
@@ -42,30 +51,33 @@ class SceneManager{
            // ASSET_MANAGER.playAsset(level.music);
         }
 
-
-        this.game.addEntity(new Background(this.game));
+        console.log({bg:level.background})
+        this.game.addEntity(new Background(this.game, level.background));
 
         // TODO: refactor/ generalize to handle more diverse blocks in the level design
-        //if (level.ground) {
-            //this.game.addEntity(new Ground(this.game, level.ground.x, level.ground.y, level.ground.size));
+        
         for(const entry of level.ground) {
-            console.log(entry);
-            this.game.addEntity(new Ground(this.game, entry.x, entry.y, entry.size));
+            // generate ground objects based on designated type in levels.js
+            this.game.addEntity(new level['groundType'](this.game, entry.x, entry.y, entry.size));
         }
-        //}
+        
         for(const entry of level.targetblock) {
             this.game.addEntity(new Flag_Block(this.game, entry.x, entry.y));
             console.log("added flagblock", [entry.x, entry.y, entry.size]);
         }
+
         for(const entry of level.enemies) {
             this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
-        }
-        //this.game.addEntity(new Flag_Block(this.game))
-        //this.game.addEntity(new Uoma(this.game));
+        }      
         this.game.addEntity(this.player);
-        console.log('Done lvel 1')
+        console.log('Done lwvel 1')
     };
-
+    loadNextLevel(x, y) {
+        // it wraps for now, but we can change this later if we want.
+        this.levelNum = (this.levelNum + 1) % this.levels.length;
+        console.log(["loading level", this.levelNum, this.levels[this.levelNum]]);
+        this.loadLevel(this.levels[this.levelNum], x, y);
+    }
     /**
      * Adds audio context to sceneManager.
      */
@@ -78,17 +90,11 @@ class SceneManager{
     }
 
     update() {
-        // This code is to ensure that once moving, Hornet maintains center.
-        // However, this breaks with the bounding box. We need a separate class 
-        // specifically for Hornet. Then we can make it work. I think. -Michael
-
+        // This code is to ensure that once moving, Hornet maintains center -Michael
         let midpoint = params.canvasWidth/2;
         
         if( this.player.x < midpoint ){
             this.x = 0;        
-        //}else if (this.player.x > 7672-midpoint){
-        //else if()
-        //    this.x = 7672 - params.canvasWidth;
         }else{
             this.x = this.player.x - midpoint;
         }
