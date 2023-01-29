@@ -85,6 +85,7 @@ class AssetManager {
     playAsset(path) {
         let audio = this.cache[path];
         audio.currentTime = 0;
+        this.adjustVolume(document.getElementById('volume').value)
         audio.play();
     }
 

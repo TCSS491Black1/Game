@@ -20,6 +20,9 @@ class SceneManager{
         //let uoma = new Uoma(this.game);
         //this.game.addEntity(uoma);
         this.marker = 0;
+        this.updateAudio();
+        document.getElementById('volume').addEventListener('input', this.updateAudio);
+        document.getElementById('mute').addEventListener('input', this.updateAudio);
     };
 
     clearEntities() {
@@ -48,7 +51,7 @@ class SceneManager{
         // To change based on professor's "title" technique.
         if(level.music) {
             ASSET_MANAGER.pauseBackgroundMusic();
-           // ASSET_MANAGER.playAsset(level.music);
+            ASSET_MANAGER.playAsset(level.music);
         }
 
         console.log({bg:level.background})
@@ -83,13 +86,14 @@ class SceneManager{
      */
     updateAudio() {
         var mute = document.getElementById("mute").checked;
-        var volume = document.getElementById("volume").checked;
+        var volume = document.getElementById("volume").value;
 
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
     }
 
     update() {
+        
         // This code is to ensure that once moving, Hornet maintains center -Michael
         let midpoint = params.canvasWidth/2;
         
