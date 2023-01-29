@@ -10,15 +10,9 @@ class SceneManager{
         this.levelNum = 0;
         
         this.loadLevel(levelOne,50,200); 
-        //this.loadLevel(levelTwo,50,550); 
-        //this.loadLevel(levelThree,50,550)
-        //this.loadLevel(levelFour,50,550)
-
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
-        //let uoma = new Uoma(this.game);
-        //this.game.addEntity(uoma);
         this.marker = 0;
         this.updateAudio();
         document.getElementById('volume').addEventListener('input', this.updateAudio);
@@ -28,7 +22,7 @@ class SceneManager{
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
-
+            ASSET_MANAGER.pauseBackgroundMusic();
         });
     };
 
@@ -50,7 +44,7 @@ class SceneManager{
 
         // To change based on professor's "title" technique.
         if(level.music) {
-            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.pauseBackgroundMusic(); // stop previous bg music.
             ASSET_MANAGER.playAsset(level.music);
         }
 
