@@ -24,6 +24,8 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/sounds/music/ver-1.mp3",
 	"./assets/sounds/music/ver-2.mp3",
 	"./assets/sounds/music/ver-3.mp3",
+	"./assets/sounds/music/drumloop.mp3",
+	"./assets/sounds/music/fadein.mp3",
 	"./assets/sounds/sfx/step.wav",
 	"./assets/sounds/sfx/coin.wav",
 	"./assets/sounds/sfx/laser.wav",
@@ -39,6 +41,8 @@ ASSET_MANAGER.downloadAll(() => {
 	ASSET_MANAGER.autoRepeat("./assets/sounds/music/ver-1.mp3");
 	ASSET_MANAGER.autoRepeat("./assets/sounds/music/ver-2.mp3");
 	ASSET_MANAGER.autoRepeat("./assets/sounds/music/ver-3.mp3");
+	ASSET_MANAGER.autoRepeat("./assets/sounds/music/drumloop.mp3");
+	ASSET_MANAGER.autoRepeat("./assets/sounds/music/fadein.mp3");
 	var canvas = document.getElementById("gameWorld");
 	var ctx = canvas.getContext("2d");
 	

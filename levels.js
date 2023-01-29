@@ -93,7 +93,7 @@ const levelThree = {
 
 }
 const levelFour = {
-    music: "./assets/sounds/music/ver-1.mp3", // TODO: Remove "wow" voice sample!!!
+    music: "./assets/sounds/music/drumloop.mp3",
     background: "./assets/HellLevel4.png",
     groundType: HellGround,
     ground: [
