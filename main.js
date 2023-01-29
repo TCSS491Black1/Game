@@ -19,6 +19,8 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/ice-block.png",
 	
 	"./assets/sounds/music/intro.mp3", // music, sound assets
+	"./assets/sounds/music/main-1.mp3",
+	"./assets/sounds/music/main-2.mp3",
 	"./assets/sounds/sfx/trill.wav",
 ].forEach(asset => ASSET_MANAGER.queueDownload(asset));
 

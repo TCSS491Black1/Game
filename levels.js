@@ -18,7 +18,7 @@ const levelOne = {
 
 }
 const levelTwo = {
-    //music: "./assets/sounds/music/intro.mp3",
+    music: "./assets/sounds/music/main-1.mp3",
     background: "./assets/Underground_Level_2.png",
     groundType: UnderGround,
     ground: [
@@ -55,7 +55,7 @@ const levelTwo = {
 
 }
 const levelThree = {
-    //music: "./assets/sounds/music/intro.mp3",
+    music: "./assets/sounds/music/main-2.mp3",
     background: "./assets/IceLevel3.png",
     groundType: IceGround,
     ground: [
@@ -91,7 +91,7 @@ const levelThree = {
 
 }
 const levelFour = {
-    //music: "./assets/sounds/music/intro.mp3",
+    music: "./assets/sounds/music/intro.mp3", // TODO: need music for level 4
     background: "./assets/HellLevel4.png",
     groundType: HellGround,
     ground: [

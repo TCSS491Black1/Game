@@ -10,22 +10,19 @@ class SceneManager{
         this.levelNum = 0;
         
         this.loadLevel(levelOne,50,200); 
-        //this.loadLevel(levelTwo,50,550); 
-        //this.loadLevel(levelThree,50,550)
-        //this.loadLevel(levelFour,50,550)
-
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
-        //let uoma = new Uoma(this.game);
-        //this.game.addEntity(uoma);
         this.marker = 0;
+        this.updateAudio();
+        document.getElementById('volume').addEventListener('input', this.updateAudio);
+        document.getElementById('mute').addEventListener('input', this.updateAudio);
     };
 
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
-
+            ASSET_MANAGER.pauseBackgroundMusic();
         });
     };
 
@@ -47,8 +44,8 @@ class SceneManager{
 
         // To change based on professor's "title" technique.
         if(level.music) {
-            ASSET_MANAGER.pauseBackgroundMusic();
-           // ASSET_MANAGER.playAsset(level.music);
+            ASSET_MANAGER.pauseBackgroundMusic(); // stop previous bg music.
+            ASSET_MANAGER.playAsset(level.music);
         }
 
         console.log({bg:level.background})
@@ -83,13 +80,14 @@ class SceneManager{
      */
     updateAudio() {
         var mute = document.getElementById("mute").checked;
-        var volume = document.getElementById("volume").checked;
+        var volume = document.getElementById("volume").value;
 
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
     }
 
     update() {
+        
         // This code is to ensure that once moving, Hornet maintains center -Michael
         let midpoint = params.canvasWidth/2;
         
