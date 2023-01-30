@@ -9,7 +9,9 @@ const levelOne = {
         {x:32*14, y:params.canvasHeight-32*9, size: 8 },
         {x:32*16, y:params.canvasHeight-32*13, size: 8 },
     ],
-    targetblock: [{x: 700, y: params.canvasHeight-32*4}],
+    targetblock: [{x: 700, y: params.canvasHeight-32*4},
+        {x: 95*32, y:params.canvasHeight + 600}
+    ],
     enemies: [
         {x: 1200, y:550},
         {x: 1200, y:450},
@@ -91,7 +93,7 @@ const levelThree = {
 
 }
 const levelFour = {
-    music: "./assets/sounds/music/intro.mp3", // TODO: need music for level 4
+    music: "./assets/sounds/music/drumloop.mp3",
     background: "./assets/HellLevel4.png",
     groundType: HellGround,
     ground: [
