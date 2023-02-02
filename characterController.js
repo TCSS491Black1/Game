@@ -46,13 +46,13 @@ class CharacterController {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40 - this.game.camera.x, this.y, 80, 215, "lime");
+        this.BB = new BoundingBox(this.x + 40 - this.game.camera.x, this.y - this.game.camera.y, 80, 215, "lime");
     };
 
     updateAttackBB() {
         this.lastAttackBB = this.attackBB;
         if (this.facingDirection == 0) {
-            this.attackBB = new BoundingBox(this.x - 200 - this.game.camera.x, this.y - 80, 339, 300, "yellow");
+            this.attackBB = new BoundingBox(this.x - 200 - this.game.camera.x, this.y- 80, 339, 300, "yellow");
         } else {
             this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
         }
@@ -144,7 +144,7 @@ class CharacterController {
             this.updateAttackBB();
         }
 
-        if (this.y == 1500) {
+        if (this.y == 2000) {
             this.dead = true;
         } // fall off the map and die
 
@@ -158,6 +158,7 @@ class CharacterController {
 
 
         this.updateBB();
+       
 
         //Collisions
         this.wasOnGround = this.onGround;
@@ -172,10 +173,16 @@ class CharacterController {
                     this.dead = true;
                 }
 
-                if (entity instanceof Ground && (this.lastBB.bottom) <= entity.BB.top) {
-                    this.y = entity.BB.top - this.BB.height - 2;
+                if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top)) {
+                    this.y = entity.BB.top - this.BB.height - 2+ this.game.camera.y;
                     this.velocity.y = 0 ;
                     this.onGround = true;
+                    console.log(this.y)
+                    
+                    console.log("Hornet collided ground");
+
+                    
+                    
                     this.updateBB(); // updating BB only required because we moved
                 }
                 //These will be for moving to the next level later.
@@ -206,7 +213,9 @@ class CharacterController {
         }
 
         // draw character sprite, based on camera and facing direction:
+       
         let destX = (this.x - this.game.camera.x);
+        let destY = (this.y - this.game.camera.y);
         if (this.facingDirection) {// if facing right
             ctx.scale(-1, 1);
             destX *= -1;
@@ -214,7 +223,7 @@ class CharacterController {
         }
         this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
             destX,
-            this.y);
+            destY);
         ctx.restore();
 
         if (this.dead === true) { // respawn character on death?

@@ -7,14 +7,15 @@ class Ground {
     };
 
     update() {
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 32 * this.w, 32, "orange");
+        this.lastBB = this.BB
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y - this.game.camera.y, 32 * this.w, 32, "orange");
     };
 
     draw(ctx) {
         for (var i = 0; i < this.w; i++) {
             ctx.drawImage(this.spritesheet,
                 this.spritex, this.spritey, 16, 16,
-                this.x + i * 32 - this.game.camera.x, this.y,
+                this.x + i * 32 - this.game.camera.x, this.y - this.game.camera.y,
                 16 * 2, 16 * 2);
         }
         this.BB.draw(ctx);

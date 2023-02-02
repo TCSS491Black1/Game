@@ -16,6 +16,11 @@ class Background {
                 this.asset,
                 this.x + (i * 1918) - this.game.camera.x, this.y, 1920, 768
             );
+            ctx.drawImage(
+                this.asset,
+                this.x + (i * 1918) - this.game.camera.x, this.y+768, 1920, 768
+            );
+
         }
     }
 }

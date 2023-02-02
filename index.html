@@ -3,7 +3,27 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>HELLΨSCAPE</title>
+    
+   
+    <style>
+        body {
+            background-color:black;
+            font-family: 'Baskerville',serif ;
+            font-size: 28px;
+        }
+        canvas {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            font-size: 14px;
+            
+        }
+        div {
+            text-align: center;
+        }
+    </style>
     <script type="text/javascript" src="./util.js"></script>
     <script type="text/javascript" src="./enemies.js"></script>
     <script type="text/javascript" src="./tiles.js"></script>
@@ -16,17 +36,25 @@
     <script type="text/javascript" src="./sceneManager.js"></script>
     <script type="text/javascript" src="./replayScreen.js"></script>
     <script type="text/javascript" src="./titleScreen.js"></script>
-    
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./timer.js"></script>
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./main.js"></script>
 </head>
 <body>
-    <canvas id="gameWorld" width="1524" height="768" style="background: white; border: 1px solid black" tabindex="0" autofocus></canvas>
+    <div>
+        
+        <h1><FONT COLOR=red> HELLΨSCAPE</h1>
+    </div>    
 
+    <canvas id="gameWorld" width="1524" height="768" style="background: black; border: 1px solid black" tabindex="0" autofocus></canvas>
+    
     <div>
         <br />
+        <h3>Left  - A   Right - D</h3>
+        <h3>Jump  - W   Attack- R</h3>
+        
+
         <input type="checkbox" id="debug"> Debug <input type="checkbox" id="mute"> Mute <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05"> Volume
     </div>
 </body>

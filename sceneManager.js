@@ -1,15 +1,18 @@
 class SceneManager{
+
     levels = [levelOne, levelTwo, levelThree, levelFour];
+
     constructor(game){
         this.game = game;
         this.game.camera = this;
         this.x = 0;
+        this.y = 0 ;
         this.score = 0;
         this.gameOver = false;
         this.player = new CharacterController(this.game,50,550);
         this.levelNum = 0;
         
-        this.loadLevel(levelOne,50,200); 
+        this.loadLevel(levelOne,50,550); 
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
@@ -30,12 +33,13 @@ class SceneManager{
         // This code is beginning to refactor loading with level.js due
         // to the current music implementation. Here, the level 
         // property can manage level-specific items. -Griffin
+
         this.level = level;
-        
         this.game.entities = [this] // TODO: this does not clear/unload entities.
         this.x = 0;
+        this.y =0;
         this.player.x = x;
-        this.player.y = 0; 
+        this.player.y = y; 
         // Hi. I changed this from 'y' to '0' to make it look like the 
         // character just falls out of the sky. More so that they fall 
         // into the ground level 2 from above - Michael
@@ -69,12 +73,14 @@ class SceneManager{
         this.game.addEntity(this.player);
         console.log('Done lwvel 1')
     };
+
     loadNextLevel(x, y) {
         // it wraps for now, but we can change this later if we want.
         this.levelNum = (this.levelNum + 1) % this.levels.length;
         console.log(["loading level", this.levelNum, this.levels[this.levelNum]]);
         this.loadLevel(this.levels[this.levelNum], x, y);
     }
+
     /**
      * Adds audio context to sceneManager.
      */
@@ -87,16 +93,18 @@ class SceneManager{
     }
 
     update() {
-        
         // This code is to ensure that once moving, Hornet maintains center -Michael
         let midpoint = params.canvasWidth/2;
-        
+        let vertMidpoint = params.canvasHeight/2;
         if( this.player.x < midpoint ){
             this.x = 0;        
         }else{
             this.x = this.player.x - midpoint;
         }
+        if(this.player.y >768){
+            this.y = 768;
 
+        }
         // spawn some more enemies for troubleshooting/dev purposes.
         const nowTime = this.game.timer.gameTime;
         if(this.game.keys['c'] && 0.5 > (nowTime - this.marker)) {
