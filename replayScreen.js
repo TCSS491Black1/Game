@@ -1,27 +1,20 @@
 class ReplayScreen{
     constructor(game, x, y) {
-        Object.assign(this, { game});
-        
         this.game = game;
-       
-
     };
 
     update(){
         if(this.game.click && this.game.click.y > 210 && this.game.click.y < 255){
             this.game.click.y = 0;
             this.removeFromWorld = true;
+            this.game.timer.reset();
             this.game.addEntity(new SceneManager(this.game));
             this.game.addEntity(new HUD(this.game));
         }
-
     };
     
     draw(ctx){ 
-            
-
         ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), 0,0, 1920, 768,);
-
         const offsetX = 250;
         const offsetY = 100
         
@@ -35,9 +28,6 @@ class ReplayScreen{
         ctx.fillStyle = 'Red';
         ctx.fillText("DEATH IS ONLY THE BEGINING",340,150);
 
-        
-
-
         ctx.strokeStyle = 'RED';
         ctx.font =  '48px ""'
         ctx.fillText("Retry?", 625,250);
@@ -46,17 +36,8 @@ class ReplayScreen{
             ctx.fillStyle = 'LIME';
             ctx.font =  '64px ""'
             ctx.fillText("ψ", 585,240);
-
-
-
         }
 
-        
-
         ctx.fillStyle = 'Black';
-
-    
-
-
     };
 }
