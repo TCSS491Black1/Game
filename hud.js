@@ -24,7 +24,7 @@ class HUD {
     
         //draw me a wire frame cross    
         ctx.fillStyle="#66161c";
-        ctx.fillRect(75, 50, 3, 75); // vertical line
+        ctx.fillRect(70, 50, 3, 75); // vertical line
         ctx.fillRect(50, 75, 300, 3); // horizontal line
         
         // draw the HP bar above the frame
