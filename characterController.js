@@ -174,7 +174,7 @@ class CharacterController {
                 }
 
                 if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top)) {
-                    this.y = entity.BB.top - this.BB.height - 2+ this.game.camera.y;
+                    this.y = entity.BB.top - this.BB.height - 2 + this.game.camera.y;
                     this.velocity.y = 0 ;
                     this.onGround = true;
                     console.log(this.y)

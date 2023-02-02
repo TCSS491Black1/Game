@@ -101,9 +101,10 @@ class SceneManager{
         }else{
             this.x = this.player.x - midpoint;
         }
-        if(this.player.y >768){
+        if(this.player.y > 768 + vertMidpoint){
             this.y = 768;
-
+        }else{
+            this.y = this.player.y - vertMidpoint;
         }
         // spawn some more enemies for troubleshooting/dev purposes.
         const nowTime = this.game.timer.gameTime;
