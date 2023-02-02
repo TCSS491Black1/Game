@@ -22,6 +22,7 @@ class CharacterController {
         this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
+        this.HP = 10;
         this.dead = false;
         this.updateBB();
 

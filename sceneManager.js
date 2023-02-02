@@ -67,6 +67,7 @@ class SceneManager{
             this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
         }      
         this.game.addEntity(this.player);
+        this.game.addEntity(new HUD());
         console.log('Done lwvel 1')
     };
     loadNextLevel(x, y) {
