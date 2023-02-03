@@ -35,10 +35,6 @@ class Enemy {
     }
 }
 class Uoma extends Enemy {
-    /*****
-     * TODO: Death animation.
-     * TODO: Attack animation.
-     */
     constructor(game, x, y) { // NOTE: why do we have "game" here, when that's always gameEngine in global scope?
         super(game, x, y);
         this.animationList["WALK"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
@@ -80,11 +76,12 @@ class Uoma extends Enemy {
         }
     }
     onCollision(entity) {
-        if (this.state != "DEAD" && entity instanceof CharacterController) { // TODO: check for instanceof CharacterWeapon?
-            //entity.dead = true;
-            this.state = "DEAD";
-            console.log(this.name + " collision with Hornet = LOSS");
-        }
+        //super.onCollision(entity);
+        // if (this.state != "DEAD" && entity instanceof CharacterController) { // TODO: check for instanceof CharacterWeapon?
+        //     //entity.dead = true;
+        //     this.state = "DEAD";
+        //     console.log(this.name + " collision with Hornet = LOSS");
+        // }
         // Need to handle collision with walls?
     }
 };
