@@ -46,19 +46,20 @@ class CharacterController {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40 - this.game.camera.x, this.y - this.game.camera.y, 80, 215, "lime");
+        this.BB = new BoundingBox(this.game,this.x + 40, this.y, 80, 215, "lime");
     };
 
     updateAttackBB() {
         this.lastAttackBB = this.attackBB;
         if (this.facingDirection == 0) {
-            this.attackBB = new BoundingBox(this.x - 200 - this.game.camera.x, this.y- 80, 339, 300, "yellow");
+            this.attackBB = new BoundingBox(this.game,this.x - 200, this.y- 80, 339, 300, "yellow");
         } else {
-            this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
+            this.attackBB = new BoundingBox(this.game,this.x, this.y - 80, 339, 300, "yellow");
         }
     }
 
     update() {
+        console.log(this.y);
         const MAXRUN = 600;
         // some constants for jumping & falling physics:
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
@@ -106,7 +107,7 @@ class CharacterController {
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
         // game keys: a, d, w, r
         if (!['a', 'd', 'w', 'r'].some(key => this.game.keys[key]) && this.state != "JUMP") {
-            console.log("Stopping.");
+           //console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
         }
@@ -144,7 +145,7 @@ class CharacterController {
             this.updateAttackBB();
         }
 
-        if (this.y == 2000) {
+        if (this.y >= 2000) {
             this.dead = true;
         } // fall off the map and die
 
@@ -174,13 +175,20 @@ class CharacterController {
                 }
 
                 if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top)) {
-                    this.y = entity.BB.top - this.BB.height - 2 + this.game.camera.y;
+                    console.log("Character"+this.BB.bottom);
+                    console.log("ground"+entity.BB.top);
+                    console.log("height"+this.BB.height);
+                    this.y = entity.BB.top-this.BB.height - 2;
+                    //this.y = entity.BB.top - this.BB.height - 2;
+                    console.log(this.y)
                     this.velocity.y = 0 ;
                     this.onGround = true;
-                    console.log(this.y)
-                    
-                    console.log("Hornet collided ground");
+                    //console.log(this.y)
 
+                    //console.log(entity.BB.top+"  "+this.BB.height)
+                    if(this.y < 1284){
+                        console.log("Hornet collided ground");
+                    }
                     
                     
                     this.updateBB(); // updating BB only required because we moved
@@ -191,7 +199,7 @@ class CharacterController {
                 }
             }
         
-
+        
             // tried figuring out collision with attacking Uoma entity, not working. -Michael
         if (this.state=="ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {             
             if (entity instanceof Enemy) {
@@ -215,7 +223,8 @@ class CharacterController {
         // draw character sprite, based on camera and facing direction:
        
         let destX = (this.x - this.game.camera.x);
-        let destY = (this.y - this.game.camera.y);
+        let destY = (this.y- this.game.camera.y);
+
         if (this.facingDirection) {// if facing right
             ctx.scale(-1, 1);
             destX *= -1;

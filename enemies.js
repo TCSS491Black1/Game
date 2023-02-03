@@ -15,7 +15,7 @@ class Enemy {
         this.alpha = 1;
     }
     draw(ctx) {
-        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x-this.game.camera.x, this.y- this.game.camera.y)
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y)
         //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
         if(this.BB) this.BB.draw(ctx);
     };
@@ -31,7 +31,7 @@ class Enemy {
         return this.health <= 0;
     }
     updateBB() {
-        this.BB = new BoundingBox(this.x + 45-this.game.camera.x, this.y + 35- this.game.camera.y, 70, 90, "red");
+        this.BB = new BoundingBox(this.game,this.x + 45, this.y + 35, 70, 90, "red");
     }
 }
 class Uoma extends Enemy {
@@ -160,7 +160,7 @@ class Flag_Block {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 64, 64, "blue");
+        this.BB = new BoundingBox(this.game,this.x, this.y, 64, 64, "blue");
     }
 
     update() {
@@ -178,7 +178,7 @@ class Flag_Block {
 
     draw(ctx) {
         this.updateBB(); // race condition because camera moves fast enough to cause drift
-        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y)
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-this.game.camera.y)
         this.BB.draw(ctx);
     };
 }

@@ -96,16 +96,31 @@ class SceneManager{
         // This code is to ensure that once moving, Hornet maintains center -Michael
         let midpoint = params.canvasWidth/2;
         let vertMidpoint = params.canvasHeight/2;
+
         if( this.player.x < midpoint ){
             this.x = 0;        
         }else{
             this.x = this.player.x - midpoint;
         }
-        if(this.player.y > 768 + vertMidpoint){
+       
+        this.y = vertMidpoint*2;
+
+        if(this.player.y < vertMidpoint){
+            this.y = 0;
+        }else if(this.player.y > params.canvasHeight + vertMidpoint ){
             this.y = 768;
         }else{
             this.y = this.player.y - vertMidpoint;
         }
+
+        console.log("camera x:"+this.y);
+        /*
+        if(this.player.y > 768 + vertMidpoint ){
+            
+        }else{
+            this.y = this.player.y - vertMidpoint;
+        }
+        */
         // spawn some more enemies for troubleshooting/dev purposes.
         const nowTime = this.game.timer.gameTime;
         if(this.game.keys['c'] && 0.5 > (nowTime - this.marker)) {

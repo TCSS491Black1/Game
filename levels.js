@@ -5,13 +5,17 @@ const levelOne = {
     ground: [
         {x:0, y:params.canvasHeight-32+768, size: 300 }, // base flat ground
         {x:32*10, y:params.canvasHeight-32*1+768, size: 8 },
-        {x:32*12, y:params.canvasHeight-32*5+768, size: 8 },
-        {x:32*14, y:params.canvasHeight-32*9+768, size: 8 },
-        {x:32*16, y:params.canvasHeight-32*13+768, size: 8 },
+        {x:32*10, y:params.canvasHeight-32*5+768, size: 8 },
+        {x:32*10, y:params.canvasHeight-32*9+768, size: 8 },
+        {x:32*100, y:params.canvasHeight-32*13+768, size: 8 },
         {x:32*10, y:32*1+768, size: 8 },
         {x:32*12, y:32*5+768, size: 8 },
         {x:32*14, y:32*9+768, size: 8 },
         {x:32*16, y:32*13+768, size: 8 },
+        {x:32*10, y:32*1+450, size: 8 },
+        {x:32*12, y:32*5+450, size: 8 },
+        {x:32*14, y:32*9+450, size: 8 },
+        {x:32*16, y:32*13+450, size: 8 },
     ],
     targetblock: [{x: 700, y: params.canvasHeight-32*4},
         {x: 95*32, y:params.canvasHeight + 600}
@@ -28,7 +32,7 @@ const levelTwo = {
     background: "./assets/Underground_Level_2.png",
     groundType: UnderGround,
     ground: [
-        {x:0, y:params.canvasHeight-32, size: 736 }, 
+        {x:0, y:params.canvasHeight-32+768, size: 736 }, 
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },
         {x:32*12, y:params.canvasHeight-32*6, size: 8 },
         {x:32*12, y:params.canvasHeight-32*9, size: 8 },
