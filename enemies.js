@@ -15,7 +15,7 @@ class Enemy {
         this.alpha = 1;
     }
     draw(ctx) {
-        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x, this.y)
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x-this.game.camera.x, this.y-this.game.camera.y)
         //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
         if(this.BB) this.BB.draw(ctx);
     };
