@@ -8,7 +8,7 @@ class Enemy {
         console.log(this.asset);
         console.log("./assets/" + this.name + ".png")
         // default values, probably overwritten for different subclasses
-        this.health = 10; 
+        this.health = 1; 
         this.speed = 100;
         this.state = "WALK";
         this.animationList = {}
