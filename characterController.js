@@ -142,10 +142,9 @@ class CharacterController {
             } else {
                 this.animationList["ATTACK"].xoffset = 0;
             }
-            this.updateAttackBB();
-        }
 
-        if (this.y == 1500) {
+            this.updateAttackBB();
+            }
             this.dead = true;
         } // fall off the map and die
 
@@ -165,12 +164,9 @@ class CharacterController {
         this.onGround = false; // assume not on ground until we detect collision w/ Ground block
         this.game.entities.forEach((entity) => {
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
-                if (entity instanceof Uoma) {
-                    this.dead = true;
-                    console.log("Hornet collided with Uoma");
-                    this.state = "DEATH";
-                    this.velocity.x = 0;
-                    this.dead = true;
+                    //this.dead = true;
+                    console.log("Hornet collided with " + entity.constructor.name);
+                    this.HP--;
                 }
 
                 if (entity instanceof Ground && (this.lastBB.bottom) <= entity.BB.top) {
