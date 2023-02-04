@@ -6,6 +6,12 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/hornet.png", // main character
 	
 	"./assets/Uoma.png", // enemies
+	"./assets/Heavy_Sentry.png",
+	"./assets/Hive_Knight.png",
+
+	"./assets/Charged_Lumafly.png",// powerups
+	"./assets/Gathering_Swarm.png",
+
 
 	"./assets/Overworld_Level_1.png", // backgrounds
 	"./assets/Underground_Level_2.png",

@@ -1,48 +1,60 @@
 class CharacterController {
     CHARACTER_SPRITESHEET = "./assets/hornet.png";
-    constructor(game, x=0, y=0) {
+    constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
         this.game.player = this;
+
+        this.viewWidth = 1024;
+        this.viewHeight = 768;
+        this.x = 0;
+        this.y = 0;
+
         this.jumpInitPosition = null;
         this.jumpInitTime = null;
         this.v_0 = 0;
 
         this.speed = 300;
         this.velocity = { x: 0, y: 0 };
+
         this.gravity = 500;
 
         this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
-        this.HP = 10;
-
-        this.onGround = true;
         this.dead = false;
-        this.updateBB(); // initializes bounding box
+        this.updateBB();
 
         this.animationList = {};
-        const spritesheet = ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET);
+
         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth, xoffset, yoffset){
-        this.animationList["IDLE"] = new Animator(spritesheet, 4, 954, 184, 214, 6, 0.1, 1, 3);
-        this.animationList["WALK"] = new Animator(spritesheet, 4, 1191, 159, 191, 8, 0.1, 1, 3);
-        this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.3, 0, 3);
-        this.animationList["ATTACK"] = new Animator(spritesheet, 827, 8270, 349, 368, 1, 1, 0, 0, 0, 100);
-        this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10);
-        this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10);
+        //(Idle)
+        this.animationList["IDLE"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 954, 184, 214, 6, 0.1, 1, 3);
+        //Walk/run
+        this.animationList["WALK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1191, 159, 191, 8, 0.1, 1, 3);
+        //Jump
+        this.animationList["JUMP"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 1626, 188, 214, 9, 0.3, 0, 3);
+        //Attack
+        this.animationList["ATTACK"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 827, 8270, 349, 368, 1, 1, 0, 0, 0, 100);
+        //Death
+        this.animationList["DEATH"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10);
+        //Dead.
+        this.animationList["DEAD"] = new Animator(ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET), 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10);
+
+        this.onGround = true;
     };
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40 - this.game.camera.x, this.y, 80, 215, "lime");
+        this.BB = new BoundingBox(this.game,this.x + 40, this.y, 80, 215, "lime");
     };
 
     updateAttackBB() {
         this.lastAttackBB = this.attackBB;
         if (this.facingDirection == 0) {
-            this.attackBB = new BoundingBox(this.x - 200 - this.game.camera.x, this.y - 80, 339, 300, "yellow");
+            this.attackBB = new BoundingBox(this.game,this.x - 200, this.y- 80, 339, 300, "yellow");
         } else {
-            this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
+            this.attackBB = new BoundingBox(this.game,this.x, this.y - 80, 339, 300, "yellow");
         }
     }
 
@@ -94,7 +106,7 @@ class CharacterController {
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
         // game keys: a, d, w, r
         if (!['a', 'd', 'w', 'r'].some(key => this.game.keys[key]) && this.state != "JUMP") {
-            console.log("Stopping.");
+           //console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
         }
@@ -129,23 +141,10 @@ class CharacterController {
             } else {
                 this.animationList["ATTACK"].xoffset = 0;
             }
-
-            // check for attack collisions w/ enemies
             this.updateAttackBB();
-            for(const entity of this.game.entities.filter(e => e instanceof Enemy && e.BB !== undefined)) {
-                // TODO: some of this logic should(?) probably be in the Enemy class
-                if(entity.BB === undefined) {
-                    console.log("Error: ", entity, " without BB");
-                }
-                if(this.attackBB.collide(entity.BB)) { 
-                    entity.HP--;
-                    if(entity.HP <= 0) entity.state = "DEAD";
-                }
-            }
-            
         }
 
-        if (this.y >= 4000) {
+        if (this.y >= 2000) {
             this.dead = true;
         } // fall off the map and die
 
@@ -156,39 +155,41 @@ class CharacterController {
             this.y = 580; //ground - ish
         }
 
+        
+
         this.updateBB();
+       
 
         //Collisions
         this.wasOnGround = this.onGround;
         this.onGround = false; // assume not on ground until we detect collision w/ Ground block
         this.game.entities.forEach((entity) => {
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
-                if (entity instanceof Enemy) {
-                    //this.dead = true;
-                    console.log("Hornet collided with " + entity.constructor.name);
-                    //this.state = "DEATH";
-                    this.HP--;
-                    if(this.HP <= 0) {
-                        this.state = "DEATH";
-                        this.dead = true;
-                    }
-                    this.velocity.x = -this.velocity.x;
-                    //this.dead = true;
+                if (entity instanceof Uoma) {
+                    this.dead = true;
+                    console.log("Hornet collided with Uoma");
+                    this.state = "DEATH";
+                    this.velocity.x = 0;
+                    this.dead = true;
                 }
 
-                else if (entity instanceof Ground && (this.lastBB.bottom) <= entity.BB.top) {
-                    this.y = entity.BB.top - this.BB.height - 2;
+                if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top)) {
+
+                    this.y = entity.BB.top-this.BB.height - 2;
                     this.velocity.y = 0 ;
                     this.onGround = true;
+            
+                    
+                    
                     this.updateBB(); // updating BB only required because we moved
                 }
                 //These will be for moving to the next level later.
-                else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
+                if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
                     this.game.camera.loadNextLevel(50, 550);
                 }
             }
         
-
+        
             // tried figuring out collision with attacking Uoma entity, not working. -Michael
         if (this.state=="ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {             
             if (entity instanceof Enemy) {
@@ -210,7 +211,10 @@ class CharacterController {
         }
 
         // draw character sprite, based on camera and facing direction:
+       
         let destX = (this.x - this.game.camera.x);
+        let destY = (this.y- this.game.camera.y);
+
         if (this.facingDirection) {// if facing right
             ctx.scale(-1, 1);
             destX *= -1;
@@ -218,7 +222,7 @@ class CharacterController {
         }
         this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
             destX,
-            this.y);
+            destY);
         ctx.restore();
 
         if (this.dead === true) { // respawn character on death?

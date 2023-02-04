@@ -10,7 +10,7 @@ class Animator {
 
     drawFrame(tick, ctx, x, y) {
         this.elapsedTime += tick;
-        
+    
         if (this.isDone() && this.loop) { // animation loops, so reset time.
             this.elapsedTime = this.frameSwappedTime = this.frameIndex = 0;
         };
@@ -27,6 +27,7 @@ class Animator {
             this.width-this.spriteBorderWidth, this.height,
             x-this.xoffset, y-this.yoffset,
             this.width, this.height);
+            
     };
     
     currentFrame() {

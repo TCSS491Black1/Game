@@ -16,7 +16,4 @@ class Timer {
         this.gameTime += gameDelta;
         return gameDelta;
     };
-    reset() {
-        this.gameTime = this.lastTimestamp = 0;
-    }
 };

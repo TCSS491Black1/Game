@@ -1,6 +1,10 @@
 class TitleScreen{
     constructor(game, x, y) {
+        Object.assign(this, { game});
         this.game = game;
+        
+
+
     };
 
     update(){
@@ -8,7 +12,6 @@ class TitleScreen{
             this.game.click.y = 0;
             this.removeFromWorld = true;
             this.game.addEntity(new SceneManager(this.game));
-            this.game.addEntity(new HUD(this.game));
         }
 
     };
@@ -30,6 +33,9 @@ class TitleScreen{
         ctx.fillStyle = 'Red';
         ctx.fillText("HELLψSCAPE", 600,150);
 
+        
+
+
         ctx.strokeStyle = 'RED';
         ctx.font =  '48px ""'
         ctx.fillText("PLAY", 625,250);
@@ -38,7 +44,17 @@ class TitleScreen{
             ctx.fillStyle = 'LIME';
             ctx.font =  '64px ""'
             ctx.fillText("ψ", 585,240);
+
+
+
         }
+
+        
+
         ctx.fillStyle = 'Black';
+
+    
+
+
     };
 }
