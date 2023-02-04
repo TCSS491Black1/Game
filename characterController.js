@@ -21,28 +21,35 @@ class CharacterController {
         this.dead = false;
         this.updateBB(); // initializes bounding box
 
+        this.scale = 0.5;
         this.animationList = {};
         const spritesheet = ASSET_MANAGER.getAsset(this.CHARACTER_SPRITESHEET);
         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth, xoffset, yoffset){
-        this.animationList["IDLE"] = new Animator(spritesheet, 4, 954, 184, 214, 6, 0.1, 1, 3);
-        this.animationList["WALK"] = new Animator(spritesheet, 4, 1191, 159, 191, 8, 0.1, 1, 3);
-        this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.3, 0, 3);
-        this.animationList["ATTACK"] = new Animator(spritesheet, 827, 8270, 349, 368, 1, 1, 0, 0, 0, 100);
-        this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10);
-        this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10);
+        this.animationList["IDLE"] = new Animator(spritesheet, 4, 954, 184, 214, 6, 0.1, 1, 3, 0, 0, this.scale);
+        this.animationList["WALK"] = new Animator(spritesheet, 4, 1191, 159, 191, 8, 0.1, 1, 3, 0, 0, this.scale);
+        this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.3, 0, 3, 0, 0, this.scale);
+        this.animationList["ATTACK"] = new Animator(spritesheet, 827, 8270, 349, 368, 1, 1, 0, 0, 0, 100*this.scale, this.scale);
+        this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10, this.scale);
+        this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10, this.scale);
     };
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 40 - this.game.camera.x, this.y, 80, 215, "lime");
+        this.BB = new BoundingBox(this.x + 40 - this.game.camera.x, this.y, 80*this.scale, 215*this.scale, "lime");
     };
 
     updateAttackBB() {
         this.lastAttackBB = this.attackBB;
+        const attackBBheight = this.animationList["ATTACK"].height * this.scale;
+        const attackBBwidth = this.animationList["ATTACK"].width * this.scale;
+        console.log(attackBBwidth, attackBBheight);
         if (this.facingDirection == 0) {
-            this.attackBB = new BoundingBox(this.x - 200 - this.game.camera.x, this.y - 80, 339, 300, "yellow");
+            this.attackBB = new BoundingBox(this.x - 200*this.scale - this.game.camera.x, this.y - 80*this.scale, 
+                attackBBwidth /*339*/, attackBBheight /*300*/, "yellow");
         } else {
-            this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
+            this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80*this.scale, 
+                attackBBwidth /*339*/, attackBBheight /*300*/, "yellow");
+            //this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
         }
     }
 
@@ -125,7 +132,7 @@ class CharacterController {
             console.log("attacking");
             this.state = "ATTACK";
             if (this.facingDirection == 0) {
-                this.animationList["ATTACK"].xoffset = 200;
+                this.animationList["ATTACK"].xoffset = 200*this.scale;
             } else {
                 this.animationList["ATTACK"].xoffset = 0;
             }
@@ -214,7 +221,7 @@ class CharacterController {
         if (this.facingDirection) {// if facing right
             ctx.scale(-1, 1);
             destX *= -1;
-            destX -= this.animationList[this.state].width;
+            destX -= this.animationList[this.state].width*this.scale;
         }
         this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
             destX,
