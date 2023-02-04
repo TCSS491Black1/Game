@@ -12,7 +12,7 @@ class SceneManager{
         this.player = new CharacterController(this.game,50,550);
         this.levelNum = 0;
         
-        this.loadLevel(levelOne,50,550); 
+        this.loadLevel(levelTwo,50,550); 
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
@@ -68,7 +68,15 @@ class SceneManager{
         }
 
         for(const entry of level.enemies) {
-            this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
+            if(entry.name == "Uoma"){
+                console.log("Uoma")
+                this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
+
+            }
+            if(entry.name == "Heavy_Sentry"){
+                this.game.addEntity(new Heavy_Sentry(this.game, entry.x, entry.y));
+            }
+
         }      
         this.game.addEntity(this.player);
         console.log('Done lwvel 1')
@@ -103,14 +111,13 @@ class SceneManager{
             this.x = this.player.x - midpoint;
         }
        
-        this.y = vertMidpoint*2;
 
-        if(this.player.y < vertMidpoint){
+        if(this.player.y < vertMidpoint - this.player.BB.height/2){
             this.y = 0;
-        }else if(this.player.y > params.canvasHeight + vertMidpoint ){
+        }else if(this.player.y > params.canvasHeight + vertMidpoint- this.player.BB.height/2 ){
             this.y = 768;
         }else{
-            this.y = this.player.y - vertMidpoint;
+            this.y = this.player.y - vertMidpoint+this.player.BB.height/2;
         }
 
         console.log("camera x:"+this.y);

@@ -156,7 +156,7 @@ class CharacterController {
             this.y = 580; //ground - ish
         }
 
-
+        
 
         this.updateBB();
        
@@ -175,9 +175,7 @@ class CharacterController {
                 }
 
                 if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top)) {
-                    console.log("Character"+this.BB.bottom);
-                    console.log("ground"+entity.BB.top);
-                    console.log("height"+this.BB.height);
+
                     this.y = entity.BB.top-this.BB.height - 2;
                     //this.y = entity.BB.top - this.BB.height - 2;
                     console.log(this.y)
