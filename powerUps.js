@@ -11,14 +11,13 @@ class PowerUp {
     }
     draw(ctx) {
         this.animationList[this.state].drawFrame(this.game.clockTick, ctx, this.x-this.game.camera.x, this.y-this.game.camera.y)
-        //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
         if(this.BB) this.BB.draw(ctx);
     };
     collisionChecks() {
         /* collision detection and resolution: */
         this.game.entities.forEach((entity) => {
             if (entity.BB && this.BB.collide(entity.BB)) {
-                this.onCollision(entity); /* NOTE: Enemy requires onCollision() */
+                this.onCollision(entity); /* NOTE: Could isolate the despawn perhaps. Okay for now*/
             }
         });
     }
@@ -29,9 +28,9 @@ class Charged_Lumafly extends PowerUp {
    
     constructor(game, x, y) {
         super(game, x, y);
-        this.animationList["IDLE"] = new Animator(this.asset, 4, 254, 242 , 225 , 12 , 0.1, 1, 4);//Doesnt look right without the other row of idle imgs
+        this.animationList["IDLE"] = new Animator(this.asset, 4, 254, 242 , 225 , 12 , 0.1, 1, 4);
         this.animationList["COLLECTED"] = new Animator(this.asset, 4, 656, 252, 238 , 5 , 0.1, 1, 4);
-         // TODO: change/correct parameters.
+
         this.alpha = 1;
         this.updateBB();
         this.state = "IDLE";
@@ -89,15 +88,10 @@ class Gathering_Swarm extends PowerUp {
     }
 
     update() {
-        // mechanics for how / where the enemy moves:
         if(this.state == "COLLECTED") {  // TODO: sound on death?
-            // we don't move on death, and can't do any damage, so no BB.
             this.BB = undefined;
             return;
         }
-        // if (this.x < -200) this.x = 1500, this.y = 300;
-        // if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100; // spawning allocated in levels.js now
-        // end of movement code
 
         this.updateBB();
         this.collisionChecks();
@@ -121,11 +115,10 @@ class Gathering_Swarm extends PowerUp {
         }
     }
     onCollision(entity) {
-        if (this.state != "COLLECTED" && entity instanceof CharacterController) { // TODO: check for instanceof CharacterWeapon?
+        if (this.state != "COLLECTED" && entity instanceof CharacterController) { 
             
             this.state = "COLLECTED";
             console.log(this.name + " collision with Hornet = LOSS");
         }
-        // Need to handle collision with walls?
     }
 };
