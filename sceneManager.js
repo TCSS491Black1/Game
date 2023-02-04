@@ -12,7 +12,7 @@ class SceneManager{
         this.player = new CharacterController(this.game,50,550);
         this.levelNum = 0;
         
-        this.loadLevel(levelTwo,50,550); 
+        this.loadLevel(levelOne,50,550); 
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
@@ -69,7 +69,6 @@ class SceneManager{
 
         for(const entry of level.enemies) {
             if(entry.name == "Uoma"){
-                console.log("Uoma")
                 this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
 
             }
@@ -113,7 +112,7 @@ class SceneManager{
     }
 
     update() {
-        // This code is to ensure that once moving, Hornet maintains center -Michael
+        // This code is to ensure that once moving, Hornet maintains center
         let midpoint = params.canvasWidth/2;
         let vertMidpoint = params.canvasHeight/2;
 
@@ -132,14 +131,6 @@ class SceneManager{
             this.y = this.player.y - vertMidpoint+this.player.BB.height/2;
         }
 
-        console.log("camera x:"+this.y);
-        /*
-        if(this.player.y > 768 + vertMidpoint ){
-            
-        }else{
-            this.y = this.player.y - vertMidpoint;
-        }
-        */
         // spawn some more enemies for troubleshooting/dev purposes.
         const nowTime = this.game.timer.gameTime;
         if(this.game.keys['c'] && 0.5 > (nowTime - this.marker)) {

@@ -5,8 +5,8 @@ class Enemy {
         Object.assign(this, { game, x, y });
         this.name = this.constructor.name;
         this.asset = ASSET_MANAGER.getAsset("./assets/" + this.name + ".png");
-        console.log(this.asset);
-        console.log("./assets/" + this.name + ".png")
+        //console.log(this.asset);
+        //console.log("./assets/" + this.name + ".png")
         // default values, probably overwritten for different subclasses
         this.health = 10; 
         this.speed = 100;
@@ -110,8 +110,6 @@ class Heavy_Sentry extends Enemy {
     onCollision(entity) {
         
         if(entity instanceof Ground && (this.lastBB.bottom-14 <= entity.BB.top)){
-            console.log("floor:"+entity.BB.top);
-            console.log("Sentry with ground");
             this.y = entity.BB.top-this.BB.height-14;
 
         }
@@ -125,7 +123,6 @@ class Heavy_Sentry extends Enemy {
    
         // mechanics for how / where the enemy moves:
         if(this.state == "DEAD") {  // TODO: sound on death?
-            // we don't move on death, and can't do any damage, so no BB.
             this.BB = undefined;
             this.y = this.y+3;
 

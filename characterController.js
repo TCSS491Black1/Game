@@ -59,7 +59,6 @@ class CharacterController {
     }
 
     update() {
-        console.log(this.y);
         const MAXRUN = 600;
         // some constants for jumping & falling physics:
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
@@ -177,16 +176,9 @@ class CharacterController {
                 if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top)) {
 
                     this.y = entity.BB.top-this.BB.height - 2;
-                    //this.y = entity.BB.top - this.BB.height - 2;
-                    console.log(this.y)
                     this.velocity.y = 0 ;
                     this.onGround = true;
-                    //console.log(this.y)
-
-                    //console.log(entity.BB.top+"  "+this.BB.height)
-                    if(this.y < 1284){
-                        console.log("Hornet collided ground");
-                    }
+            
                     
                     
                     this.updateBB(); // updating BB only required because we moved

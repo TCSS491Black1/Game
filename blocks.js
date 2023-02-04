@@ -4,13 +4,13 @@ class Ground {
         Object.assign(this, { game, x, y, w });
         this.spritesheet = ASSET_MANAGER.getAsset("./assets/Environmental_Blocks.png");
         this.BB = new BoundingBox(this.game,this.x, this.y, 32 * w, 32, "orange");
-        //console.log(this.x+"  "+this.y)
+      
     };
 
     update() {
        
         this.BB = new BoundingBox(this.game,this.x ,this.y, 32 * this.w, 32, "orange");
-        //console.log(this.y-this.game.camera.y)
+        
     };
 
     draw(ctx) {
