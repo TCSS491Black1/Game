@@ -56,14 +56,8 @@ const levelTwo = {
     // easily can add a "platform" or "obstacle" option here too
     ],
     targetblock: [{x: 700, y: params.canvasHeight-32*4}],
-    enemies: [
-        {name: "Heavy_Sentry" , x: 1200, y:550*2+100},
-        {name: "Heavy_Sentry" , x: 2200, y:450*2},
-        {name: "Heavy_Sentry" , x: 3200, y:350*2},
-        {name: "Heavy_Sentry" , x: 4200, y:550*2},
-        {name: "Heavy_Sentry" , x: 5200, y:450*2},
-        {name: "Heavy_Sentry" , x: 6200, y:350*2},
-    ],
+    enemies: [{}  ],
+    powerUps:  [{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
 
 }
 const levelThree = {

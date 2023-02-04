@@ -77,6 +77,18 @@ class SceneManager{
                 this.game.addEntity(new Heavy_Sentry(this.game, entry.x, entry.y));
             }
 
+        }
+        for(const entry of level.powerUps) {
+            if(entry.name == "Charged_Lumafly"){
+                this.game.addEntity(new Charged_Lumafly(this.game, entry.x, entry.y));
+
+
+            }
+            if(entry.name == "Gathering_Swarm"){
+                this.game.addEntity(new Gathering_Swarm(this.game, entry.x, entry.y));
+
+            }
+
         }      
         this.game.addEntity(this.player);
         console.log('Done lwvel 1')
