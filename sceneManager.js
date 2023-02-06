@@ -38,15 +38,19 @@ class SceneManager{
         this.level = level;
         this.game.entities = [this] // TODO: this does not clear/unload entities.
         this.x = 0;
-        this.y =0;
+        this.y = 0;
         this.player.x = x;
         this.player.y = y; 
         // Hi. I changed this from 'y' to '0' to make it look like the 
         // character just falls out of the sky. More so that they fall 
         // into the ground level 2 from above - Michael
-        this.player.velocity = { x: 0, y: 0 };
+        this.player.jumpInitPosition = null; // on zone-in lets simulate dropping off a ledge.
+        this.player.jumpInitTime = null;
+        this.player.wasOnGround = true;
+        this.player.onGround = true;
+        this.player.state = "IDLE";
         
-
+        console.log("zoning in @ ", x, y);
         // To change based on professor's "title" technique.
         if(level.music) {
             ASSET_MANAGER.pauseBackgroundMusic(); // stop previous bg music.
@@ -91,7 +95,7 @@ class SceneManager{
         }      
         this.game.addEntity(this.player);
         this.game.addEntity(new HUD());
-        console.log('Done level: '+level.groundType)
+        console.log('Done level: '+level.groundType.name)
     };
 
     loadNextLevel(x, y) {
