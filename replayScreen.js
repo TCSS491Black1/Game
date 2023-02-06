@@ -11,6 +11,7 @@ class ReplayScreen{
         if(this.game.click && this.game.click.y > 210 && this.game.click.y < 255){
             this.game.click.y = 0;
             this.removeFromWorld = true;
+            this.game.timer.reset();
             this.game.addEntity(new SceneManager(this.game));
             this.game.addEntity(new HUD());
         }
