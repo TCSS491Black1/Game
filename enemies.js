@@ -1,7 +1,7 @@
 class Enemy {
     // Enemy exists to be subclassed; holds common code to be inherited by all enemies,
     // as well as possibly checking if(entity instanceof Enemy) later
-    constructor(game, x=700, y=550) {        
+    constructor(game, x=0, y=0) {        
         Object.assign(this, { game, x, y });
         this.name = this.constructor.name;
         this.asset = ASSET_MANAGER.getAsset("./assets/" + this.name + ".png");
@@ -236,7 +236,7 @@ class Flag_Block {
         this.game.entities.forEach(function (entity) {
             if (entity.BB && that.BB.collide(entity.BB)) {
                 if (entity instanceof CharacterController) {
-                    //entity.dead = false;
+
                     console.log("Block collision with Hornet = WIN")
                 }
             }

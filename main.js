@@ -13,7 +13,9 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Gathering_Swarm.png",
 
 
-	"./assets/Overworld_Level_1.png", // backgrounds
+	"./assets/Overworld_Level_1_blue.png", // backgrounds
+	"./assets/Overworld_Level_1.png", 
+
 	"./assets/Underground_Level_2.png",
 	"./assets/IceLevel3.png",
 	"./assets/HellLevel4.png",

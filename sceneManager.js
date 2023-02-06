@@ -5,14 +5,15 @@ class SceneManager{
     constructor(game){
         this.game = game;
         this.game.camera = this;
+        this.worldSize = 1;
         this.x = 0;
         this.y = 0 ;
         this.score = 0;
         this.gameOver = false;
-        this.player = new CharacterController(this.game,50,550);
+        this.player = new CharacterController(this.game,50,0);
         this.levelNum = 0;
         
-        this.loadLevel(levelOne,50,550); 
+        this.loadLevel(levelOne,50,0); 
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
@@ -52,9 +53,8 @@ class SceneManager{
             ASSET_MANAGER.playAsset(level.music);
         }
 
-        console.log({bg:level.background})
         this.game.addEntity(new Background(this.game, level.background));
-
+        this.worldSize = level.worldSize;
         // TODO: refactor/ generalize to handle more diverse blocks in the level design
         
         for(const entry of level.ground) {
@@ -90,14 +90,16 @@ class SceneManager{
 
         }      
         this.game.addEntity(this.player);
-        console.log('Done lwvel 1')
+        console.log('Done level: '+level.groundType)
     };
 
     loadNextLevel(x, y) {
         // it wraps for now, but we can change this later if we want.
+
         this.levelNum = (this.levelNum + 1) % this.levels.length;
         console.log(["loading level", this.levelNum, this.levels[this.levelNum]]);
         this.loadLevel(this.levels[this.levelNum], x, y);
+
     }
 
     /**
@@ -122,15 +124,15 @@ class SceneManager{
             this.x = this.player.x - midpoint;
         }
        
-
-        if(this.player.y < vertMidpoint - this.player.BB.height/2){
-            this.y = 0;
-        }else if(this.player.y > params.canvasHeight + vertMidpoint- this.player.BB.height/2 ){
-            this.y = 768;
-        }else{
-            this.y = this.player.y - vertMidpoint+this.player.BB.height/2;
+        if(this.worldSize>1){
+            if(this.player.y < vertMidpoint - this.player.BB.height/2){
+                this.y = 0;
+            }else if(this.player.y > params.canvasHeight + vertMidpoint- this.player.BB.height/2 ){
+                this.y = 768;
+            }else{
+                this.y = this.player.y - vertMidpoint+this.player.BB.height/2;
+            }
         }
-
         // spawn some more enemies for troubleshooting/dev purposes.
         const nowTime = this.game.timer.gameTime;
         if(this.game.keys['c'] && 0.5 > (nowTime - this.marker)) {

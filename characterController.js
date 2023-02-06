@@ -2,6 +2,7 @@ class CharacterController {
     CHARACTER_SPRITESHEET = "./assets/hornet.png";
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
+        console.log(x+" "+y)
 
         this.game.player = this;
 
@@ -59,6 +60,7 @@ class CharacterController {
     }
 
     update() {
+      
         const MAXRUN = 600;
         // some constants for jumping & falling physics:
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
@@ -185,7 +187,10 @@ class CharacterController {
                 }
                 //These will be for moving to the next level later.
                 if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
-                    this.game.camera.loadNextLevel(50, 550);
+                 
+                    this.state = "IDLE";
+                    this.game.camera.loadNextLevel(50, 0);
+
                 }
             }
         
