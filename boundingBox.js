@@ -1,6 +1,6 @@
 class BoundingBox {
-    constructor(x, y, width, height, color="black") {
-        Object.assign(this, { x, y, width, height, color })
+    constructor(game,x, y, width, height, color="black") {
+        Object.assign(this, {game, x, y, width, height, color })
         this.left = x;
         this.top = y;
         this.right = this.left + this.width;
@@ -16,6 +16,6 @@ class BoundingBox {
     draw(ctx) {
         ctx.strokeStyle = this.color;
         ctx.lineWidth = 3;
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.strokeRect(this.x-this.game.camera.x, this.y-this.game.camera.y, this.width, this.height);
     }
 }
