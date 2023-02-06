@@ -90,6 +90,7 @@ class SceneManager{
 
         }      
         this.game.addEntity(this.player);
+        this.game.addEntity(new HUD());
         console.log('Done level: '+level.groundType)
     };
 

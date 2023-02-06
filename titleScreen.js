@@ -12,6 +12,7 @@ class TitleScreen{
             this.game.click.y = 0;
             this.removeFromWorld = true;
             this.game.addEntity(new SceneManager(this.game));
+            this.game.addEntity(new HUD());
         }
 
     };

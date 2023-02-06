@@ -84,8 +84,8 @@ class Uoma extends Enemy {
     onCollision(entity) {
         if (this.state != "DEAD" && entity instanceof CharacterController) { // TODO: check for instanceof CharacterWeapon?
             //entity.dead = true;
-            this.state = "DEAD";
-            console.log(this.name + " collision with Hornet = LOSS");
+            //this.state = "DEAD";
+            //console.log(this.name + " collision with Hornet = LOSS");
         }
         // Need to handle collision with walls?
     }
