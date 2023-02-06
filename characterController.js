@@ -10,6 +10,7 @@ class CharacterController {
 
         this.speed = 300;
         this.velocity = { x: 0, y: 0 };
+        this.terminalVelocity = 50;
         this.gravity = 500;
 
         this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
@@ -82,7 +83,7 @@ class CharacterController {
         }
         if(this.jumpInitTime !== null && this.jumpInitPosition !== null) {
             const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
-            this.y = gravY(t, this.v_0);
+            this.y = Math.min(gravY(t, this.v_0), this.y + this.terminalVelocity);
         }
 
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
@@ -124,7 +125,7 @@ class CharacterController {
             this.velocity = { x: 0, y: 0 };
             this.state = "IDLE";
             this.x = 0;
-            this.y = 200;
+            this.y = -params.canvasHeight*6;
         }
         this.y += 9;
 
