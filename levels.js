@@ -33,7 +33,7 @@ const levelOne = {
 const levelTwo = {
     music: "./assets/sounds/music/main-1.mp3",
     background: ["./assets/Underground_Level_2.png","./assets/Underground_Level_2.png"],
-    foreground: ["./assets/Level1ParallaxFlowers.png",],
+    foreground: ["./assets/Level2ParallaxBoulders.png",],
     worldSize: 2,
     groundType: UnderGround,
     ground: [
