@@ -1,6 +1,7 @@
 const levelOne = {
     music: "./assets/sounds/music/intro.mp3",
     background: ["./assets/Overworld_Level_1_blue.png","./assets/Overworld_Level_1.png"],
+    foreground: ["./assets/Level1ParallaxFlowers.png",],
     worldSize: 2,
     groundType: GrassGround,
     ground: [
@@ -32,6 +33,7 @@ const levelOne = {
 const levelTwo = {
     music: "./assets/sounds/music/main-1.mp3",
     background: ["./assets/Underground_Level_2.png","./assets/Underground_Level_2.png"],
+    foreground: ["./assets/Level1ParallaxFlowers.png",],
     worldSize: 2,
     groundType: UnderGround,
     ground: [
@@ -68,6 +70,7 @@ const levelTwo = {
 const levelThree = {
     music: "./assets/sounds/music/main-2.mp3",
     background: ["./assets/IceLevel3.png"],
+    foreground: ["./assets/Level1ParallaxFlowers.png",],
     worldSize: 1,
     groundType: IceGround,
     ground: [
@@ -107,6 +110,7 @@ const levelThree = {
 const levelFour = {
     music: "./assets/sounds/music/drumloop.mp3",
     background: ["./assets/HellLevel4.png"],
+    foreground: ["./assets/Level1ParallaxFlowers.png",],
     worldSize: 1,
     groundType: HellGround,
     ground: [

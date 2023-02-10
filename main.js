@@ -19,6 +19,7 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Underground_Level_2.png",
 	"./assets/IceLevel3.png",
 	"./assets/HellLevel4.png",
+	"./assets/Level1ParallaxFlowers.png",	
 
 	"./assets/Environmental_Blocks.png", // various blocks/ground
 	"./assets/Dirt_Block.png",
