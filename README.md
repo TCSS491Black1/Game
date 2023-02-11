@@ -5,7 +5,7 @@
 ---
 [![Merged Pull Requests](https://img.shields.io/github/issues-search/TCSS491Black1/Game?label=merged%20PRs&query=is%3Apr+is%3Aclosed+is%3Amerged)](https://github.com/TCSS491Black1/Game/pulls)
 
-[https://tcss491black1.github.io/](https://tcss491black1.github.io/)
+[https://tcss491black1.github.io/Game/](https://tcss491black1.github.io/Game/)
 ---
 - Hollow Knight Clone is created by [Patrick Tibbals][patrick-github], [Michael Theisen][michael-github], [Griffin Ryan][griffin-github], and [Peter Iriarte][peter-github].
 
