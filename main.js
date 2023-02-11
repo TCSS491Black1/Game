@@ -8,6 +8,7 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Uoma.png", // enemies
 	"./assets/Heavy_Sentry.png",
 	"./assets/Hive_Knight.png",
+	"./assets/hiveknight.png", // modified version of Hive_Knight.png
 
 	"./assets/Charged_Lumafly.png",// powerups
 	"./assets/Gathering_Swarm.png",
@@ -42,11 +43,15 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/sounds/music/ver-3.mp3",
 	"./assets/sounds/music/drumloop.mp3",
 	"./assets/sounds/music/fadein.mp3",
+	"./assets/sounds/sfx/attack.wav",
 	"./assets/sounds/sfx/step.wav",
-	"./assets/sounds/sfx/coin.wav",
+	"./assets/sounds/sfx/collide.wav",
+	"./assets/sounds/sfx/drop.wav",
+	"./assets/sounds/sfx/hit.wav",
+	"./assets/sounds/sfx/jump.wav",
 	"./assets/sounds/sfx/laser.wav",
-	"./assets/sounds/sfx/snare.wav",
-	"./assets/sounds/sfx/wall.wav",
+	"./assets/sounds/sfx/stab.wav",
+	"./assets/sounds/sfx/step.wav",
 	"./assets/sounds/sfx/trill.wav",
 ].forEach(asset => ASSET_MANAGER.queueDownload(asset));
 
