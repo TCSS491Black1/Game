@@ -1,0 +1,9 @@
+# VS Code configs.
+/.vs/
+/.vscode/
+
+# macOS .DS_Store files.
+.DS_Store
+
+# misc.
+*.todo
