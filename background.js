@@ -4,12 +4,12 @@ class Background {
         this.y = 0;
         this.game = game;
         this.speed = 0;
-        this.images=[];
-        //Loop down the background images and make them into an array of assets
-        for( var j=0 ; j < img.length;j++ ){
-            this.images[j] = ASSET_MANAGER.getAsset(img[j]);
-        }
 
+        //Loop down the background images and make them into an array of assets
+        this.images = [];
+        for(const image of img) {
+             this.images.push(ASSET_MANAGER.getAsset(image));
+        }
     }
 
     update() {
@@ -45,6 +45,7 @@ class Foreground {
             this.images[j] = ASSET_MANAGER.getAsset(img[j]);
         }
 
+        console.log("foreground: ", this.images[0]);
     }
 
     update() {
@@ -60,7 +61,7 @@ class Foreground {
             for (var i = 0; i < 9; i++) {
                 ctx.drawImage(
                     image,
-                    this.x + (i * 1022) - this.game.camera.x, this.y+(530*2)-this.game.camera.y, 1022, 448
+                    this.x + (i * 1028) - this.game.camera.x, this.y+(530*2)-this.game.camera.y, 1028, 448
                 );
 
             }
