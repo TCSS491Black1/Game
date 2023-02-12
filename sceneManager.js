@@ -60,6 +60,9 @@ class SceneManager{
         this.player.y = level.spawnPoint[1];  
 
         this.game.addEntity(new Background(this.game, level.background));
+        this.game.addEntity(new Foreground(this.game, level.foreground)); 
+        this.game.addEntity(new Pillars(this.game, level.pillars)); 
+
         this.worldSize = level.worldSize;
         // TODO: refactor/ generalize to handle more diverse blocks in the level design
         

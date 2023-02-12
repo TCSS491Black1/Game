@@ -1,6 +1,8 @@
 const levelOne = {
     music: "./assets/sounds/music/intro.mp3",
     background: ["./assets/Overworld_Level_1_blue.png","./assets/Overworld_Level_1.png"],
+    foreground: ["./assets/Level1ParallaxFlowers.png",],
+    pillars: [],
     worldSize: 2,
     spawnPoint: [350 , 0],
     groundType: GrassGround,
@@ -36,6 +38,8 @@ const levelOne = {
 const levelTwo = {
     music: "./assets/sounds/music/main-1.mp3",
     background: ["./assets/Underground_Level_2.png","./assets/Underground_Level_2.png"],
+    foreground: ["./assets/Level2ParallaxBoulders.png",],
+    pillars: [],
     worldSize: 2,
     spawnPoint: [350 , 1200],
     groundType: UnderGround,
@@ -191,32 +195,47 @@ const levelTwo = {
 }
 const levelThree = {
     music: "./assets/sounds/music/main-2.mp3",
-    background: ["./assets/IceLevel3.png"],
-    worldSize: 1,
     spawnPoint: [150 , 0],
+    background: ["./assets/IceLevel_3_black.png","./assets/IceLevel3.png"],
+    foreground: [],
+    pillars: ["./assets/Level3ParallaxPillars.png",],
+    worldSize: 2,
     groundType: IceGround,
     wallType: IceWall,
-    ground: [
-        {x:0, y:params.canvasHeight-32, size: 736 }
+    ground: [{x:0, y:params.canvasHeight*2-32, size: 736 }, 
+        {x:32*12, y:params.canvasHeight*2-32*5, size: 8 },
+        {x:32*12, y:params.canvasHeight*2-32*6, size: 8 },
+        {x:32*12, y:params.canvasHeight*2-32*9, size: 8 },
+        {x:32*24, y:params.canvasHeight*2-32*13, size: 8 },
+        {x:32*46, y:params.canvasHeight*2-32*13, size: 8 },
 
-    ],
-    wall: [{x:0,y:0,size: 24}],
-    targetblock: [{x: 700, y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
-    enemies: [
-        {name: "Uoma" , x: 1200, y:550},
-        {name: "Uoma" , x: 2200, y:450},
-        {name: "Uoma" , x: 3200, y:350},
-        {name: "Uoma" , x: 4200, y:550},
-        {name: "Uoma" , x: 5200, y:450},
-        {name: "Uoma" , x: 6200, y:350},
-    ],
-    powerUps:  [{}]
+        {x:32*36, y:params.canvasHeight*2-32*13, size: 8 },
+        {x:32*72, y:params.canvasHeight*2-32*5, size: 8 },
+        {x:32*85, y:params.canvasHeight*2-32*9, size: 8 },
+        {x:32*95, y:params.canvasHeight*2-32*12, size: 8 },
 
+        {x:32*200, y:params.canvasHeight*2-32*1, size: 8 },
+        {x:32*202, y:params.canvasHeight*2-32*5, size: 8 },
+        {x:32*204, y:params.canvasHeight*2-32*9, size: 8 },
+        {x:32*206, y:params.canvasHeight*2-32*13, size: 8 },
+
+        {x:32*226, y:params.canvasHeight*2-32*13, size: 8 },
+        {x:32*246, y:params.canvasHeight*2-32*13, size: 8 },
+        {x:32*276, y:params.canvasHeight*2-32*13, size: 8 }],
+    wall: [{x:-32,y:0,size: 24}],
+    targetblock: [{x: 700, y: params.canvasHeight+32*12,xScale:1,yScale:1}],
+    enemies: [{name: "Heavy_Sentry" , x: 1200, y:550*2},
+    {name: "Heavy_Sentry" , x: 2200, y:550*2},
+    {name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
+    powerUps:  [{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
 
 }
+
 const levelFour = {
     music: "./assets/sounds/music/drumloop.mp3",
     background: ["./assets/HellLevel4.png"],
+    foreground: [],
+    pillars: [],
     worldSize: 1,
     spawnPoint: [150 , 0],
     groundType: HellGround,
@@ -242,7 +261,7 @@ const levelFour = {
         {x:32*276, y:params.canvasHeight-32*13, size: 8 },
 
     ],
-    wall: [{x:0,y:0,size: 24}],
+    wall: [{x:-32,y:0,size: 24}],
     targetblock: [{x: 700, y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
