@@ -92,7 +92,8 @@ class Pillars {
             for (var i = 0; i < 15; i++) {
                 ctx.drawImage(
                     image,
-                    this.x + (i * 1918) - this.game.camera.x, this.y+(768*j)-this.game.camera.y, 1920, 768
+                    this.x + (i * 1022) - this.game.camera.x, this.y+(655)-this.game.camera.y, 1022, 858
+                    //this.x + (i * 1918) - this.game.camera.x, this.y+(768*j)-this.game.camera.y, 1920, 768
                 );
 
             }
