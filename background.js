@@ -1,40 +1,40 @@
-class Background {
-    constructor(game, img) {
+class ParallaxLayer {
+    constructor(img, speed, yOffset) {
         this.x = 0;
         this.y = 0;
-        this.game = game;
-        this.speed = 0;
-
-        //Loop down the background images and make them into an array of assets
+        this.speed = speed;
+        this.yOffset = yOffset;
         this.images = [];
-        for(const image of img) {
-             this.images.push(ASSET_MANAGER.getAsset(image));
+        this.game = gameEngine;
+        for (const image of img) {
+            this.images.push(ASSET_MANAGER.getAsset(image));
         }
     }
 
     update() {
-        this.x = (0.8)*this.game.camera.x;
+        this.x = this.speed * this.game.camera.x;
     }
 
     draw(ctx) {
         //Starting from top background image drawn right then down one layer at a time
         // j for vertical position
         // i for horizontal position 
-        for( var j=0 ; j < this.images.length;j++ ){
-            let image =this.images[j];
-            for (var i = 0; i < 7; i++) {
+        for (var j = 0; j < this.images.length; j++) {
+            let image = this.images[j];
+            for (var i = 0; i < 15; i++) {
                 ctx.drawImage(
                     image,
-                    this.x + (i * 1920) - this.game.camera.x, this.y+(768*j)-this.game.camera.y, 1920, 768
+                    this.x + i * image.width - this.game.camera.x,
+                    this.y + this.yOffset - this.game.camera.y,
+                    image.width, image.height
                 );
-
             }
         }
     }
 }
-
-class Foreground {
+class Background  {
     constructor(game, img) {
+        //super(img, 0, 0);
         this.x = 0;
         this.y = 0;
         this.game = game;
@@ -45,14 +45,12 @@ class Foreground {
             this.images[j] = ASSET_MANAGER.getAsset(img[j]);
         }
 
-        console.log("foreground: ", this.images[0]);
     }
 
     update() {
-        //this.x = (0.8)*this.game.camera.x;
+        this.x = this.speed * this.game.camera.x;
     }
-
-    draw(ctx) {
+    draw(ctx) { // backgrounds have a custom draw(), because they tile differently.
         //Starting from top background image drawn right then down one layer at a time
         // j for vertical position
         // i for horizontal position 
@@ -69,34 +67,14 @@ class Foreground {
     }
 }
 
-class Pillars {
+class Foreground extends ParallaxLayer {
     constructor(game, img) {
-        this.x = 0;
-        this.y = 0;
-        this.game = game;
-        this.images=[];
-        console.log(img[0]);
-        for( var j=0 ; j < img.length;j++ ){
-            this.images[j] = ASSET_MANAGER.getAsset(img[j]);
-        }
-
+        super(img, 0, 1060);
     }
+}
 
-    update() {
-        this.x = (0.6)*this.game.camera.x;
-    }
-
-    draw(ctx) {
-        for( var j=0 ; j < this.images.length;j++ ){
-            let image =this.images[j];
-            for (var i = 0; i < 15; i++) {
-                ctx.drawImage(
-                    image,
-                    this.x + (i * 1022) - this.game.camera.x, this.y+(655)-this.game.camera.y, 1022, 858
-                    //this.x + (i * 1918) - this.game.camera.x, this.y+(768*j)-this.game.camera.y, 1920, 768
-                );
-
-            }
-        }
+class Pillars extends ParallaxLayer {
+    constructor(game, img) {
+        super(img, 0.6, 655);
     }
 }
