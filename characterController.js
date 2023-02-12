@@ -2,7 +2,6 @@ class CharacterController {
     CHARACTER_SPRITESHEET = "./assets/hornet.png";
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
-        console.log(x+" "+y)
 
         this.game.player = this;
 
@@ -18,9 +17,10 @@ class CharacterController {
         this.speed = 300;
         this.velocity = { x: 0, y: 0 };
         this.terminalVelocity = 50;
+        //For falling through platforms
+        this.phase = false;
 
         this.gravity = 500;
-
         this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
@@ -45,7 +45,7 @@ class CharacterController {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.game,this.x + 40, this.y, 80*this.scale, 215*this.scale, "lime");
+        this.BB = new BoundingBox(this.game,this.x + 25, this.y, 80*this.scale, 215*this.scale, "lime");
     };
 
     updateAttackBB() {
@@ -64,7 +64,6 @@ class CharacterController {
     }
 
     update() {
-      
         const MAXRUN = 600;
         // some constants for jumping & falling physics:
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
@@ -130,14 +129,15 @@ class CharacterController {
                 this.velocity.x = 0;
             }
         }
-
-        if (this.game.keys["g"]) { // cheat/reset character location/state
-            this.velocity = { x: 0, y: 0 };
-            this.state = "IDLE";
-            this.x = 0;
-            this.y = -params.canvasHeight*6;
-        }
         this.y += 9;
+
+        //Phasing through current platform to land below
+        if(this.game.keys["s"] &&  this.y + this.BB.height < this.game.camera.worldSize*params.canvasHeight-32){
+            console.log(this.game.camera.worldSize);
+            this.phase = true;
+        }else{
+            this.phase = false;
+        }
 
         if (this.game.keys["r"]) { // attack key                                                        
             console.log("attacking");
@@ -156,6 +156,13 @@ class CharacterController {
                 }
             }
                 
+        }
+        
+        if (this.game.keys["g"]) { // cheat/reset character location/state
+            this.velocity = { x: 0, y: 0 };
+            this.state = "IDLE";
+            this.x = 0;
+            this.y = -params.canvasHeight*6;
         }
 
         if (this.y >= 4000) {
@@ -191,16 +198,36 @@ class CharacterController {
                     this.velocity.x = -this.velocity.x;
                 }
 
-                else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top)) {
+                else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
                     this.y = entity.BB.top-this.BB.height - 2;
                     this.velocity.y = 0 ;
                     this.onGround = true;
-                    this.updateBB(); // updating BB only required because we moved
+                    this.updateBB();
+                }else if(entity instanceof Wall){
+                    //Land on top of wall
+                    if(this.lastBB.bottom <= entity.BB.top){
+                        this.y = entity.BB.top-this.BB.height - 2;
+                        this.velocity.y = 0 ;
+                        this.onGround = true;
+                        this.updateBB();
+                    //Hold to right of wall    
+                    }else if(this.lastBB.left < entity.BB.right && this.lastBB.right > entity.BB.right){
+                        console.log("Move right");
+                        this.velocity.x = 0;
+                        this.x = entity.BB.right-25;
+                    //Hold to left of wall
+                    }else if(this.lastBB.right < entity.BB.right){
+                        console.log("Move left");
+                        this.velocity.x = 0;
+                        this.x = entity.BB.left-this.BB.width-25;
+
+                    }
+
                 }
                 //These will be for moving to the next level later.
                 else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
                     this.state = "IDLE";
-                    this.game.camera.loadNextLevel(50, 0);
+                    this.game.camera.loadNextLevel(0, 0);
                 }
             }
         
@@ -228,7 +255,7 @@ class CharacterController {
         // draw character sprite, based on camera and facing direction:
        
         let destX = (this.x - this.game.camera.x);
-        let destY = (this.y- this.game.camera.y);
+        let destY = (this.y - this.game.camera.y);
 
         if (this.facingDirection) {// if facing right
             ctx.scale(-1, 1);
