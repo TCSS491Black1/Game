@@ -48,7 +48,7 @@ class Foreground {
     }
 
     update() {
-        this.x = (0.8)*this.game.camera.x;
+        //this.x = (0.8)*this.game.camera.x;
     }
 
     draw(ctx) {
