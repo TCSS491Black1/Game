@@ -40,7 +40,7 @@ class HUD {
 
         ctx.fillStyle = "red";
         for(let HP=0; HP < MAXHP; HP++ ) {
-            if(HP <= playerHP) { 
+            if(HP < playerHP) { 
                 ctx.fillRect(startx + HP*20, starty, pipWidth, barHeight);
             } else {
                 ctx.strokeRect(startx + HP*20, starty, pipWidth, barHeight);
