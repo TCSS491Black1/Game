@@ -16,6 +16,8 @@ class CharacterController {
         this.state = "WALK";
 
         this.HP = 10;
+        this.timeOfLastDamage = 0;
+        this.invulnLength = 3;
         this.dead = false;
         this.updateBB();
         this.attackBeginTime = undefined;
@@ -178,7 +180,11 @@ class CharacterController {
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Enemy) {
                     console.log("Hornet collided with " + entity.constructor.name);
-                    this.HP--;
+                    const t = this.game.timer.gameTime;
+                    if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
+                        this.HP--;
+                        this.timeOfLastDamage = t;
+                    }
                     if (this.HP <= 0) {
                         this.changeState("DEATH")
                         this.dead = true;
@@ -243,7 +249,12 @@ class CharacterController {
         if (this.state == 'ATTACK') {
             this.attackBB.draw(ctx);
         }
-        this.BB.draw(ctx);
+        const t = this.game.timer.gameTime;
+        if(t - this.timeOfLastDamage > this.invulnLength) {
+            this.BB.draw(ctx); // no BB if we're invuln.
+        } else {
+            ctx.globalAlpha = 0.5;
+        }
 
         // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);
