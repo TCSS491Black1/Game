@@ -11,7 +11,7 @@ class CharacterController {
         this.y = 0;
 
         this.speed = 300;
-        
+
         this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
@@ -28,7 +28,7 @@ class CharacterController {
         this.animationList["IDLE"] = new Animator(spritesheet, 4, 954, 184, 214, 6, 0.1, 1, 3, 0, 0, this.scale);
         this.animationList["WALK"] = new Animator(spritesheet, 4, 1191, 159, 191, 8, 0.1, 1, 3, 0, 0, this.scale);
         this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.3, 0, 3, 0, 0, this.scale);
-        this.animationList["ATTACK"] = new Animator(spritesheet, 827, 8270, 349, 368, 1, 1, 0, 0, 0, 100*this.scale, this.scale);
+        this.animationList["ATTACK"] = new Animator(spritesheet, 827, 8270, 349, 368, 1, 1, 0, 0, 0, 100 * this.scale, this.scale);
         this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10, this.scale);
         this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10, this.scale);
 
@@ -37,46 +37,46 @@ class CharacterController {
         // credit for gravity formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
         const t_h = 0.25;                           // time to apex of jump in seconds. jump duration = 0.5    
-        this.g = 2*h/(t_h**2);                     // acceleration due to gravity.
-        this.v_0 = -2*h/t_h;                        // initial velocity(on jump) in the y axis
+        this.g = 2 * h / (t_h ** 2);                     // acceleration due to gravity.
+        this.v_0 = -2 * h / t_h;                        // initial velocity(on jump) in the y axis
         this.velocity = { x: 0, y: 0 };
         this.terminalVelocity = 50;                 // maximum rate of descent(pixels/second)
-        
+
         this.phase = false;                         //For falling through platforms
         this.onGround = true;
         // end of gravity maths
         //******************* */
-        
+
     };
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.game,this.x + 25, this.y, 80*this.scale, 215*this.scale, "lime");
+        this.BB = new BoundingBox(this.game, this.x + 25, this.y, 80 * this.scale, 215 * this.scale, "lime");
     };
 
     updateAttackBB() {
         this.lastAttackBB = this.attackBB;
         const attackBBheight = this.animationList["ATTACK"].height * this.scale;
         const attackBBwidth = this.animationList["ATTACK"].width * this.scale * 0.5;
-        
+
         if (this.facingDirection == 0) {
-            this.attackBB = new BoundingBox(this.game, this.x - 200*this.scale, this.y- 80*this.scale, 
+            this.attackBB = new BoundingBox(this.game, this.x - 200 * this.scale, this.y - 80 * this.scale,
                 attackBBwidth, attackBBheight /*300*/, "yellow");
         } else {
-            this.attackBB = new BoundingBox(this.game,this.x + attackBBwidth, this.y - 80*this.scale, 
-                attackBBwidth, attackBBheight , "yellow");
+            this.attackBB = new BoundingBox(this.game, this.x + attackBBwidth, this.y - 80 * this.scale,
+                attackBBwidth, attackBBheight, "yellow");
             //this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
         }
     }
     changeState(newState, msg) {
         const oldState = this.state;
         this.state = newState;
-        if(this.state != oldState)
+        if (this.state != oldState)
             console.log("State changed to ", this.state, " from ", oldState, msg);
     }
     update() {
-        const MAXRUN = 600;        
-        
+        const MAXRUN = 600;
+
         // Jump trigger
         if (this.game.keys["w"] && this.onGround && this.state != "JUMP" && this.state != "ATTACK") {
             this.changeState("JUMP", 84);
@@ -84,11 +84,11 @@ class CharacterController {
         }
 
         const t = this.game.clockTick;                // time elapsed since last frame
-        this.velocity.y = this.velocity.y + this.g*t; // accelerate due to gravity.
+        this.velocity.y = this.velocity.y + this.g * t; // accelerate due to gravity.
         this.y += this.velocity.y * t;                // calculate new Y position from velocity.
 
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
-            if (this.onGround) this.state = "WALK";                   // walk if not mid-air
+            if (this.onGround) this.changeState("WALK", 91);          // walk if not mid-air
             this.facingDirection = 1;                                 // facing the right
             this.velocity.x = Math.min(this.velocity.x + 10, MAXRUN); // increase velocity by 10, up to MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
@@ -98,31 +98,32 @@ class CharacterController {
             this.facingDirection = 0;                                 // face left
             this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
-        } else if(this.onGround) {
+        } else if (this.onGround && this.state != "ATTACK") {
             this.changeState("IDLE", 104);
             this.velocity.x = 0;
         }
 
         //Phasing through current platform to land below
-        if(this.game.keys["s"] &&  this.y + this.BB.height < this.game.camera.worldSize*params.canvasHeight-32){
+        if (this.game.keys["s"] && this.y + this.BB.height < this.game.camera.worldSize * params.canvasHeight - 32) {
             this.phase = true;
-        }else{
+        } else {
             this.phase = false;
         }
 
         //****************** */
-        // attack animation code:
-        if(this.game.click && this.attackBeginTime === undefined) { // begin attacking now on click.
+        // attack animation code.
+        // This section is responsible for going into and leaving "ATTACK" state.
+        if (this.game.click && this.attackBeginTime === undefined) { // begin attacking now on click.
             this.attackBeginTime = this.game.timer.gameTime;
             this.game.click = undefined;
         }
         const attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
         if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
             this.game.click == undefined;
-            this.changeState("ATTACK",141);
+            this.changeState("ATTACK", 141);
 
             if (this.facingDirection == 0) {
-                this.animationList["ATTACK"].xoffset = 200*this.scale;
+                this.animationList["ATTACK"].xoffset = 200 * this.scale;
             } else {
                 this.animationList["ATTACK"].xoffset = 0;
             }
@@ -134,10 +135,9 @@ class CharacterController {
                     if (entity.HP <= 0) entity.state = "DEAD";
                 }
             }
-        } else if(attackTimeElapsed >= 0.4) { // cleanup after attack + internal cooldown of 0.1s
+        } else if (attackTimeElapsed >= 0.4) { // cleanup after attack + internal cooldown of 0.1s
             this.attackBeginTime = undefined;
-            //this.state = "JUMP";
-            if(!this.onGround)
+            if (!this.onGround)
                 this.changeState("JUMP", 159);
             else {
                 this.changeState("IDLE", 162);
@@ -149,19 +149,19 @@ class CharacterController {
         if (this.game.keys["g"]) { // cheat/reset character location/state
             this.velocity = { x: 0, y: 0 };
             this.changeState("IDLE", 164);
-            //this.state = "IDLE";
             this.x = 0;
-            this.y = -params.canvasHeight*6;
+            this.y = -params.canvasHeight * 6;
         }
 
-        if (this.y >= 4000) {
+        if (this.y >= 4000) { // fell off the map and died
             this.dead = true;
-        } // fall off the map and die
-
-        if (this.dead === true) { // death state makes Hornet stay dead. Should we keep Hornet on screen during reset popup? timer before reset?
+        }
+        // death state makes Hornet stay dead. Should we keep Hornet on screen during reset popup?
+        // timer before reset?
+        if (this.dead === true) { 
             this.changeState("DEAD");
             console.log("dead");
-            this.velocity = { x: null, y: null };
+            this.velocity = { x: 0, y: 0 };
             this.y = 580; //ground - ish
         }
 
@@ -182,49 +182,44 @@ class CharacterController {
                     this.velocity.x = -this.velocity.x;
                 }
                 else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
-                    this.y = entity.BB.top-this.BB.height;
+                    this.y = entity.BB.top - this.BB.height;
                     this.velocity.y = 0;
                     this.onGround = true;
                     this.updateBB();
-                }else if(entity instanceof Wall){
+                } else if (entity instanceof Wall) {
                     //Land on top of wall
-                    if(this.lastBB.bottom <= entity.BB.top){
-                        this.y = entity.BB.top-this.BB.height;
-                        this.velocity.y = 0 ;
+                    if (this.lastBB.bottom <= entity.BB.top) {
+                        this.y = entity.BB.top - this.BB.height;
+                        this.velocity.y = 0;
                         this.onGround = true;
                         this.updateBB();
-                    //Hold to right of wall    
-                    }else if(this.lastBB.left < entity.BB.right && this.lastBB.right > entity.BB.right){
+                        //Hold to right of wall    
+                    } else if (this.lastBB.left < entity.BB.right && this.lastBB.right > entity.BB.right) {
                         console.log("Move right");
                         this.velocity.x = 0;
-                        this.x = entity.BB.right-25;
-                    //Hold to left of wall
-                    }else if(this.lastBB.right < entity.BB.right){
+                        this.x = entity.BB.right - 25;
+                        //Hold to left of wall
+                    } else if (this.lastBB.right < entity.BB.right) {
                         console.log("Move left");
                         this.velocity.x = 0;
-                        this.x = entity.BB.left-this.BB.width-25;
+                        this.x = entity.BB.left - this.BB.width - 25;
 
                     }
-
                 }
-                //These will be for moving to the next level later.
                 else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
                     this.changeState("IDLE", 226);
-                    //this.state = "IDLE";
                     this.game.camera.loadNextLevel(0, 0);
                 }
             }
-        
-        
-            // tried figuring out collision with attacking Uoma entity, not working. -Michael
-        if (this.state=="ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {             
-            if (entity instanceof Enemy) {
-                //console.log("Hornet killed " + entity.constructor.name);
-                entity.HP--;
+
+            // deal damage if attack hits enemy:
+            if (this.state == "ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {
+                if (entity instanceof Enemy) {
+                    entity.HP--;
+                }
             }
-        }
-    });
-    this.updateBB(); // updating BB due to collision-based movement
+        });
+        this.updateBB(); // updating BB due to collision-based movement
     };
 
     draw(ctx) {
@@ -234,17 +229,17 @@ class CharacterController {
             this.attackBB.draw(ctx);
         }
         this.BB.draw(ctx);
-        
+
 
         // draw character sprite, based on camera and facing direction:
-       
+
         let destX = (this.x - this.game.camera.x);
         let destY = (this.y - this.game.camera.y);
 
         if (this.facingDirection) {// if facing right
             ctx.scale(-1, 1);
             destX *= -1;
-            destX -= this.animationList[this.state].width*this.scale;
+            destX -= this.animationList[this.state].width * this.scale;
         }
         this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
             destX,
