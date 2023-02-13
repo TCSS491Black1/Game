@@ -90,9 +90,7 @@ class CharacterController {
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
             if(this.state != "ATTACK")
                 this.facingDirection = 1;                             // facing the right
-            
             if (this.onGround) this.changeState("WALK", 91);          // walk if not mid-air
-            
             this.velocity.x = Math.min(this.velocity.x + 10, MAXRUN); // increase velocity by 10, up to MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
@@ -126,6 +124,7 @@ class CharacterController {
         if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
             this.game.click == undefined;
             this.changeState("ATTACK", 141);
+            this.velocity.x = 0;
 
             if (this.facingDirection == 0) {
                 this.animationList["ATTACK"].xoffset = 200 * this.scale;
