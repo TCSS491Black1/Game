@@ -20,14 +20,6 @@ class SceneManager{
 
         this.marker = 0;
         this.soundEngine.updateAudio();
-        this.soundEngine.autoRepeat("./assets/sounds/music/intro.mp3");
-        this.soundEngine.autoRepeat("./assets/sounds/music/main-1.mp3");
-        this.soundEngine.autoRepeat("./assets/sounds/music/main-2.mp3");
-        this.soundEngine.autoRepeat("./assets/sounds/music/ver-1.mp3");
-        this.soundEngine.autoRepeat("./assets/sounds/music/ver-2.mp3");
-        this.soundEngine.autoRepeat("./assets/sounds/music/ver-3.mp3");
-        this.soundEngine.autoRepeat("./assets/sounds/music/drumloop.mp3");
-        this.soundEngine.autoRepeat("./assets/sounds/music/fadein.mp3");
         document.getElementById('volume').addEventListener('input', this.soundEngine.updateAudio);
         document.getElementById('mute').addEventListener('input', this.soundEngine.updateAudio);
     };
@@ -60,9 +52,9 @@ class SceneManager{
         this.player.state = "IDLE";
         
         console.log("zoning in @ ", x, y);
-        // To change based on professor's "title" technique.
+
         if(level.music) {
-            this.soundEngine.playAsset(level.music, true);
+            this.soundEngine.playBackgroundMusic(level.music, 0.1);
         }        
 
         this.game.addEntity(new Background(this.game, level.background));

@@ -4,6 +4,7 @@ class AssetManager {
         this.errorCount = 0;
         this.cache = [];
         this.downloadQueue = [];
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     };
 
     queueDownload(path) {
@@ -51,28 +52,19 @@ class AssetManager {
                 
                 case 'wav':
                 case 'mp3':
-                    var aud = new Audio();
-                    aud.addEventListener("loadeddata", function() {
-                        console.log("Loaded " + this.src);
-                        that.successCount++;
-                        if (that.isDone()) callback();
-                    });
-
-                    aud.addEventListener("error", function () {
-                        console.log("Error loading " + this.src);
-                        that.errorCount++;
-                        if (that.isDone()) callback();
-                    });
-
-                    aud.addEventListener("ended", function () {
-                        aud.pause();
-                        aud.currentTime = 0;
-                    });
-
-                    aud.src = path;
-                    aud.load();
-
-                    this.cache[path] = aud;
+                    fetch(path)
+                        .then(response => response.arrayBuffer())
+                        .then(arrayBuffer => this.audioContext.decodeAudioData(arrayBuffer))
+                        .then(audioBuffer => {
+                            this.cache[path] = audioBuffer;
+                            this.successCount++;
+                            if (this.isDone()) callback();
+                        })
+                        .catch(error => {
+                            console.error('Error decoding audio data:', error);
+                            this.errorCount++;
+                            if (this.isDone()) callback();
+                        });
                     break;
             }
         }
@@ -83,16 +75,22 @@ class AssetManager {
     };
 
     playAsset(path) {
-        let audio = this.cache[path];
-        audio.currentTime = 0;
-        this.adjustVolume(document.getElementById('volume').value)
-        audio.play();
+        let audioBuffer = this.cache[path];
+        let source = this.audioContext.createBufferSource();
+        source.buffer = audioBuffer;
+
+        let gainNode = this.audioContext.createGain();
+        gainNode.gainNode.value = document.getElementById('volume').value;
+        source.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+
+        source.start(0);
     }
 
     muteAudio(mute) {
         for (var key in this.cache) {
             let asset = this.cache[key];
-            if (asset instanceof Audio) {
+            if (asset instanceof AudioBuffer) {
                 asset.muted = mute;
             }
         }
@@ -101,7 +99,7 @@ class AssetManager {
     adjustVolume(volume) {
         for (var key in this.cache) {
             let asset = this.cache[key];
-            if (asset instanceof Audio) {
+            if (asset instanceof AudioBuffer) {
                 asset.volume = volume;
             }
         }
@@ -110,11 +108,13 @@ class AssetManager {
     pauseBackgroundMusic() {
         for (var key in this.cache) {
             let asset = this.cache[key];
-            if (asset instanceof Audio) {
+            if (asset instanceof AudioBuffer) {
                 asset.pause();
                 asset.currentTime = 0;
             }
         }
     };
+
+
 
 };

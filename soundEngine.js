@@ -1,8 +1,6 @@
 class SoundEngine {
     constructor(game, x, y) {
-        this.game = game;
-        this.x = x;
-        this.y = y;
+        Object.assign(this, { game, x, y });
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     }
 
@@ -15,14 +13,14 @@ class SoundEngine {
         panner.rolloffFactor = 1;
         panner.setPosition(x, y, 0);
 
-        let gainNode = this.audioContext.createGain();
-        gainNode.value = volume;
+        this.gainNode = this.audioContext.createGain();
+        this. GainNode.value = volume;
 
         let source = this.audioContext.createBufferSource();
         source.buffer = buffer;
         source.connect(panner);
-        panner.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
+        panner.connect(this.GainNode);
+        this.GainNode.connect(this.audioContext.destination);
         source.start(0);
     }
 
@@ -35,14 +33,14 @@ class SoundEngine {
         panner.rolloffFactor = 1;
         panner.setPosition(x, y, 0);
 
-        let gainNode = this.audioContext.createGain();
-        gainNode.value = volume;
+        this.gainNode = this.audioContext.createGain();
+        this.gainNode.value = volume;
 
         let source = this.audioContext.createBufferSource();
         source.buffer = buffer;
         source.connect(panner);
-        panner.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
+        panner.connect(this.GainNode);
+        this.GainNode.connect(this.audioContext.destination);
 
         // This line sets the playback rate based on player's speed
         source.playbackRate.value = this.game.player.speed / 5;
@@ -58,7 +56,7 @@ class SoundEngine {
     }
 
     setVolume(volume) {
-        this.audioContext.gainNode.value = volume;
+        this.gainNode.value = volume;
     }
 
     updateAudio() {
@@ -68,5 +66,21 @@ class SoundEngine {
             volume = 0;
         }
         this.setVolume(volume);
-    };
+    }
+
+    playBackgroundMusic(assetName, volume = 0.4) {
+        let gainNode = this.audioContext.createGain();
+        gainNode.value = volume;
+      
+        let audioBuffer = ASSET_MANAGER.getAsset(assetName);
+              
+        let source = this.audioContext.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+      
+        source.loop = true;
+        source.start(0);
+    }
+      
 }
