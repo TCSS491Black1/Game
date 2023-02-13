@@ -51,14 +51,14 @@ class CharacterController {
     updateAttackBB() {
         this.lastAttackBB = this.attackBB;
         const attackBBheight = this.animationList["ATTACK"].height * this.scale;
-        const attackBBwidth = this.animationList["ATTACK"].width * this.scale;
-        //console.log(attackBBwidth, attackBBheight);
+        const attackBBwidth = this.animationList["ATTACK"].width * this.scale * 0.5;
+        
         if (this.facingDirection == 0) {
-            this.attackBB = new BoundingBox(this.game,this.x - 200*this.scale, this.y- 80*this.scale, 
-                attackBBwidth /*339*/, attackBBheight /*300*/, "yellow");
+            this.attackBB = new BoundingBox(this.game, this.x - 200*this.scale, this.y- 80*this.scale, 
+                attackBBwidth, attackBBheight /*300*/, "yellow");
         } else {
-            this.attackBB = new BoundingBox(this.game,this.x, this.y - 80*this.scale, 
-                attackBBwidth /*339*/, attackBBheight /*300*/, "yellow");
+            this.attackBB = new BoundingBox(this.game,this.x + attackBBwidth, this.y - 80*this.scale, 
+                attackBBwidth, attackBBheight , "yellow");
             //this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
         }
     }
@@ -248,9 +248,9 @@ class CharacterController {
         // draw the character's bounding box:
         if (this.state == 'ATTACK') {
             this.attackBB.draw(ctx);
-        } else {
-            this.BB.draw(ctx);
-        }
+        } 
+        this.BB.draw(ctx);
+        
 
         // draw character sprite, based on camera and facing direction:
        
