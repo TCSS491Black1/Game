@@ -70,14 +70,15 @@ class CharacterController {
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
         const t_h = 0.25;                           // time to apex of jump in seconds. jump duration = 0.5    
         const g = 2*h/(t_h**2);                     // acceleration due to gravity.
-
+        
         //Small Jump
-        if (this.game.keys["w"] && this.state != "JUMP") {
+        if (this.game.keys["w"] && this.state != "JUMP" && this.state != "ATTACK") {
             //console.log("small jump");
             this.state = "JUMP";
             this.v_0 = -2*h/t_h;                // initial velocity in the y axis
             this.jumpInitTime = new Date();
             this.jumpInitPosition = { x: this.x, y: this.y };
+            this.velocity.y = this.v_0;
         }
 
         const gravY = (t, v_0) => {
@@ -86,24 +87,30 @@ class CharacterController {
             // note: video assumes different coordinate system than canvas.    
             return Math.floor(0.5*g*t**2 + v_0*t + this.jumpInitPosition?.y);
         }
-        if(!this.onGround && this.wasOnGround && this.jumpInitTime == null && this.jumpInitPosition == null) {
+        
+        if(!this.onGround && this.wasOnGround/* && this.jumpInitTime == null && this.jumpInitPosition == null*/) {
             // did not jump, but still falling:
-            this.jumpInitTime = new Date();
-            this.jumpInitPosition = {x:this.x, y:this.y};
+            // this.jumpInitTime = new Date();
+            // this.jumpInitPosition = {x:this.x, y:this.y};
+            
         }
-        if(this.jumpInitTime !== null && this.jumpInitPosition !== null) {
-            const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
-            this.y = Math.min(gravY(t, this.v_0), this.y + this.terminalVelocity);
-        }
+        // if(this.jumpInitTime !== null && this.jumpInitPosition !== null) {
+        //     const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
+        //     this.y = Math.min(gravY(t, this.v_0), this.y + this.terminalVelocity);
+        // }
+        const t = this.game.clockTick; // presume falling.
+        //this.velocity.y = Math.min(this.velocity.y + g*t, this.terminalVelocity)
+        this.velocity.y = this.velocity.y + g*t;
+        this.y += this.velocity.y * t;
 
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
-            if (this.state != "JUMP") this.state = "WALK";             // walk if not mid-air
+            if (this.onGround/*state != "JUMP"*/) this.state = "WALK";             // walk if not mid-air
             this.facingDirection = 1;                                 // facing the right
             this.velocity.x = Math.min(this.velocity.x + 10, MAXRUN); // increase velocity by 10, up to MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
         else if (this.game.keys["a"]) {                               // Move/accelerate character left
-            if (this.state != "JUMP") this.state = "WALK";             // walk if not mid-air
+            if (this.onGround/*state != "JUMP"*/) this.state = "WALK";             // walk if not mid-air
             this.facingDirection = 0;                                 // face left
             this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
@@ -111,7 +118,7 @@ class CharacterController {
 
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
         // game keys: a, d, w, r
-        if (!['a', 'd', 'w', 'r'].some(key => this.game.keys[key]) && this.state != "JUMP") {
+        if (!['a', 'd', 'w', 'r'].some(key => this.game.keys[key]) && this.onGround) {
            //console.log("Stopping.");
             this.state = "IDLE";
             this.velocity.x = 0;
@@ -121,8 +128,8 @@ class CharacterController {
         if (this.onGround && !this.wasOnGround){
             this.jumpInitTime = null;      // cleaning up jump data on landing
             this.jumpInitPosition = null;
-            this.v_0 = 0;
-
+            //this.v_0 = 0;
+            // this.velocity.y = 0;
             if (this.game.keys["a"] || this.game.keys["d"]) // change animation after landing:
                 this.state = "WALK";
             else {
@@ -130,7 +137,7 @@ class CharacterController {
                 this.velocity.x = 0;
             }
         }
-        this.y += 9;
+        //this.y += 9;
 
         //Phasing through current platform to land below
         if(this.game.keys["s"] &&  this.y + this.BB.height < this.game.camera.worldSize*params.canvasHeight-32){
@@ -162,9 +169,10 @@ class CharacterController {
                     if (entity.HP <= 0) entity.state = "DEAD";
                 }
             }
-        } else if(attackTimeElapsed >= 0.4) { // cleanup after attack internal cooldown of 0.1s
+        } else if(attackTimeElapsed >= 0.4) { // cleanup after attack + internal cooldown of 0.1s
             this.attackBeginTime = undefined;
-            this.state = "IDLE";
+            this.state = "JUMP";
+            console.log("Jump status", this.x, this.y, this.state, this.jumpInitPosition, this.jumpInitTime);
         }
         
         if (this.game.keys["g"]) { // cheat/reset character location/state
@@ -249,6 +257,7 @@ class CharacterController {
             }
         }
     });
+    this.updateBB();
         //that.updateBB(); // updating BB due to collision-based movement
     };
 
