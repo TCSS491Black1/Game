@@ -234,9 +234,7 @@ class CharacterController {
         }
         this.BB.draw(ctx);
 
-
         // draw character sprite, based on camera and facing direction:
-
         let destX = (this.x - this.game.camera.x);
         let destY = (this.y - this.game.camera.y);
 
