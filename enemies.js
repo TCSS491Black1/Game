@@ -9,7 +9,7 @@ class Enemy {
         //console.log("./assets/" + this.name + ".png")
         // default values, probably overwritten for different subclasses
         this.facingDirection = 0;
-        this.health = 10; 
+        this.HP = 10; 
         this.speed = 100;
         this.state = "WALK";
         this.animationList = {}
@@ -42,7 +42,7 @@ class Enemy {
         });
     }
     isDead() {
-        return this.health <= 0;
+        return this.HP <= 0;
     }
     updateBB() {
         this.lastBB = this.BB;
