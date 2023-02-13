@@ -88,14 +88,19 @@ class CharacterController {
         this.y += this.velocity.y * t;                // calculate new Y position from velocity.
 
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
+            if(this.state != "ATTACK")
+                this.facingDirection = 1;                             // facing the right
+            
             if (this.onGround) this.changeState("WALK", 91);          // walk if not mid-air
-            this.facingDirection = 1;                                 // facing the right
+            
             this.velocity.x = Math.min(this.velocity.x + 10, MAXRUN); // increase velocity by 10, up to MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
         else if (this.game.keys["a"]) {                               // Move/accelerate character left
+            if(this.state != "ATTACK")
+                this.facingDirection = 0;                             // face left
             if (this.onGround) this.changeState("WALK", 99);          // walk if not mid-air
-            this.facingDirection = 0;                                 // face left
+            
             this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         } else if (this.onGround && this.state != "ATTACK") {
