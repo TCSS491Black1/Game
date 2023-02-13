@@ -27,6 +27,7 @@ class CharacterController {
         this.HP = 10;
         this.dead = false;
         this.updateBB();
+        this.attackBeginTime = undefined;
 
         this.scale = 0.5;
         this.animationList = {};
@@ -139,8 +140,14 @@ class CharacterController {
             this.phase = false;
         }
 
-        if (this.game.keys["r"]) { // attack key                                                        
+        if(this.game.click && this.attackBeginTime === undefined) { // begin attacking now on click.
+            this.attackBeginTime = this.game.timer.gameTime;
+            this.game.click = undefined;
+        }
+        const attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
+        if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
             //console.log("attacking");
+            this.game.click == undefined;
             this.state = "ATTACK";
             if (this.facingDirection == 0) {
                 this.animationList["ATTACK"].xoffset = 200*this.scale;
@@ -155,7 +162,9 @@ class CharacterController {
                     if (entity.HP <= 0) entity.state = "DEAD";
                 }
             }
-                
+        } else if(attackTimeElapsed >= 0.4) { // cleanup after attack internal cooldown of 0.1s
+            this.attackBeginTime = undefined;
+            this.state = "IDLE";
         }
         
         if (this.game.keys["g"]) { // cheat/reset character location/state
