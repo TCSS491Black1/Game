@@ -75,11 +75,9 @@ class CharacterController {
             console.log("State changed to ", this.state, " from ", oldState, msg);
     }
     update() {
-        const MAXRUN = 600;
-        // some constants for jumping & falling physics:
+        const MAXRUN = 600;        
         
-        
-        //Small Jump
+        // Jump trigger
         if (this.game.keys["w"] && this.onGround && this.state != "JUMP" && this.state != "ATTACK") {
             this.changeState("JUMP", 84);
             this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
@@ -105,24 +103,6 @@ class CharacterController {
             this.velocity.x = 0;
         }
 
-        // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
-        // game keys: a, d, w, r
-        // if (!['a', 'd', 'w', 'r'].some(key => this.game.keys[key]) && this.onGround) {
-        //    //console.log("Stopping.");
-        //    this.changeState("IDLE");
-        //     //this.state = "IDLE";
-        //     this.velocity.x = 0;
-        // }
-
-        // // we were jumping/falling, but collision w/ ground detected:
-        // if (this.onGround && !this.wasOnGround){
-        //     if (this.game.keys["a"] || this.game.keys["d"]) // change animation after landing:
-        //         this.changeState("WALK");
-        //     else {
-            
-        //     }
-        // }
-
         //Phasing through current platform to land below
         if(this.game.keys["s"] &&  this.y + this.BB.height < this.game.camera.worldSize*params.canvasHeight-32){
             this.phase = true;
@@ -130,16 +110,17 @@ class CharacterController {
             this.phase = false;
         }
 
+        //****************** */
+        // attack animation code:
         if(this.game.click && this.attackBeginTime === undefined) { // begin attacking now on click.
             this.attackBeginTime = this.game.timer.gameTime;
             this.game.click = undefined;
         }
         const attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
         if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
-            //console.log("attacking");
             this.game.click == undefined;
             this.changeState("ATTACK",141);
-            //this.state = "ATTACK";
+
             if (this.facingDirection == 0) {
                 this.animationList["ATTACK"].xoffset = 200*this.scale;
             } else {
@@ -161,9 +142,10 @@ class CharacterController {
             else {
                 this.changeState("IDLE", 162);
             }
-            //console.log("Jump status", this.x, this.y, this.state, this.jumpInitPosition, this.jumpInitTime);
         }
-        
+        // end of attack code
+        // ****************
+
         if (this.game.keys["g"]) { // cheat/reset character location/state
             this.velocity = { x: 0, y: 0 };
             this.changeState("IDLE", 164);
@@ -178,7 +160,6 @@ class CharacterController {
 
         if (this.dead === true) { // death state makes Hornet stay dead. Should we keep Hornet on screen during reset popup? timer before reset?
             this.changeState("DEAD");
-            //this.state = "DEAD";
             console.log("dead");
             this.velocity = { x: null, y: null };
             this.y = 580; //ground - ish
@@ -243,8 +224,7 @@ class CharacterController {
             }
         }
     });
-    this.updateBB();
-        //that.updateBB(); // updating BB due to collision-based movement
+    this.updateBB(); // updating BB due to collision-based movement
     };
 
     draw(ctx) {
@@ -272,7 +252,6 @@ class CharacterController {
         ctx.restore();
 
         if (this.dead === true) { // respawn character on death?
-
             this.game.camera.clearEntities();
             this.game.addEntity(new ReplayScreen(this.game));
         }
