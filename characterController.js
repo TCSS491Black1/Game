@@ -63,7 +63,12 @@ class CharacterController {
             //this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
         }
     }
-
+    changeState(newState) {
+        const oldState = this.state;
+        this.state = newState;
+        if(this.state != oldState)
+            console.log("State changed to ", this.state, " from ", oldState);
+    }
     update() {
         const MAXRUN = 600;
         // some constants for jumping & falling physics:
@@ -72,28 +77,28 @@ class CharacterController {
         const g = 2*h/(t_h**2);                     // acceleration due to gravity.
         
         //Small Jump
-        if (this.game.keys["w"] && this.state != "JUMP" && this.state != "ATTACK") {
+        if (this.game.keys["w"] && this.onGround && this.state != "JUMP" && this.state != "ATTACK") {
             //console.log("small jump");
-            this.state = "JUMP";
+            this.changeState("JUMP");
             this.v_0 = -2*h/t_h;                // initial velocity in the y axis
             this.jumpInitTime = new Date();
             this.jumpInitPosition = { x: this.x, y: this.y };
             this.velocity.y = this.v_0;
         }
 
-        const gravY = (t, v_0) => {
+//        const gravY = (t, v_0) => {
             // determines correct position given time, initial velocity, and initial position in the y axis
             // credit for jump formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
             // note: video assumes different coordinate system than canvas.    
-            return Math.floor(0.5*g*t**2 + v_0*t + this.jumpInitPosition?.y);
-        }
+            //return Math.floor(0.5*g*t**2 + v_0*t + this.jumpInitPosition?.y);
+        //}
         
-        if(!this.onGround && this.wasOnGround/* && this.jumpInitTime == null && this.jumpInitPosition == null*/) {
+        //if(!this.onGround && this.wasOnGround/* && this.jumpInitTime == null && this.jumpInitPosition == null*/) {
             // did not jump, but still falling:
             // this.jumpInitTime = new Date();
             // this.jumpInitPosition = {x:this.x, y:this.y};
             
-        }
+        //}
         // if(this.jumpInitTime !== null && this.jumpInitPosition !== null) {
         //     const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
         //     this.y = Math.min(gravY(t, this.v_0), this.y + this.terminalVelocity);
@@ -120,7 +125,8 @@ class CharacterController {
         // game keys: a, d, w, r
         if (!['a', 'd', 'w', 'r'].some(key => this.game.keys[key]) && this.onGround) {
            //console.log("Stopping.");
-            this.state = "IDLE";
+           this.changeState("IDLE");
+            //this.state = "IDLE";
             this.velocity.x = 0;
         }
 
@@ -131,9 +137,11 @@ class CharacterController {
             //this.v_0 = 0;
             // this.velocity.y = 0;
             if (this.game.keys["a"] || this.game.keys["d"]) // change animation after landing:
-                this.state = "WALK";
+            this.changeState("WALK");
+                //this.state = "WALK";
             else {
-                this.state = "IDLE";
+                this.changeState("IDLE");
+                //this.state = "IDLE";
                 this.velocity.x = 0;
             }
         }
@@ -141,7 +149,6 @@ class CharacterController {
 
         //Phasing through current platform to land below
         if(this.game.keys["s"] &&  this.y + this.BB.height < this.game.camera.worldSize*params.canvasHeight-32){
-            console.log(this.game.camera.worldSize);
             this.phase = true;
         }else{
             this.phase = false;
@@ -155,7 +162,8 @@ class CharacterController {
         if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
             //console.log("attacking");
             this.game.click == undefined;
-            this.state = "ATTACK";
+            this.changeState("ATTACK");
+            //this.state = "ATTACK";
             if (this.facingDirection == 0) {
                 this.animationList["ATTACK"].xoffset = 200*this.scale;
             } else {
@@ -177,7 +185,8 @@ class CharacterController {
         
         if (this.game.keys["g"]) { // cheat/reset character location/state
             this.velocity = { x: 0, y: 0 };
-            this.state = "IDLE";
+            this.changeState("IDLE");
+            //this.state = "IDLE";
             this.x = 0;
             this.y = -params.canvasHeight*6;
         }
@@ -187,16 +196,14 @@ class CharacterController {
         } // fall off the map and die
 
         if (this.dead === true) { // death state makes Hornet stay dead. Should we keep Hornet on screen during reset popup? timer before reset?
-            this.state = "DEAD";
+            this.changeState("DEAD");
+            //this.state = "DEAD";
             console.log("dead");
             this.velocity = { x: null, y: null };
             this.y = 580; //ground - ish
         }
 
-        
-
         this.updateBB();
-       
 
         //Collisions
         this.wasOnGround = this.onGround;
@@ -204,26 +211,23 @@ class CharacterController {
         this.game.entities.forEach((entity) => {
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Enemy) {
-                    //this.dead = true;
                     console.log("Hornet collided with " + entity.constructor.name);
-                    //this.state = "DEATH";
                     this.HP--;
                     if (this.HP <= 0) {
-                        this.state = "DEATH";
+                        this.changeState("DEATH")
                         this.dead = true;
                     }
                     this.velocity.x = -this.velocity.x;
                 }
-
                 else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
-                    this.y = entity.BB.top-this.BB.height - 2;
+                    this.y = entity.BB.top-this.BB.height;
                     this.velocity.y = 0 ;
                     this.onGround = true;
                     this.updateBB();
                 }else if(entity instanceof Wall){
                     //Land on top of wall
                     if(this.lastBB.bottom <= entity.BB.top){
-                        this.y = entity.BB.top-this.BB.height - 2;
+                        this.y = entity.BB.top-this.BB.height;
                         this.velocity.y = 0 ;
                         this.onGround = true;
                         this.updateBB();
@@ -243,7 +247,8 @@ class CharacterController {
                 }
                 //These will be for moving to the next level later.
                 else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
-                    this.state = "IDLE";
+                    this.changeState("IDLE");
+                    //this.state = "IDLE";
                     this.game.camera.loadNextLevel(0, 0);
                 }
             }
@@ -252,8 +257,8 @@ class CharacterController {
             // tried figuring out collision with attacking Uoma entity, not working. -Michael
         if (this.state=="ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {             
             if (entity instanceof Enemy) {
-                console.log("Hornet killed " + entity.constructor.name);
-                entity.state="DEAD";
+                //console.log("Hornet killed " + entity.constructor.name);
+                entity.HP--;
             }
         }
     });
@@ -266,7 +271,7 @@ class CharacterController {
         // draw the character's bounding box:
         if (this.state == 'ATTACK') {
             this.attackBB.draw(ctx);
-        } 
+        }
         this.BB.draw(ctx);
         
 
