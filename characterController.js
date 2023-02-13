@@ -183,7 +183,18 @@ class CharacterController {
                         this.changeState("DEATH")
                         this.dead = true;
                     }
-                    this.velocity.x = -this.velocity.x;
+                    if(this.lastBB.bottom <= entity.BB.top) { // if hit enemy from above, bounce.
+                        this.y = entity.BB.top - this.BB.height;
+                        this.velocity.y = -this.velocity.y;
+                    } else if(this.lastBB.left < entity.BB.right && this.lastBB.right > entity.BB.right) {
+                        // hit enemy from the right
+                        this.x = entity.BB.left + entity.BB.width;
+                        this.velocity.x = -this.velocity.x;
+                    } else if (this.lastBB.right < entity.BB.right) { 
+                        // hit enemy from the left
+                        this.x = entity.BB.left - this.BB.width;
+                        this.velocity.x = -this.velocity.x;
+                    }
                 }
                 else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
                     this.y = entity.BB.top - this.BB.height;
