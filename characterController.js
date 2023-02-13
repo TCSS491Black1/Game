@@ -10,17 +10,8 @@ class CharacterController {
         this.x = 0;
         this.y = 0;
 
-        this.jumpInitPosition = null;
-        this.jumpInitTime = null;
-        this.v_0 = 0;
-
         this.speed = 300;
-        this.velocity = { x: 0, y: 0 };
-        this.terminalVelocity = 50;
-        //For falling through platforms
-        this.phase = false;
-
-        this.gravity = 500;
+        
         this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
@@ -41,7 +32,21 @@ class CharacterController {
         this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10, this.scale);
         this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10, this.scale);
 
+        //******************** */
+        // jump/gravity math variables:
+        // credit for gravity formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
+        const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
+        const t_h = 0.25;                           // time to apex of jump in seconds. jump duration = 0.5    
+        this.g = 2*h/(t_h**2);                     // acceleration due to gravity.
+        this.v_0 = -2*h/t_h;                        // initial velocity(on jump) in the y axis
+        this.velocity = { x: 0, y: 0 };
+        this.terminalVelocity = 50;                 // maximum rate of descent(pixels/second)
+        
+        this.phase = false;                         //For falling through platforms
         this.onGround = true;
+        // end of gravity maths
+        //******************* */
+        
     };
 
     updateBB() {
@@ -63,89 +68,60 @@ class CharacterController {
             //this.attackBB = new BoundingBox(this.x - this.game.camera.x, this.y - 80, 339, 300, "yellow");
         }
     }
-    changeState(newState) {
+    changeState(newState, msg) {
         const oldState = this.state;
         this.state = newState;
         if(this.state != oldState)
-            console.log("State changed to ", this.state, " from ", oldState);
+            console.log("State changed to ", this.state, " from ", oldState, msg);
     }
     update() {
         const MAXRUN = 600;
         // some constants for jumping & falling physics:
-        const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
-        const t_h = 0.25;                           // time to apex of jump in seconds. jump duration = 0.5    
-        const g = 2*h/(t_h**2);                     // acceleration due to gravity.
+        
         
         //Small Jump
         if (this.game.keys["w"] && this.onGround && this.state != "JUMP" && this.state != "ATTACK") {
-            //console.log("small jump");
-            this.changeState("JUMP");
-            this.v_0 = -2*h/t_h;                // initial velocity in the y axis
-            this.jumpInitTime = new Date();
-            this.jumpInitPosition = { x: this.x, y: this.y };
-            this.velocity.y = this.v_0;
+            this.changeState("JUMP", 84);
+            this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
         }
 
-//        const gravY = (t, v_0) => {
-            // determines correct position given time, initial velocity, and initial position in the y axis
-            // credit for jump formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
-            // note: video assumes different coordinate system than canvas.    
-            //return Math.floor(0.5*g*t**2 + v_0*t + this.jumpInitPosition?.y);
-        //}
-        
-        //if(!this.onGround && this.wasOnGround/* && this.jumpInitTime == null && this.jumpInitPosition == null*/) {
-            // did not jump, but still falling:
-            // this.jumpInitTime = new Date();
-            // this.jumpInitPosition = {x:this.x, y:this.y};
-            
-        //}
-        // if(this.jumpInitTime !== null && this.jumpInitPosition !== null) {
-        //     const t = (new Date() - this.jumpInitTime)/1000; // current air time(seconds)
-        //     this.y = Math.min(gravY(t, this.v_0), this.y + this.terminalVelocity);
-        // }
-        const t = this.game.clockTick; // presume falling.
-        //this.velocity.y = Math.min(this.velocity.y + g*t, this.terminalVelocity)
-        this.velocity.y = this.velocity.y + g*t;
-        this.y += this.velocity.y * t;
+        const t = this.game.clockTick;                // time elapsed since last frame
+        this.velocity.y = this.velocity.y + this.g*t; // accelerate due to gravity.
+        this.y += this.velocity.y * t;                // calculate new Y position from velocity.
 
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
-            if (this.onGround/*state != "JUMP"*/) this.state = "WALK";             // walk if not mid-air
+            if (this.onGround) this.state = "WALK";                   // walk if not mid-air
             this.facingDirection = 1;                                 // facing the right
             this.velocity.x = Math.min(this.velocity.x + 10, MAXRUN); // increase velocity by 10, up to MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
         else if (this.game.keys["a"]) {                               // Move/accelerate character left
-            if (this.onGround/*state != "JUMP"*/) this.state = "WALK";             // walk if not mid-air
+            if (this.onGround) this.changeState("WALK", 99);                   // walk if not mid-air
             this.facingDirection = 0;                                 // face left
             this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
+        } else if(this.onGround) {
+            this.changeState("IDLE", 104);
+            this.velocity.x = 0;
         }
 
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
         // game keys: a, d, w, r
-        if (!['a', 'd', 'w', 'r'].some(key => this.game.keys[key]) && this.onGround) {
-           //console.log("Stopping.");
-           this.changeState("IDLE");
-            //this.state = "IDLE";
-            this.velocity.x = 0;
-        }
+        // if (!['a', 'd', 'w', 'r'].some(key => this.game.keys[key]) && this.onGround) {
+        //    //console.log("Stopping.");
+        //    this.changeState("IDLE");
+        //     //this.state = "IDLE";
+        //     this.velocity.x = 0;
+        // }
 
-        // we were jumping/falling, but collision w/ ground detected:
-        if (this.onGround && !this.wasOnGround){
-            this.jumpInitTime = null;      // cleaning up jump data on landing
-            this.jumpInitPosition = null;
-            //this.v_0 = 0;
-            // this.velocity.y = 0;
-            if (this.game.keys["a"] || this.game.keys["d"]) // change animation after landing:
-            this.changeState("WALK");
-                //this.state = "WALK";
-            else {
-                this.changeState("IDLE");
-                //this.state = "IDLE";
-                this.velocity.x = 0;
-            }
-        }
-        //this.y += 9;
+        // // we were jumping/falling, but collision w/ ground detected:
+        // if (this.onGround && !this.wasOnGround){
+        //     if (this.game.keys["a"] || this.game.keys["d"]) // change animation after landing:
+        //         this.changeState("WALK");
+        //     else {
+            
+        //     }
+        // }
 
         //Phasing through current platform to land below
         if(this.game.keys["s"] &&  this.y + this.BB.height < this.game.camera.worldSize*params.canvasHeight-32){
@@ -162,7 +138,7 @@ class CharacterController {
         if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
             //console.log("attacking");
             this.game.click == undefined;
-            this.changeState("ATTACK");
+            this.changeState("ATTACK",141);
             //this.state = "ATTACK";
             if (this.facingDirection == 0) {
                 this.animationList["ATTACK"].xoffset = 200*this.scale;
@@ -179,13 +155,18 @@ class CharacterController {
             }
         } else if(attackTimeElapsed >= 0.4) { // cleanup after attack + internal cooldown of 0.1s
             this.attackBeginTime = undefined;
-            this.state = "JUMP";
-            console.log("Jump status", this.x, this.y, this.state, this.jumpInitPosition, this.jumpInitTime);
+            //this.state = "JUMP";
+            if(!this.onGround)
+                this.changeState("JUMP", 159);
+            else {
+                this.changeState("IDLE", 162);
+            }
+            //console.log("Jump status", this.x, this.y, this.state, this.jumpInitPosition, this.jumpInitTime);
         }
         
         if (this.game.keys["g"]) { // cheat/reset character location/state
             this.velocity = { x: 0, y: 0 };
-            this.changeState("IDLE");
+            this.changeState("IDLE", 164);
             //this.state = "IDLE";
             this.x = 0;
             this.y = -params.canvasHeight*6;
@@ -221,7 +202,7 @@ class CharacterController {
                 }
                 else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
                     this.y = entity.BB.top-this.BB.height;
-                    this.velocity.y = 0 ;
+                    this.velocity.y = 0;
                     this.onGround = true;
                     this.updateBB();
                 }else if(entity instanceof Wall){
@@ -247,7 +228,7 @@ class CharacterController {
                 }
                 //These will be for moving to the next level later.
                 else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
-                    this.changeState("IDLE");
+                    this.changeState("IDLE", 226);
                     //this.state = "IDLE";
                     this.game.camera.loadNextLevel(0, 0);
                 }
