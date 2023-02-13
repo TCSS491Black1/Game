@@ -124,7 +124,7 @@ class CharacterController {
         if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
             this.game.click == undefined;
             this.changeState("ATTACK", 141);
-            this.velocity.x = 0;
+            if(this.onGround) this.velocity.x = 0;
 
             if (this.facingDirection == 0) {
                 this.animationList["ATTACK"].xoffset = 200 * this.scale;
