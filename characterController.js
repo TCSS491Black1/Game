@@ -52,7 +52,7 @@ class CharacterController {
         this.lastAttackBB = this.attackBB;
         const attackBBheight = this.animationList["ATTACK"].height * this.scale;
         const attackBBwidth = this.animationList["ATTACK"].width * this.scale;
-        console.log(attackBBwidth, attackBBheight);
+        //console.log(attackBBwidth, attackBBheight);
         if (this.facingDirection == 0) {
             this.attackBB = new BoundingBox(this.game,this.x - 200*this.scale, this.y- 80*this.scale, 
                 attackBBwidth /*339*/, attackBBheight /*300*/, "yellow");
@@ -72,7 +72,7 @@ class CharacterController {
 
         //Small Jump
         if (this.game.keys["w"] && this.state != "JUMP") {
-            console.log("small jump");
+            //console.log("small jump");
             this.state = "JUMP";
             this.v_0 = -2*h/t_h;                // initial velocity in the y axis
             this.jumpInitTime = new Date();
@@ -140,7 +140,7 @@ class CharacterController {
         }
 
         if (this.game.keys["r"]) { // attack key                                                        
-            console.log("attacking");
+            //console.log("attacking");
             this.state = "ATTACK";
             if (this.facingDirection == 0) {
                 this.animationList["ATTACK"].xoffset = 200*this.scale;
