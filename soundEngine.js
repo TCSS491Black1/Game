@@ -20,7 +20,7 @@ class SoundEngine {
         source.buffer = buffer;
         source.connect(panner);
         panner.connect(this.GainNode);
-        this.GainNode.connect(this.audioContext.destination);
+        this.gainNode.connect(this.audioContext.destination);
         source.start(0);
     }
 
@@ -40,23 +40,11 @@ class SoundEngine {
         source.buffer = buffer;
         source.connect(panner);
         panner.connect(this.GainNode);
-        this.GainNode.connect(this.audioContext.destination);
+        this.gainNode.connect(this.audioContext.destination);
 
         // This line sets the playback rate based on player's speed
         source.playbackRate.value = this.game.player.speed / 5;
         source.start(0);
-    }
-
-    mute() {
-        this.audioContext.suspend();
-    }
-
-    unmute() {
-        this.audioContext.resume();
-    }
-
-    setVolume(volume) {
-        this.gainNode.value = volume;
     }
 
     updateAudio() {
@@ -65,7 +53,7 @@ class SoundEngine {
         if (mute) {
             volume = 0;
         }
-        this.setVolume(volume);
+        this.audioContext.volume = volume;
     }
 
     playBackgroundMusic(assetName, volume = 0.4) {
@@ -81,6 +69,18 @@ class SoundEngine {
       
         source.loop = true;
         source.start(0);
+    }
+
+    mute() {
+        this.audioContext.suspend();
+    }
+
+    unmute() {
+        this.audioContext.resume();
+    }
+
+    setVolume(volume) {
+        this.gainNode.value = volume;
     }
       
 }

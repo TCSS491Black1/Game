@@ -79,7 +79,7 @@ class CharacterController {
             this.jumpInitTime = new Date();
             this.jumpInitPosition = { x: this.x, y: this.y };
 
-            ASSET_MANAGER.playAsset("./assets/sounds/sfx/jump.wav"); // Play static jump sound.
+            // ASSET_MANAGER.playAsset("./assets/sounds/sfx/jump.wav"); // Play static jump sound.
         }
 
         const gravY = (t, v_0) => {
@@ -114,7 +114,7 @@ class CharacterController {
             // TODO: make a SoundManager for playing footsteps based on velocity.
             // TODO: 
             // this.soundEngine.playSound("./assets/sounds/sfx/footstep.wav", 0.5, 0.5, 0, 0, 1); // Play static footstep sound.
-            ASSET_MANAGER.playAsset("./assets/sounds/sfx/step.wav");
+            // ASSET_MANAGER.playAsset("./assets/sounds/sfx/step.wav");
         }
 
         // IDLE: if no game keys are being pressed, and we aren't mid-air, we stop and IDLE:
@@ -130,7 +130,7 @@ class CharacterController {
             this.jumpInitTime = null;      // cleaning up jump data on landing
             this.jumpInitPosition = null;
             this.v_0 = 0;
-            ASSET_MANAGER.playAsset("./assets/sounds/sfx/collide.wav"); // Play static landing sound.
+            //ASSET_MANAGER.playAsset("./assets/sounds/sfx/collide.wav"); // Play static landing sound.
 
             if (this.game.keys["a"] || this.game.keys["d"]) // change animation after landing:
                 this.state = "WALK";
