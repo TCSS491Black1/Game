@@ -117,12 +117,4 @@ class AssetManager {
         }
     };
 
-    // TO-DO: Modify it as a switching function on the loop here 
-    // to cue next song that melodically fits.
-    autoRepeat(path) {
-        var aud = this.cache[path];
-        aud.addEventListener("ended", function () {
-            aud.play();
-        });
-    };
 };

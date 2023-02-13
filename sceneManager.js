@@ -12,21 +12,30 @@ class SceneManager{
         this.gameOver = false;
         this.player = new CharacterController(this.game,50,0);
         this.levelNum = 0;
+        this.soundEngine = new SoundEngine(this.game, 0, 0);
         
         this.loadLevel(levelOne,50,0); 
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
         this.marker = 0;
-        this.updateAudio();
-        document.getElementById('volume').addEventListener('input', this.updateAudio);
-        document.getElementById('mute').addEventListener('input', this.updateAudio);
+        this.soundEngine.updateAudio();
+        this.soundEngine.autoRepeat("./assets/sounds/music/intro.mp3");
+        this.soundEngine.autoRepeat("./assets/sounds/music/main-1.mp3");
+        this.soundEngine.autoRepeat("./assets/sounds/music/main-2.mp3");
+        this.soundEngine.autoRepeat("./assets/sounds/music/ver-1.mp3");
+        this.soundEngine.autoRepeat("./assets/sounds/music/ver-2.mp3");
+        this.soundEngine.autoRepeat("./assets/sounds/music/ver-3.mp3");
+        this.soundEngine.autoRepeat("./assets/sounds/music/drumloop.mp3");
+        this.soundEngine.autoRepeat("./assets/sounds/music/fadein.mp3");
+        document.getElementById('volume').addEventListener('input', this.soundEngine.updateAudio);
+        document.getElementById('mute').addEventListener('input', this.soundEngine.updateAudio);
     };
 
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
-            ASSET_MANAGER.pauseBackgroundMusic();
+            this.soundEngine.pauseBackgroundMusic();
         });
     };
 
@@ -53,9 +62,8 @@ class SceneManager{
         console.log("zoning in @ ", x, y);
         // To change based on professor's "title" technique.
         if(level.music) {
-            ASSET_MANAGER.pauseBackgroundMusic(); // stop previous bg music.
-            ASSET_MANAGER.playAsset(level.music);
-        }
+            this.soundEngine.playAsset(level.music, true);
+        }        
 
         this.game.addEntity(new Background(this.game, level.background));
         this.game.addEntity(new Foreground(this.game, level.foreground)); 
@@ -108,17 +116,6 @@ class SceneManager{
         console.log(["loading level", this.levelNum, this.levels[this.levelNum]]);
         this.loadLevel(this.levels[this.levelNum], x, y);
 
-    }
-
-    /**
-     * Adds audio context to sceneManager.
-     */
-    updateAudio() {
-        var mute = document.getElementById("mute").checked;
-        var volume = document.getElementById("volume").value;
-
-        ASSET_MANAGER.muteAudio(mute);
-        ASSET_MANAGER.adjustVolume(volume);
     }
 
     update() {
