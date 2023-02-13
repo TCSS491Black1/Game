@@ -71,7 +71,7 @@ class CharacterController {
     changeState(newState, msg) {
         const oldState = this.state;
         this.state = newState;
-        if (this.state != oldState)
+        if (this.game.options.debugging && this.state != oldState)
             console.log("State changed to ", this.state, " from ", oldState, msg);
     }
     update() {
@@ -94,7 +94,7 @@ class CharacterController {
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
         else if (this.game.keys["a"]) {                               // Move/accelerate character left
-            if (this.onGround) this.changeState("WALK", 99);                   // walk if not mid-air
+            if (this.onGround) this.changeState("WALK", 99);          // walk if not mid-air
             this.facingDirection = 0;                                 // face left
             this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
