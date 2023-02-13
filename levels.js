@@ -24,13 +24,17 @@ const levelOne = {
     ],
     wall:[{x:-32,y:0,size: 47}],
 
-    targetblock: [{x: 700, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
-        {x: 95*32, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}
+    targetblock: [{x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
+        {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}
     ],
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 1200, y:450},
         {name: "Uoma" , x: 1200, y:350},
+        {name: "Uoma" , x: 1200, y:1250},
+        {name: "Uoma" , x: 1400, y:1250},
+        {name: "Uoma" , x: 1600, y:1250},
+        {name: "Uoma" , x: 1800, y:1250},
     ],
     powerUps:  [{}]
 

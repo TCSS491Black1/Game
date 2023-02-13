@@ -74,6 +74,11 @@ class GameEngine {
 
         this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
         this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+
+        document.getElementById("debug").addEventListener("input", e => {
+            this.options.debugging = e.target.checked;
+            console.log("Debugging ", e.target.checked? "enabled." : "disabled." );
+        })
     };
 
     addEntity(entity) {
