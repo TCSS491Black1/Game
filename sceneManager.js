@@ -54,6 +54,7 @@ class SceneManager{
         console.log("zoning in @ ", x, y);
 
         if(level.music) {
+            this.soundEngine.pauseBackgroundMusic();
             this.soundEngine.playBackgroundMusic(level.music, 0.1);
         }        
 
