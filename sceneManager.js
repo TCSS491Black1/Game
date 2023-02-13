@@ -10,11 +10,11 @@ class SceneManager{
         this.y = 0 ;
         this.score = 0;
         this.gameOver = false;
-        this.player = new CharacterController(this.game,50,0);
+        this.player = new CharacterController(this.game,0,0);
         this.levelNum = 0;
         this.soundEngine = new SoundEngine(this.game, 0, 0);
         
-        this.loadLevel(levelOne,50,0); 
+        this.loadLevel(levelOne,0,0); 
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
@@ -40,8 +40,7 @@ class SceneManager{
         this.game.entities = [this] // TODO: this does not clear/unload entities.
         this.x = 0;
         this.y = 0;
-        this.player.x = x;
-        this.player.y = y; 
+
         // Hi. I changed this from 'y' to '0' to make it look like the 
         // character just falls out of the sky. More so that they fall 
         // into the ground level 2 from above - Michael
@@ -56,7 +55,11 @@ class SceneManager{
         if(level.music) {
             this.soundEngine.pauseBackgroundMusic();
             this.soundEngine.playBackgroundMusic(level.music, 0.1);
-        }        
+        }
+
+        //Custom level starting point
+        this.player.x = level.spawnPoint[0];
+        this.player.y = level.spawnPoint[1];  
 
         this.game.addEntity(new Background(this.game, level.background));
         this.game.addEntity(new Foreground(this.game, level.foreground)); 
@@ -69,9 +72,15 @@ class SceneManager{
             // generate ground objects based on designated type in levels.js
             this.game.addEntity(new level['groundType'](this.game, entry.x, entry.y, entry.size));
         }
+          
+        for(const entry of level.wall) {
+            // generate ground objects based on designated type in levels.js
+            this.game.addEntity(new level['wallType'](this.game, entry.x, entry.y, entry.size));
+        }
+
         
         for(const entry of level.targetblock) {
-            this.game.addEntity(new Flag_Block(this.game, entry.x, entry.y));
+            this.game.addEntity(new Flag_Block(this.game, entry.x, entry.y,entry.xScale,entry.yScale));
             console.log("added flagblock", [entry.x, entry.y, entry.size]);
         }
 
