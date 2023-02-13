@@ -74,18 +74,18 @@ class AssetManager {
         return this.cache[path];
     };
 
-    playAsset(path) {
-        let audioBuffer = this.cache[path];
-        let source = this.audioContext.createBufferSource();
-        source.buffer = audioBuffer;
+    // playAsset(path) {
+    //     let audioBuffer = this.cache[path];
+    //     let source = this.audioContext.createBufferSource();
+    //     source.buffer = audioBuffer;
 
-        let gainNode = this.audioContext.createGain();
-        gainNode.gainNode.value = document.getElementById('volume').value;
-        source.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
+    //     let gainNode = this.audioContext.createGain();
+    //     gainNode.gainNode.value = document.getElementById('volume').value;
+    //     source.connect(gainNode);
+    //     gainNode.connect(this.audioContext.destination);
 
-        source.start(0);
-    }
+    //     source.start(0);
+    // }
 
     muteAudio(mute) {
         for (var key in this.cache) {
@@ -114,7 +114,5 @@ class AssetManager {
             }
         }
     };
-
-
 
 };
