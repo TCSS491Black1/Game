@@ -19,9 +19,9 @@ class SceneManager{
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
         this.marker = 0;
-        this.soundEngine.updateAudio();
-        document.getElementById('volume').addEventListener('input', this.soundEngine.updateAudio);
-        document.getElementById('mute').addEventListener('input', this.soundEngine.updateAudio);
+        // this.soundEngine.updateAudio();
+        // document.getElementById('volume').addEventListener('input', this.soundEngine.updateAudio);
+        // document.getElementById('mute').addEventListener('input', this.soundEngine.updateAudio);
     };
 
     clearEntities() {

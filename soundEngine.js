@@ -1,4 +1,5 @@
 class SoundEngine {
+
     constructor(game, x, y, volume = 0.4) {
         Object.assign(this, { game, x, y });
         // this.audioCtx = new (window.audioCtx || window.webkitaudioCtx)();
@@ -7,31 +8,32 @@ class SoundEngine {
         this.game.soundEngine = this;
 
         this.parentGainNode = this.audioCtx.createGain();
-        this.parentGainNode.volume = volume;
+        this.parentGainNode.gain.setValueAtTime(volume, this.audioCtx.currentTime);
 
         // AudioBuffer/SourceNode --> gain node --> destination.
         this.parentGainNode.connect(this.audioCtx.destination);
+
+        const vol = document.querySelector("#volume");
+        const mute = document.querySelector("#mute");
         
+        // Event listeners to handle gainNode volume changes.
+        vol.onclick = () => {
+            this.parentGainNode.gain.setValueAtTime(vol.value, this.audioCtx.currentTime);
+        };
+        mute.onclick = () => {
+            if (mute.id === "") {
+              this.parentGainNode.gain.setValueAtTime(0, this.audioCtx.currentTime);
+              mute.id = "activated";
+              mute.textContent = "Unmute";
+            } else {
+              this.parentGainNode.gain.setValueAtTime(1, this.audioCtx.currentTime);
+              mute.id = "";
+              mute.textContent = "Mute";
+            }
+        };
+    
         this.isPlaying = false;
         this.isTakingDamage = false;
-    }
-
-    update() {
-        // FIXME: mute and vol sliders.
-
-        // TODO: Refactor some things into this update() method 
-        //       to make the code more readable.
-
-        // TODO: Add a random utility for enemy collision sounds.
-        //       It would be nice to have a random sound play when an enemy is hit.
-        //       This would make the current death sound possibly very pretty!
-
-        // TODO: Export 2 more trill.wav in different chord progressions from
-        //       Ableton Live 11 Suite (or remake 3 new ones in Live 10).
-        
-        // TODO: Implement the playStepSound() method in characterController.js
-
-        // FIXME: Implement this.game.x and this.game.y context to the PannerNode objects.
     }
 
     playSound(assetName, volume = 0.4, x = 0, y = 0) {
@@ -78,15 +80,6 @@ class SoundEngine {
         // This line sets the playback rate based on player's speed
         source.playbackRate.value = this.game.player.speed / 5;
         source.start(0);
-    }
-
-    updateAudio() {
-        let volume = document.getElementById("volume").value;
-        let mute = document.getElementById("mute").checked;
-        if (mute) {
-            volume = 0;
-        }
-        this.parentGainNode.value = volume;
     }
 
     playBackgroundMusic(assetName, volume = 0.1) {
