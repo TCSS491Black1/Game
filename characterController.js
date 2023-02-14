@@ -83,6 +83,8 @@ class CharacterController {
         if (this.game.keys["w"] && this.onGround && this.state != "JUMP" && this.state != "ATTACK") {
             this.changeState("JUMP", 84);
             this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
+
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
         }
 
         const t = this.game.clockTick;                // time elapsed since last frame
@@ -100,6 +102,7 @@ class CharacterController {
             console.log("attacking")
             this.attackBeginTime = this.game.timer.gameTime;
             attackTimeElapsed = 0;
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
         } else {
             // attack on cooldown. Flash or something?
         }
@@ -195,6 +198,7 @@ class CharacterController {
                     if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
                         this.HP--;
                         this.timeOfLastDamage = t;
+                        this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
                     }
                     if (this.HP <= 0) {
                         this.changeState("DEATH")
@@ -240,6 +244,7 @@ class CharacterController {
                 }
                 else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
                     this.changeState("IDLE", 226);
+                    this.game.soundEngine.playSound("./assets/sounds/sfx/flag.wav");
                     this.game.camera.loadNextLevel(0, 0);
                 }
             }
