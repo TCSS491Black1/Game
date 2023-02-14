@@ -28,7 +28,7 @@ class SceneManager{
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
             this.soundEngine.pauseBackgroundMusic();
-        });
+        }.bind(this));
     };
 
     loadLevel(level , x, y){
