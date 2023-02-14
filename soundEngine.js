@@ -1,33 +1,41 @@
 class SoundEngine {
     constructor(game, x, y, volume = 0.4) {
         Object.assign(this, { game, x, y });
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // this.audioCtx = new (window.audioCtx || window.webkitaudioCtx)();
 
+        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         this.game.soundEngine = this;
-        this.backgroundMusicSource = this.audioContext.createBufferSource();
-        // this.attackSoundSource = this.audioContext.createBufferSource();
+
+        this.parentGainNode = this.audioCtx.createGain();
+        this.parentGainNode.volume = volume;
+
+        // AudioBuffer/SourceNode --> gain node --> destination.
+        this.parentGainNode.connect(this.audioCtx.destination);
         
         this.isPlaying = false;
         this.isTakingDamage = false;
     }
 
     update() {
+        // FIXME: mute and vol sliders.
+
         // TODO: Refactor some things into this update() method 
         //       to make the code more readable.
 
         // TODO: Add a random utility for enemy collision sounds.
         //       It would be nice to have a random sound play when an enemy is hit.
         //       This would make the current death sound possibly very pretty!
-        
-        // TODO: Recrack Ableton Live to make those sounds.
 
+        // TODO: Export 2 more trill.wav in different chord progressions from
+        //       Ableton Live 11 Suite (or remake 3 new ones in Live 10).
+        
         // TODO: Implement the playStepSound() method in characterController.js
 
-        // FIXME: Implement this.game.x and this.game.y context to this the PannerNode objects.
+        // FIXME: Implement this.game.x and this.game.y context to the PannerNode objects.
     }
 
     playSound(assetName, volume = 0.4, x = 0, y = 0) {
-        let panner = this.audioContext.createPanner();
+        let panner = this.audioCtx.createPanner();
         panner.panningModel = "equalpower";
         panner.distanceModel = "inverse";
         panner.refDistance = 1;
@@ -35,20 +43,21 @@ class SoundEngine {
         panner.rolloffFactor = 1;
         panner.setPosition(x, y, 0);
 
-        this.gainNode = this.audioContext.createGain();
-        this.gainNode.value = volume;
+        // Gain node for single sound.
+        //const gainNode = this.audioCtx.createGain();
+        //gainNode.value = volume;
 
         // Retrieve asset and set to AudioBuffer node.
-        let source = this.audioContext.createBufferSource();
+        let source = this.audioCtx.createBufferSource();
         source.buffer = ASSET_MANAGER.getAsset(assetName);
         source.connect(panner);
-        panner.connect(this.gainNode);
-        this.gainNode.connect(this.audioContext.destination);
+        panner.connect(this.parentGainNode);
+        // this.gainNode.connect(this.audioCtx.destination);
         source.start(0);
     }
 
     playStepSound(buffer, volume = 0.5, x = 0, y = 0) {
-        let panner = this.audioContext.createPanner();
+        let panner = this.audioCtx.createPanner();
         panner.panningModel = "equalpower";
         panner.distanceModel = "inverse";
         panner.refDistance = 1;
@@ -56,15 +65,15 @@ class SoundEngine {
         panner.rolloffFactor = 1;
         panner.setPosition(x, y, 0);
 
-        this.gainNode = this.audioContext.createGain();
+        this.gainNode = this.audioCtx.createGain();
         this.gainNode.value = volume;
 
         // Retrieve asset and set to AudioBuffer node.
-        let source = this.audioContext.createBufferSource();
+        let source = this.audioCtx.createBufferSource();
         source.buffer = ASSET_MANAGER.getAsset(buffer);
         source.connect(panner);
         panner.connect(this.GainNode);
-        this.gainNode.connect(this.audioContext.destination);
+        this.gainNode.connect(this.audioCtx.destination);
 
         // This line sets the playback rate based on player's speed
         source.playbackRate.value = this.game.player.speed / 5;
@@ -77,18 +86,17 @@ class SoundEngine {
         if (mute) {
             volume = 0;
         }
-        this.audioContext.volume = volume;
+        this.parentGainNode.value = volume;
     }
 
     playBackgroundMusic(assetName, volume = 0.1) {
-        let gainNode = this.audioContext.createGain();
-        gainNode.value = volume;
-      
+        // Create AudioBuffer and set to AudioBufferSourceNode.
         let audioBuffer = ASSET_MANAGER.getAsset(assetName);
-        this.backgroundMusicSource = this.audioContext.createBufferSource();
+        this.backgroundMusicSource = this.audioCtx.createBufferSource();
         this.backgroundMusicSource.buffer = audioBuffer;
-        this.backgroundMusicSource.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
+
+        // Connect the AudioBufferSourceNode to the gainNode.
+        this.backgroundMusicSource.connect(this.parentGainNode);
       
         this.backgroundMusicSource.loop = true;
         this.backgroundMusicSource.start(0);
@@ -103,11 +111,11 @@ class SoundEngine {
     }
 
     mute() {
-        this.audioContext.suspend();
+        this.audioCtx.suspend();
     }
 
     unmute() {
-        this.audioContext.resume();
+        this.audioCtx.resume();
     }
 
     setVolume(volume) {

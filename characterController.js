@@ -198,6 +198,7 @@ class CharacterController {
                     if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
                         this.HP--;
                         this.timeOfLastDamage = t;
+                        this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
                     }
                     if (this.HP <= 0) {
                         this.changeState("DEATH")
