@@ -102,6 +102,7 @@ class CharacterController {
             console.log("attacking")
             this.attackBeginTime = this.game.timer.gameTime;
             attackTimeElapsed = 0;
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
         } else {
             // attack on cooldown. Flash or something?
         }
