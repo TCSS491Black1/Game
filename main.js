@@ -13,7 +13,6 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Charged_Lumafly.png",// powerups
 	"./assets/Gathering_Swarm.png",
 
-
 	"./assets/Overworld_Level_1_blue.png", // backgrounds
 	"./assets/Overworld_Level_1.png", 
 
@@ -26,16 +25,13 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Level2ParallaxBoulders.png",
 	"./assets/Level3ParallaxPillars.png",
 
-
-
-
 	"./assets/Environmental_Blocks.png", // various blocks/ground
 	"./assets/Dirt_Block.png",
 	"./assets/lava_7.png",
 	"./assets/block.png",
 	"./assets/ice-block.png",
 	
-	"./assets/sounds/music/intro.mp3", // music, sound assets
+	"./assets/sounds/music/intro.mp3", // music sound assets
 	"./assets/sounds/music/main-1.mp3",
 	"./assets/sounds/music/main-2.mp3",
 	"./assets/sounds/music/ver-1.mp3",
@@ -53,6 +49,23 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/sounds/sfx/stab.wav",
 	"./assets/sounds/sfx/step.wav",
 	"./assets/sounds/sfx/trill.wav",
+
+	"./assets/sounds/character/hive-jump1.wav", // character sound assets
+	"./assets/sounds/character/hive-jump2.wav",
+	"./assets/sounds/character/hive-jump3.wav",
+	"./assets/sounds/character/hornet-jump1.wav",
+	"./assets/sounds/character/hornet-jump2.wav",
+	"./assets/sounds/character/hornet-jump3.wav",
+	"./assets/sounds/character/hornet-jumpland1.wav",
+	"./assets/sounds/character/hornet-jumpland2.wav",
+	"./assets/sounds/character/hornet-dash1.wav",
+	"./assets/sounds/character/hornet-dash2.wav",
+	"./assets/sounds/character/hornet-swordhit1.wav",
+	"./assets/sounds/character/hornet-swordhit2.wav",
+	"./assets/sounds/character/hornet-swordhit3.wav",
+	"./assets/sounds/character/hornet-swordmiss1.wav",
+	"./assets/sounds/character/hornet-swordmiss2.wav",
+	"./assets/sounds/character/hornet-swordmiss3.wav",	
 ].forEach(asset => ASSET_MANAGER.queueDownload(asset));
 
 ASSET_MANAGER.downloadAll(() => {

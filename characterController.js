@@ -82,7 +82,7 @@ class CharacterController {
             this.changeState("JUMP", 84);
             this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
 
-            this.game.soundEngine.playSound("./assets/sounds/sfx/jump.wav");
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
         }
 
         const t = this.game.clockTick;                // time elapsed since last frame
@@ -121,6 +121,14 @@ class CharacterController {
         if (this.game.click && this.attackBeginTime === undefined) { // begin attacking now on click.
             this.attackBeginTime = this.game.timer.gameTime;
             this.game.click = undefined;
+            
+            // ****************
+            // Combat sound logic here based on collisions 
+            // or lack thereof with enemies, etc. -Griffin.
+            // FIXME: The SoundEngine class should handle more dynamic control.
+            //        This is a hacky way to do it.
+            
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
         }
         const attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
         if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
@@ -180,6 +188,7 @@ class CharacterController {
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Enemy) {
                     console.log("Hornet collided with " + entity.constructor.name);
+                    this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
                     this.HP--;
                     if (this.HP <= 0) {
                         this.changeState("DEATH")
@@ -225,6 +234,7 @@ class CharacterController {
                 }
                 else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
                     this.changeState("IDLE", 226);
+                    this.game.soundEngine.playSound("./assets/sounds/sfx/flag.wav");
                     this.game.camera.loadNextLevel(0, 0);
                 }
             }

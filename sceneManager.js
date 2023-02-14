@@ -32,10 +32,7 @@ class SceneManager{
     };
 
     loadLevel(level , x, y){
-        // This code is beginning to refactor loading with level.js due
-        // to the current music implementation. Here, the level 
-        // property can manage level-specific items. -Griffin
-
+        // Setup of level properties here.
         this.level = level;
         this.game.entities = [this] // TODO: this does not clear/unload entities.
         this.x = 0;
@@ -54,7 +51,7 @@ class SceneManager{
 
         if(level.music) {
             this.soundEngine.pauseBackgroundMusic();
-            this.soundEngine.playBackgroundMusic(level.music, 0.1);
+            this.soundEngine.playBackgroundMusic(level.music);
         }
 
         //Custom level starting point

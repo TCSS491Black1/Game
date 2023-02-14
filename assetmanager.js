@@ -75,36 +75,23 @@ class AssetManager {
         return this.cache[path];
     };
 
-    // playAsset(path) {
-    //     let audioBuffer = this.cache[path];
-    //     let source = this.audioContext.createBufferSource();
-    //     source.buffer = audioBuffer;
+    // muteAudio(mute) {
+    //     for (var key in this.cache) {
+    //         let asset = this.cache[key];
+    //         if (asset instanceof AudioBuffer) {
+    //             asset.muted = mute;
+    //         }
+    //     }
+    // };
 
-    //     let gainNode = this.audioContext.createGain();
-    //     gainNode.gainNode.value = document.getElementById('volume').value;
-    //     source.connect(gainNode);
-    //     gainNode.connect(this.audioContext.destination);
-
-    //     source.start(0);
-    // }
-
-    muteAudio(mute) {
-        for (var key in this.cache) {
-            let asset = this.cache[key];
-            if (asset instanceof AudioBuffer) {
-                asset.muted = mute;
-            }
-        }
-    };
-
-    adjustVolume(volume) {
-        for (var key in this.cache) {
-            let asset = this.cache[key];
-            if (asset instanceof AudioBuffer) {
-                asset.volume = volume;
-            }
-        }
-    };
+    // adjustVolume(volume) {
+    //     for (var key in this.cache) {
+    //         let asset = this.cache[key];
+    //         if (asset instanceof AudioBuffer) {
+    //             asset.volume = volume;
+    //         }
+    //     }
+    // };
 
     pauseBackgroundMusic() {
         for (var key in this.cache) {

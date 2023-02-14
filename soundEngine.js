@@ -5,11 +5,28 @@ class SoundEngine {
 
         this.game.soundEngine = this;
         this.backgroundMusicSource = this.audioContext.createBufferSource();
+        // this.attackSoundSource = this.audioContext.createBufferSource();
         
         this.isPlaying = false;
+        this.isTakingDamage = false;
     }
 
-    playSound(assetName, volume = 0.5, x = 0, y = 0) {
+    update() {
+        // TODO: Refactor some things into this update() method 
+        //       to make the code more readable.
+
+        // TODO: Add a random utility for enemy collision sounds.
+        //       It would be nice to have a random sound play when an enemy is hit.
+        //       This would make the current death sound possibly very pretty!
+        
+        // TODO: Recrack Ableton Live to make those sounds.
+
+        // TODO: Implement the playStepSound() method in characterController.js
+
+        // FIXME: Implement this.game.x and this.game.y context to this the PannerNode objects.
+    }
+
+    playSound(assetName, volume = 0.4, x = 0, y = 0) {
         let panner = this.audioContext.createPanner();
         panner.panningModel = "equalpower";
         panner.distanceModel = "inverse";
@@ -63,7 +80,7 @@ class SoundEngine {
         this.audioContext.volume = volume;
     }
 
-    playBackgroundMusic(assetName, volume = 0.4) {
+    playBackgroundMusic(assetName, volume = 0.1) {
         let gainNode = this.audioContext.createGain();
         gainNode.value = volume;
       

@@ -69,6 +69,7 @@ class Charged_Lumafly extends PowerUp {
             
             this.state = "COLLECTED";
             console.log(this.name + " collision with Hornet = LOSS");
+            this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
         }
        
     }
@@ -119,6 +120,7 @@ class Gathering_Swarm extends PowerUp {
             
             this.state = "COLLECTED";
             console.log(this.name + " collision with Hornet = LOSS");
+            this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
         }
     }
 };
