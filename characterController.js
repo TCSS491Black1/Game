@@ -81,6 +81,8 @@ class CharacterController {
         if (this.game.keys["w"] && this.onGround && this.state != "JUMP" && this.state != "ATTACK") {
             this.changeState("JUMP", 84);
             this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
+
+            this.game.soundEngine.playSound("./assets/sounds/sfx/jump.wav");
         }
 
         const t = this.game.clockTick;                // time elapsed since last frame

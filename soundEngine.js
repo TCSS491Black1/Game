@@ -2,12 +2,14 @@ class SoundEngine {
     constructor(game, x, y, volume = 0.4) {
         Object.assign(this, { game, x, y });
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        this.game.soundEngine = this;
         this.backgroundMusicSource = this.audioContext.createBufferSource();
         
         this.isPlaying = false;
     }
 
-    playSound(buffer, volume = 0.5, x = 0, y = 0) {
+    playSound(assetName, volume = 0.5, x = 0, y = 0) {
         let panner = this.audioContext.createPanner();
         panner.panningModel = "equalpower";
         panner.distanceModel = "inverse";
@@ -17,12 +19,13 @@ class SoundEngine {
         panner.setPosition(x, y, 0);
 
         this.gainNode = this.audioContext.createGain();
-        this. GainNode.value = volume;
+        this.gainNode.value = volume;
 
+        // Retrieve asset and set to AudioBuffer node.
         let source = this.audioContext.createBufferSource();
-        source.buffer = buffer;
+        source.buffer = ASSET_MANAGER.getAsset(assetName);
         source.connect(panner);
-        panner.connect(this.GainNode);
+        panner.connect(this.gainNode);
         this.gainNode.connect(this.audioContext.destination);
         source.start(0);
     }
@@ -39,8 +42,9 @@ class SoundEngine {
         this.gainNode = this.audioContext.createGain();
         this.gainNode.value = volume;
 
+        // Retrieve asset and set to AudioBuffer node.
         let source = this.audioContext.createBufferSource();
-        source.buffer = buffer;
+        source.buffer = ASSET_MANAGER.getAsset(buffer);
         source.connect(panner);
         panner.connect(this.GainNode);
         this.gainNode.connect(this.audioContext.destination);

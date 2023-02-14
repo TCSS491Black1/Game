@@ -10,9 +10,9 @@ class SceneManager{
         this.y = 0 ;
         this.score = 0;
         this.gameOver = false;
+        this.soundEngine = new SoundEngine(this.game, 0, 0);
         this.player = new CharacterController(this.game,0,0);
         this.levelNum = 0;
-        this.soundEngine = new SoundEngine(this.game, 0, 0);
         
         this.loadLevel(levelOne,0,0); 
         //professor has a method "loadlevel1" that we should make and use instead.

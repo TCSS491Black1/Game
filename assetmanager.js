@@ -57,6 +57,7 @@ class AssetManager {
                         .then(arrayBuffer => this.audioContext.decodeAudioData(arrayBuffer))
                         .then(audioBuffer => {
                             this.cache[path] = audioBuffer;
+                            console.log("Loaded " + path);
                             this.successCount++;
                             if (this.isDone()) callback();
                         })
