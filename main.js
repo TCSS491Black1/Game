@@ -32,8 +32,8 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/ice-block.png",
 	
 	"./assets/sounds/music/intro.mp3", // music sound assets
-	"./assets/sounds/music/main-1.mp3",
-	"./assets/sounds/music/main-2.mp3",
+	"./assets/sounds/music/main-1-quiet.mp3",
+	"./assets/sounds/music/main-2-quiet.mp3",
 	"./assets/sounds/music/ver-1.mp3",
 	"./assets/sounds/music/ver-2.mp3",
 	"./assets/sounds/music/ver-3.mp3",
