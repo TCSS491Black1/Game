@@ -36,7 +36,10 @@ const levelOne = {
         {name: "Uoma" , x: 1600, y:1250},
         {name: "Uoma" , x: 1800, y:1250},
     ],
-    powerUps:  [{}]
+    powerUps:  [
+        {name: "Lightseed", x: 299, y:402},
+        {name: "Lightseed", x: 811, y:1404},
+    ],
 
 }
 const levelTwo = {
