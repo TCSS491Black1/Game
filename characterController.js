@@ -16,6 +16,7 @@ class CharacterController {
         this.state = "WALK";
 
         this.HP = 10;
+        this.maxHP = 10;
         this.timeOfLastDamage = 0;
         this.invulnLength = 3;
         this.dead = false;
@@ -37,6 +38,9 @@ class CharacterController {
         //******************** */
         // jump/gravity math variables:
         // credit for gravity formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
+        this.jumps = 0;     // number of jumps counted mid-air.
+        this.jumpsTotal = 1; // number of jumps possible mid-air
+
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
         const t_h = 0.25;                           // time to apex of jump in seconds. jump duration = 0.5    
         this.g = 2 * h / (t_h ** 2);                     // acceleration due to gravity.
@@ -80,10 +84,14 @@ class CharacterController {
         const MAXRUN = 600;
 
         // Jump trigger
-        if (this.game.keys["w"] && this.onGround && this.state != "JUMP" && this.state != "ATTACK") {
-            this.changeState("JUMP", 84);
-            this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
+        if (this.game.keys["w"]
+            && ((this.onGround && this.state != "JUMP") || this.jumps < this.jumpsTotal)
+            && this.state != "ATTACK") {
+            this.game.keys["w"] = false;
 
+            this.changeState("JUMP", 84);
+            this.jumps += 1;
+            this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
             this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
         }
 
@@ -99,7 +107,6 @@ class CharacterController {
         const attackCooldown = 0.5;
 
         if (this.game.click && attackTimeElapsed > attackCooldown) { // check if not on cooldown
-            console.log("attacking")
             this.attackBeginTime = this.game.timer.gameTime;
             attackTimeElapsed = 0;
             this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
@@ -220,6 +227,7 @@ class CharacterController {
                 else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
                     this.y = entity.BB.top - this.BB.height;
                     this.velocity.y = 0;
+                    this.jumps = 0;
                     this.onGround = true;
                     this.updateBB();
                 } else if (entity instanceof Wall) {
