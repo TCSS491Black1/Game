@@ -8,7 +8,7 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Uoma.png", // enemies
 	"./assets/Heavy_Sentry.png",
 	"./assets/Hive_Knight.png",
-	"./assets/hiveknight.png", // modified version of Hive_Knight.png
+	"./assets/HiveKnight.png", // modified version of Hive_Knight.png
 
 	"./assets/Charged_Lumafly.png",// powerups
 	"./assets/Gathering_Swarm.png",

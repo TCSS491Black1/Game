@@ -329,7 +329,7 @@ class HiveKnight {
         // are unique to each enemy already, and in future implementations
         // these enemy behaivors will likely only get more individualized.
         //
-        // If it's only these three lines, we should seperate the entities 
+        // If it's only these 3 lines and 1 in draw(), we should seperate the entities 
         // into individual classes to allow for more readable code. (like 
         // the CharacterController class) The Hive Knight boss is only 
         // partially implemented at the moment.    - Griffin
@@ -342,13 +342,13 @@ class HiveKnight {
         //              spriteBorderWidth=0, xoffset=0, yoffset=0, scale=1
         this.scale = 0.5;
         this.animationList = {};
-        this.animationList["IDLE"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
-        this.animationList["WALK"] = new Animator();
-        this.animationList["RUN"] = new Animator();
-        this.animationList["JUMP"] = new Animator();
-        this.animationList["FALL"] = new Animator();
-        this.animationList["ATTACK"] = new Animator();
-        this.animationList["DEAD"] = new Animator();
+        this.animationList["IDLE"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
+        this.animationList["WALK"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
+        this.animationList["RUN"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
+        this.animationList["JUMP"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
+        this.animationList["FALL"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
+        this.animationList["ATTACK"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
+        this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
         // ------------ Sprite sheet setup complete. ------------
 
         // Set up other Hive Knight properties.
@@ -464,13 +464,25 @@ class HiveKnight {
         }
         ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
         
-        // -------------------------------------------
-        // ----- Begin HiveKnight's super.draw() -----
-        super.draw(ctx);
-        // ----- End HiveKnight's super.draw() -----
-        // -------------------------------------------
+        // --------------- Sprite drawing. -------------------
+        let destX = (this.x - this.game.camera.x);
+        let destY = (this.y- this.game.camera.y);
 
+        if (this.facingDirection) {// if facing right
+            ctx.scale(-1, 1);
+            destX *= -1;
+            destX -= this.animationList[this.state].width;
+        }
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
+            destX,
+            destY);
         ctx.restore();
+        //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
+        if(this.BB) this.BB.draw(ctx);
+        if(this.ledgeCheckBox) this.ledgeCheckBox.draw(ctx);
+        ctx.restore();
+        // --------------- End of sprite drawing. -------------------
+
         if(this.alpha <= 0) {
             this.removeFromWorld = true;
             console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
