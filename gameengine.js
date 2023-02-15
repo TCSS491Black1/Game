@@ -49,7 +49,7 @@ class GameEngine {
             this.mouse = getXandY(e);
         });
 
-        this.ctx.canvas.addEventListener("click", e => {
+        this.ctx.canvas.addEventListener("mousedown", e => {
             if (this.options.debugging) {
                 console.log("CLICK", getXandY(e));
             }
