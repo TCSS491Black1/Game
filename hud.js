@@ -30,7 +30,7 @@ class HUD {
         // draw the HP bar above the frame
         const startx = 85;
         const starty = 55;
-        const MAXHP = 10;
+        const MAXHP = gameEngine.player.maxHP;
         const playerHP = gameEngine.player.HP;
         const pipWidth = 15;
         const barHeight = 10;

@@ -16,6 +16,7 @@ class CharacterController {
         this.state = "WALK";
 
         this.HP = 10;
+        this.maxHP = 10;
         this.timeOfLastDamage = 0;
         this.invulnLength = 3;
         this.dead = false;
