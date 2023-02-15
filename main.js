@@ -29,6 +29,7 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/lava_7.png",
 	"./assets/block.png",
 	"./assets/ice-block.png",
+	"./assets/Pit_Glow.png",
 	
 	"./assets/sounds/music/intro.mp3", // music sound assets
 	"./assets/sounds/music/main-1-quiet.mp3",
