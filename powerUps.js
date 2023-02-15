@@ -64,7 +64,7 @@ class Charged_Lumafly extends PowerUp {
     }
     onCollision(entity) {
         if (this.state != "COLLECTED" && entity instanceof CharacterController) { 
-            
+            entity.HP += 2;
             this.state = "COLLECTED";
             this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
         }
