@@ -89,7 +89,6 @@ class CharacterController {
             this.game.keys["w"] = false;
 
             this.changeState("JUMP", 84);
-            console.log("Jumped", this.jumpsTotal);
             this.jumps += 1;
             this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
             this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
@@ -107,7 +106,6 @@ class CharacterController {
         const attackCooldown = 0.5;
 
         if (this.game.click && attackTimeElapsed > attackCooldown) { // check if not on cooldown
-            console.log("attacking")
             this.attackBeginTime = this.game.timer.gameTime;
             attackTimeElapsed = 0;
             this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");

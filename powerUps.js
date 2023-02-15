@@ -62,21 +62,6 @@ class Charged_Lumafly extends PowerUp {
     updateBB() {
         this.BB = new BoundingBox(this.game,this.x + 55, this.y + 55, 134, 130, "red");
     }
-    // draw(ctx) {
-    //     ctx.save();
-    //     if(this.state == "COLLECTED") { // we want to fade out on death.
-    //         this.alpha -= this.game.clockTick; // time delay?
-    //     }
-    //     ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
-    //     super.draw(ctx);
-    //     ctx.restore();
-
-    //     if(this.alpha <= 0) {
-    //         this.removeFromWorld = true;
-    //         console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
-    //         ctx.globalAlpha = 1;
-    //     }
-    // }
     onCollision(entity) {
         if (this.state != "COLLECTED" && entity instanceof CharacterController) { 
             
@@ -121,16 +106,15 @@ class Gathering_Swarm extends PowerUp {
 class Lightseed extends PowerUp {
     constructor(game, x, y) { 
         super(game, x, y);
-        // constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth=0, xoffset=0, yoffset=0, scale=1) {
+        
         this.animationList["IDLE"] = new Animator(this.asset, 139,119, 65, 70, 1, 1, 1, 0, 0, 0, 1);
         this.animationList["RUN"] = new Animator(this.asset, 4, 211, 76, 62, 3, 0.2, 1, 3, 0, 0, 1);
         this.animationList["COLLECTED"] = new Animator(this.asset, 139,119, 65, 70, 1, 1, 1, 0, 0, 0, 1);
-        // this.animationList["IDLE"] = new Animator(this.asset, 4, 33, 100 , 90 , 4 , 0.1, 1, 4);
-        // this.animationList["COLLECTED"] = new Animator(this.asset, 4, 33, 100 , 90 , 4 , 0.1, 1, 4);
+        
         this.state = "RUN";
         this.updateBB();
         this.speed = 100;
-        this.facingDirection = 1;
+        this.facingDirection = 1; // TODO: add/abstract mirror code to Animator.
     }
 
     update() {
