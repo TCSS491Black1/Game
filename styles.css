@@ -19,10 +19,6 @@ canvas {
     display: block;
     font-size: 14px;
 }
-#oldMenu {
-    text-align: center;
-    display: none;
-}
 #configsMenu {
     margin: auto;
     position: absolute;
@@ -35,6 +31,27 @@ canvas {
     display: none;
     z-index: 5;
 }
-#controlsConfigs {
+#controlsMenu {
     margin-left: 20px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.left-child {
+    grid-column: 1/1;
+    border-bottom: 1px solid red;
+}
+.mid-child {
+    grid-column: 2/3;
+    border-bottom: 1px solid red;
+}
+.right-child {
+    grid-column: 3/3;
+}
+.subtext {
+    position:relative;
+    font-size: 18px;
+    top: -8px;
 }

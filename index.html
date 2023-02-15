@@ -35,40 +35,45 @@
 
     <canvas id="gameWorld" width="1524" height="768" style="background: black; border: 1px solid black" tabindex="0"
         autofocus></canvas>
-        <div id="configsMenu">
-            Configs:
-            <hr />
+    <div id="configsMenu">
+        Configs:
+        <hr />
+        <div id="soundConfigs" class="container">
             <div>
-                <input type="checkbox" id="mute" checked="true"> Mute <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05"> Volume
+                Master: <br/>
+                <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05">
+                <span class="subtext">Mute <input type="checkbox" id="mute">
+            </div></span>
+            <div>
+                Music: <br/>
+                <input type="range" id="musicVolume" min="0" max="1" value="0.1" step="0.05">
+                <span class="subtext">Mute <input type="checkbox" id="musicMute">
             </div>
-            <div id="musicsMenu">Music:
-                <input type="checkbox" id="musicMute" checked="true"> Mute <input type="range" id="musicVolume" min="0"
-                    max="1" value="0.1" step="0.05"> Volume
+            <div>SoundFX: <br />
+                <input type="range" id="FXVolume" min="0" max="1" value="0.1" step="0.05">
+                <span class="subtext">Mute <input type="checkbox" id="FXMute">
             </div>
-
-            <div id="soundFXMenu"> SoundFX:
-                <input type="checkbox" id="FXMute" checked="true"> Mute <input type="range" id="FXVolume" min="0"
-                    max="1" value="0.1" step="0.05"> Volume
-            </div>
-            <hr />
-            Controls:
-            <div id="controlsConfigs"> <!--TODO: use flexbox.-->
-                <div>Move Left - A</div>
-                <div>Right     - D</div>
-                <div>Move down - S </div>
-                <div>Jump      - W</div>
-                <div>Attack    - Mouse Left Click</div>
         </div>
-            <br />
-            <input type="checkbox" id="debug" checked="false"> Debug 
+        <hr />
+        Controls:
+        <div id="controlsMenu" class="container">
+            <div class="left-child">Move Left</div>
+            <div class="mid-child">A</div>
+            <div class="left-child">Move Right</div>
+            <div class="mid-child">D</div>
+            <div class="left-child">Move Down</div>
+            <div class="mid-child">S</div>
+            <div class="left-child">Jump</div>
+            <div class="mid-child">W</div>
+            <div class="left-child">Attack</div>
+            <div class="mid-child">Left Click</div>
         </div>
+        <br />
+        <hr/>
+        Debug<input type="checkbox" id="debug">
+    </div>
     </div>
     <div>
-    
-        <div id="oldMenu">
-        <br />
-
-    </div>
 </body>
 
 </html>
