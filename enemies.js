@@ -81,7 +81,7 @@ class Uoma extends Enemy {
 
     update() {
         // mechanics for how / where the enemy moves:
-        if(this.state == "DEAD") {  // TODO: sound on death?
+        if(this.state == "DEAD") {
             // we don't move on death, and can't do any damage, so no BB.
             this.BB = undefined;
             return;
@@ -188,7 +188,7 @@ class Heavy_Sentry extends Enemy {
     update() {
    
         // Mechanics for how / where the enemy moves:
-        if(this.state == "DEAD") {  // TODO: sound on death?
+        if(this.state == "DEAD") {
             this.BB = undefined;
             this.y = this.y+3;
             return;
@@ -316,47 +316,45 @@ class Heavy_Sentry extends Enemy {
         }
     }
 }
+
 class Hive_Knight extends Enemy {
+
     constructor(game, x, y) {
         super(game, x, y);
-        // TODO: adjust Animator arguments for sprite sheet
-        this.animator = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
+
+        // Set up the very large spritesheet for the Hive Knight.
+        this.animationList = { "IDLE": new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4), "RUN": this.animator, "ATTACK": this.animator, "DEAD": this.animator };
+        this.animationList["WALK"] = new Animator();
+
+        // Set up other Hive Knight properties.
+        this.alpha = 1;
+        this.HP = 10;
+        this.state = "IDLE";
+        this.runFrameCount = 1;
+        this.isHalted = false;
+        this.isGrounded = false;
+        this.facingDirection = 1;
+        this.movingDirection = 0;
+        this.turnTime = 0;
+
+        this.updateBB();
     }
 
-    onCollision(entity) {
-
-        if (entity instanceof CharacterController) {
-            entity.dead = true;
-            console.log(this.name + " collision with Hornet = LOSS");
-        }
-    }
     update() {
 
-        // mechanics for how / where the enemy moves:
-        if(this.state == "DEAD") {  // TODO: sound on death?
-            // we don't move on death, and can't do any damage, so no BB.
-            this.BB = undefined;
-            return;
-        }
-        this.updateBB();
-        this.collisionChecks();
     }
-    draw(ctx) {
-        ctx.save();
-        if(this.state == "DEAD") { // we want to fade out on death.
-            this.alpha -= this.game.clockTick; // time delay?
-        }
-        ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
-        super.draw(ctx);
-        ctx.restore();
 
-        if(this.alpha <= 0) {
-            this.removeFromWorld = true;
-            console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
-            ctx.globalAlpha = 1;
-        }
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 180,240, "red");
     }
+
+    draw(ctx) {
+
+    }
+    
 }
+
 class Flag_Block {
     //Scalling added to allow single block to span any gap size
     constructor(game, x, y, xScale, yScale) {

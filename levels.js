@@ -190,7 +190,10 @@ const levelTwo = {
         {x:420*32,y:0,size: 41},
         {x:221*32,y:8*32 ,size: 18}],
 
-    targetblock: [{x: 32, y: 47*32, xScale: 3.5 , yScale: 1}],
+    targetblock: [{x: 32, y: 47*32, xScale: 3.5 , yScale: 1}, 
+        // For getting to the boss room for testing:
+        {x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1}
+    ],
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400}],
    // {name: "Heavy_Sentry" , x: 2200, y:550*2},
     //{name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
@@ -237,11 +240,12 @@ const levelThree = {
 
 const levelFour = {
     music: "./assets/sounds/music/drumloop.mp3",
+    spawnPoint: [150 , 0],
     background: ["./assets/HellLevel4.png"],
     foreground: [],
+    particles: ["lava"],
     pillars: [],
     worldSize: 1,
-    spawnPoint: [150 , 0],
     groundType: HellGround,
     wallType: HellWall,
     ground: [
@@ -274,6 +278,7 @@ const levelFour = {
         {name: "Uoma" , x: 4200, y:550},
         {name: "Uoma" , x: 5200, y:450},
         {name: "Uoma" , x: 6200, y:350},
+        {name: "Hive_Knight" , x: 8000, y:550},
     ],
     powerUps:  [{}]
 
