@@ -35,3 +35,6 @@ canvas {
     display: none;
     z-index: 5;
 }
+#controlsConfigs {
+    margin-left: 20px;
+}
