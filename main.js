@@ -50,6 +50,12 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/sounds/sfx/trill.wav",
 ].forEach(asset => ASSET_MANAGER.queueDownload(asset));
 
+const resizeCanvas = (event) => {
+	var canvas = document.getElementById("gameWorld");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+}
+
 ASSET_MANAGER.downloadAll(() => {
 	ASSET_MANAGER.autoRepeat("./assets/sounds/music/intro.mp3");
 	ASSET_MANAGER.autoRepeat("./assets/sounds/music/main-1.mp3");
@@ -59,11 +65,16 @@ ASSET_MANAGER.downloadAll(() => {
 	ASSET_MANAGER.autoRepeat("./assets/sounds/music/ver-3.mp3");
 	ASSET_MANAGER.autoRepeat("./assets/sounds/music/drumloop.mp3");
 	ASSET_MANAGER.autoRepeat("./assets/sounds/music/fadein.mp3");
+
 	var canvas = document.getElementById("gameWorld");
 	var ctx = canvas.getContext("2d");
-	
+
 	canvas.focus();
 	gameEngine.init(ctx);
+	
+	window.onresize = resizeCanvas;
+	resizeCanvas();
+
 	gameEngine.addEntity(new TitleScreen(gameEngine));
 	gameEngine.start();
 });
