@@ -104,7 +104,7 @@ class CharacterController {
         // This section is responsible for going into and leaving "ATTACK" state.
         let attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
         const attackDuration = 0.1;
-        const attackCooldown = 0.5;
+        const attackCooldown = 0.2;
 
         if (this.game.click && attackTimeElapsed > attackCooldown) { // check if not on cooldown
             this.attackBeginTime = this.game.timer.gameTime;

@@ -67,12 +67,22 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/sounds/character/hornet-swordmiss3.wav",	
 ].forEach(asset => ASSET_MANAGER.queueDownload(asset));
 
+const resizeCanvas = (event) => {
+	var canvas = document.getElementById("gameWorld");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+}
+
 ASSET_MANAGER.downloadAll(() => {
 	var canvas = document.getElementById("gameWorld");
 	var ctx = canvas.getContext("2d");
-	
+
 	canvas.focus();
 	gameEngine.init(ctx);
+	
+	window.onresize = resizeCanvas;
+	resizeCanvas();
+
 	gameEngine.addEntity(new TitleScreen(gameEngine));
 	gameEngine.start();
 });
