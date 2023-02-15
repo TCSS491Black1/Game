@@ -192,7 +192,7 @@ const levelTwo = {
 
     targetblock: [{x: 32, y: 47*32, xScale: 3.5 , yScale: 1}, 
         // For getting to the boss room for testing:
-        {x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1}
+        {x: 900, y: 1200, xScale: 1 , yScale: 1}
     ],
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400}],
    // {name: "Heavy_Sentry" , x: 2200, y:550*2},

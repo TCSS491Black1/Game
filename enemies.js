@@ -317,10 +317,13 @@ class Heavy_Sentry extends Enemy {
     }
 }
 
-class Hive_Knight extends Enemy {
+class HiveKnight extends Enemy {
 
     constructor(game, x, y) {
-        super(game, x, y);
+        // super(game, x, y);
+        Object.assign(this, { game, x, y });
+        this.name = this.constructor.name;
+        this.asset = ASSET_MANAGER.getAsset("./assets/" + this.ddname + ".png");
 
         // Set up the very large spritesheet for the Hive Knight.
         this.animationList = { "IDLE": new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4), "RUN": this.animator, "ATTACK": this.animator, "DEAD": this.animator };
