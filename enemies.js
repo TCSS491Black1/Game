@@ -317,17 +317,39 @@ class Heavy_Sentry extends Enemy {
     }
 }
 
-class HiveKnight extends Enemy {
+class HiveKnight {
 
     constructor(game, x, y) {
         // super(game, x, y);
         Object.assign(this, { game, x, y });
         this.name = this.constructor.name;
-        this.asset = ASSET_MANAGER.getAsset("./assets/" + this.ddname + ".png");
+        this.asset = ASSET_MANAGER.getAsset("./assets/" + this.name + ".png");
+        // ---------------------------------------------------------------
+        // Are we only using inheritance for one or two shared processes? Most attributes 
+        // are unique to each enemy already, and in future implementations
+        // these enemy behaivors will likely only get more individualized.
+        //
+        // If it's only these three lines, we should seperate the entities 
+        // into individual classes to allow for more readable code. (like 
+        // the CharacterController class) The Hive Knight boss is only 
+        // partially implemented at the moment.    - Griffin
+        // ---------------------------------------------------------------
 
+        // ------------ Sprite sheet setup ------------
         // Set up the very large spritesheet for the Hive Knight.
-        this.animationList = { "IDLE": new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4), "RUN": this.animator, "ATTACK": this.animator, "DEAD": this.animator };
+        // Args for Animator constructor:   spritesheet, xStart, yStart, 
+        //              width, height, frameCount, frameDuration, loop, 
+        //              spriteBorderWidth=0, xoffset=0, yoffset=0, scale=1
+        this.scale = 0.5;
+        this.animationList = {};
+        this.animationList["IDLE"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
         this.animationList["WALK"] = new Animator();
+        this.animationList["RUN"] = new Animator();
+        this.animationList["JUMP"] = new Animator();
+        this.animationList["FALL"] = new Animator();
+        this.animationList["ATTACK"] = new Animator();
+        this.animationList["DEAD"] = new Animator();
+        // ------------ Sprite sheet setup complete. ------------
 
         // Set up other Hive Knight properties.
         this.alpha = 1;
@@ -336,24 +358,124 @@ class HiveKnight extends Enemy {
         this.runFrameCount = 1;
         this.isHalted = false;
         this.isGrounded = false;
+        this.isDead = false;
         this.facingDirection = 1;
         this.movingDirection = 0;
         this.turnTime = 0;
+        this.velocity = {x:0, y:0};
 
         this.updateBB();
     }
 
-    update() {
-
+    collisionChecks() {
+        /* collision detection and resolution: */
+        this.game.entities.forEach((entity) => {
+            if (entity.BB && this.BB.collide(entity.BB)) {
+                this.onCollision(entity); /* NOTE: Enemy requires onCollision() */
+            }
+        });
     }
 
-    updateBB() {
+    /**
+     * Check collision of HiveKnight with other entities. 
+     * If successful, onCollision() updates this.state 
+     * and other attributes of HiveKnight before update() call.
+     * 
+     * @param {*} entity 
+     */
+    onCollision(entity) {
+
+        // Check if HiveKnight is colliding with a ground entity.
+        //      If so, set isGrounded to true and 
+        //      set HiveKnight's y position to top of entity.BB.
+        if(entity instanceof Ground && (this.lastBB.bottom-14 <= entity.BB.top)) {
+            this.isGrounded = true;
+            this.y = entity.BB.top - this.BB.height-14;
+        }
+        
+        // Check if HiveKnight is colliding with the player.
+        //     If so, deal damage to the player based on state.
+        if(entity instanceof CharacterController) {
+            entity.HP -= 1;
+        }
+    }
+
+    withinRange() {
+        if(Math.abs(this.game.player.x + this.game.player.BB.width/2 - this.x + this.BB.width/2) < 1000 &&
+           Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2) < 600){
+            return true;
+        }
+        return false;
+    }
+
+    plotSine(input, amp = 100, freq = 20, scale = 20) {
+        const amplitude = amp;
+        const frequency = freq;
+        const height = scale;
+        
+        // y = sin(x).
+        const y = height/2 + amplitude * Math.sin(input/frequency);
+        return y;
+    }
+
+    /**
+     * Update HiveKnight's bounding box attributes based on current state.
+     */
+     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 180,240, "red");
+        this.BB = new BoundingBox(this.game, 
+            this.x+40, this.y+40, 80*this.scale, 80*this.scale, "red");
+    }
+
+    /**
+     * Update HiveKnight's state and attributes based on last state.
+     * State is updated on the cycle in onCollision().
+     */
+    update() {
+
+        if(this.state == "DEAD") {
+            this.BB = undefined;
+            this.y = this.y - 10;
+            return;
+
+        } else if(this.state == "IDLE") {
+            // Do a floating effect while waiting idling.
+            this.velocity.x = 0;
+            this.velocity.y = this.plotSine(this.velocity.y, 100, 20, 20);
+
+        } else if(this.state == "WALK") {
+            // Walk back and forth.
+            this.velocity.x = 0.5 * this.movingDirection;
+            this.velocity.y = this.plotSine(this.velocity.y, 100, 20, 20);
+
+        }
+        // TODO: check all states here and if on ground/etc. and update 
+        // velocities accordingly.
+
+        this.y += (this.speed * this.game.clockTick);    
+        this.updateBB();
+        this.collisionChecks();
     }
 
     draw(ctx) {
+        ctx.save();
+        if(this.state == "DEAD") { // we want to fade out on death.
+            this.alpha -= this.game.clockTick; // time delay?
+        }
+        ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
+        
+        // -------------------------------------------
+        // ----- Begin HiveKnight's super.draw() -----
+        super.draw(ctx);
+        // ----- End HiveKnight's super.draw() -----
+        // -------------------------------------------
 
+        ctx.restore();
+        if(this.alpha <= 0) {
+            this.removeFromWorld = true;
+            console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
+            ctx.globalAlpha = 1;
+        }
     }
     
 }

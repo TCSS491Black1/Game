@@ -278,7 +278,7 @@ const levelFour = {
         {name: "Uoma" , x: 4200, y:550},
         {name: "Uoma" , x: 5200, y:450},
         {name: "Uoma" , x: 6200, y:350},
-        {name: "Hive_Knight" , x: 8000, y:550},
+        {name: "HiveKnight" , x: 8832, y:600},
     ],
     powerUps:  [{}]
 
