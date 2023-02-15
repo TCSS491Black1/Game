@@ -1,0 +1,22 @@
+body {
+    background-color:black;
+    font-family: 'Baskerville',serif ;
+    font-size: 28px;
+    color: red;
+}
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-size: 14px;
+}
+div {
+    text-align: center;
+}
+#configsMenu {
+    border: 3px solid red;
+    right: 50%;
+    width: 50%;
+}
