@@ -12,12 +12,11 @@ const ASSET_MANAGER = new AssetManager();
 
 	"./assets/Charged_Lumafly.png",// powerups
 	"./assets/Gathering_Swarm.png",
+	"./assets/Lightseed.png",
 
 	"./assets/Overworld_Level_1_blue.png", // backgrounds
 	"./assets/Overworld_Level_1.png", 
-
 	"./assets/Underground_Level_2.png",
-
 	"./assets/IceLevel_3_black.png",
 	"./assets/IceLevel3.png",
 	"./assets/HellLevel4.png",

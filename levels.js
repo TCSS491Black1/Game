@@ -36,7 +36,10 @@ const levelOne = {
         {name: "Uoma" , x: 1600, y:1250},
         {name: "Uoma" , x: 1800, y:1250},
     ],
-    powerUps:  [{}]
+    powerUps:  [
+        {name: "Lightseed", x: 299, y:402},
+        {name: "Lightseed", x: 811, y:1404},
+    ],
 
 }
 const levelTwo = {
@@ -197,7 +200,7 @@ const levelTwo = {
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400}],
    // {name: "Heavy_Sentry" , x: 2200, y:550*2},
     //{name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
-    powerUps:  [{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
+    powerUps:  [{name: "Lightseed" , x: 800, y:400},{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
 
 }
 const levelThree = {
@@ -234,7 +237,7 @@ const levelThree = {
     enemies: [{name: "Heavy_Sentry" , x: 1200, y:550*2},
     {name: "Heavy_Sentry" , x: 2200, y:550*2},
     {name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
-    powerUps:  [{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
+    powerUps:  [{name: "Lightseed" , x: 800, y:400},{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
 
 }
 

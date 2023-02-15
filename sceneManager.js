@@ -92,17 +92,16 @@ class SceneManager{
         for(const entry of level.powerUps) {
             if(entry.name == "Charged_Lumafly"){
                 this.game.addEntity(new Charged_Lumafly(this.game, entry.x, entry.y));
-
-
             }
             if(entry.name == "Gathering_Swarm"){
                 this.game.addEntity(new Gathering_Swarm(this.game, entry.x, entry.y));
-
+            }
+            if(entry.name == "Lightseed") {
+                this.game.addEntity(new Lightseed(this.game, entry.x, entry.y));
             }
             if(entry.name == "Hive_Knight"){
                 this.game.addEntity(new Hive_Knight(this.game, entry.x, entry.y));
             }
-
         }      
         this.game.addEntity(this.player);
         this.game.addEntity(new HUD());
