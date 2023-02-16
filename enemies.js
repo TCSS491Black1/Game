@@ -317,44 +317,32 @@ class Heavy_Sentry extends Enemy {
     }
 }
 
-class HiveKnight {
+class HiveKnight extends Enemy {
 
+    // Are we only using inheritance for name,asset,withinRange(), and collisionChecks()? 
+    // Most attributes are unique to each enemy, and in future implementations
+    // these enemy behaivors will likely get more individualized.   - Griffin
     constructor(game, x, y) {
-        // super(game, x, y);
-        Object.assign(this, { game, x, y });
+        super(game, x, y);
         this.name = this.constructor.name;
         this.asset = ASSET_MANAGER.getAsset("./assets/" + this.name + ".png");
-        // ---------------------------------------------------------------
-        // Are we only using inheritance for one or two shared processes? Most attributes 
-        // are unique to each enemy already, and in future implementations
-        // these enemy behaivors will likely only get more individualized.
-        //
-        // If it's only these 3 lines and 1 in draw(), we should seperate the entities 
-        // into individual classes to allow for more readable code. (like 
-        // the CharacterController class) The Hive Knight boss is only 
-        // partially implemented at the moment.    - Griffin
-        // ---------------------------------------------------------------
 
+        // ---------------------------------------------------------------
+        // new Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth, xoffset, yoffset, scale)
         // ------------ Sprite sheet setup ------------
-        // Set up the very large spritesheet for the Hive Knight.
-        // Args for Animator constructor:   spritesheet, xStart, yStart, 
-        //              width, height, frameCount, frameDuration, loop, 
-        //              spriteBorderWidth=0, xoffset=0, yoffset=0, scale=1
         this.scale = 0.5;
-        this.animationList = {};
-        this.animationList["IDLE"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
-        this.animationList["WALK"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
-        this.animationList["RUN"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
-        this.animationList["JUMP"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
-        this.animationList["FALL"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
-        this.animationList["ATTACK"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
-        this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4, 0, 0, 1);
+        this.state = "IDLE";
+
+        this.animationList = {
+            "IDLE": new Animator(this.asset, 496, 19, 213, 348, 5, 0.2, 1, 3, 0, 0, this.scale),
+            "TELEPORT-IN": new Animator(this.asset, 2083, 6788, 413, 311, 6, 0.1, 1, 3, 0, 0, this.scale),
+        },
+          
         // ------------ Sprite sheet setup complete. ------------
 
         // Set up other Hive Knight properties.
         this.alpha = 1;
         this.HP = 10;
-        this.state = "IDLE";
         this.runFrameCount = 1;
         this.isHalted = false;
         this.isGrounded = false;
@@ -367,45 +355,49 @@ class HiveKnight {
         this.updateBB();
     }
 
-    collisionChecks() {
-        /* collision detection and resolution: */
-        this.game.entities.forEach((entity) => {
-            if (entity.BB && this.BB.collide(entity.BB)) {
-                this.onCollision(entity); /* NOTE: Enemy requires onCollision() */
-            }
-        });
-    }
-
-    /**
-     * Check collision of HiveKnight with other entities. 
-     * If successful, onCollision() updates this.state 
-     * and other attributes of HiveKnight before update() call.
-     * 
-     * @param {*} entity 
-     */
     onCollision(entity) {
 
         // Check if HiveKnight is colliding with a ground entity.
         //      If so, set isGrounded to true and 
         //      set HiveKnight's y position to top of entity.BB.
-        if(entity instanceof Ground && (this.lastBB.bottom-14 <= entity.BB.top)) {
+        if(entity instanceof Ground && (this.lastBB.bottom-14 <= entity.BB.top)){
             this.isGrounded = true;
-            this.y = entity.BB.top - this.BB.height-14;
+            //Keep enemy on surface
+            this.y = entity.BB.top-this.BB.height-14;
+
+            //Keep from falling off ledges if not in follow character mode
+            //Left side stop or turn
+            if(entity.BB.x - this.BB.x > 0 && this.movingDirection == 0){
+                if(super.withinRange()){
+                    this.halt = true;
+                    this.state = "IDLE";
+                }else{
+                    this.halt = false;
+                    this.state = "TURN"
+                    this.movingDirection = 1;
+                    this.x += 10
+                }
+            //Right side stop or turn
+            }else if(entity.BB.x+entity.BB.width - this.BB.x < 200 && this.movingDirection == 1){
+                if(super.withinRange()){
+                    this.halt = true;
+                    this.state = "IDLE";
+
+                }else{
+                    this.halt = false;
+                    this.state = "TURN"
+                    this.movingDirection = 0;
+                    this.x -= 10
+                }
+            }
+            
         }
-        
         // Check if HiveKnight is colliding with the player.
         //     If so, deal damage to the player based on state.
         if(entity instanceof CharacterController) {
             entity.HP -= 1;
+            console.log("Hornet collided with HiveKnight. Hornet HP: ", entity.HP);
         }
-    }
-
-    withinRange() {
-        if(Math.abs(this.game.player.x + this.game.player.BB.width/2 - this.x + this.BB.width/2) < 1000 &&
-           Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2) < 600){
-            return true;
-        }
-        return false;
     }
 
     plotSine(input, amp = 100, freq = 20, scale = 20) {
@@ -424,7 +416,7 @@ class HiveKnight {
      updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.game, 
-            this.x+40, this.y+40, 80*this.scale, 80*this.scale, "red");
+            this.x+40, this.y, 230*this.scale, 360*this.scale, "red");
     }
 
     /**
@@ -441,12 +433,12 @@ class HiveKnight {
         } else if(this.state == "IDLE") {
             // Do a floating effect while waiting idling.
             this.velocity.x = 0;
-            this.velocity.y = this.plotSine(this.velocity.y, 100, 20, 20);
+            this.velocity.y = 0;
 
         } else if(this.state == "WALK") {
             // Walk back and forth.
             this.velocity.x = 0.5 * this.movingDirection;
-            this.velocity.y = this.plotSine(this.velocity.y, 100, 20, 20);
+            this.velocity.y = this.plotSine(this.velocity.y, 20, 20, 20);
 
         }
         // TODO: check all states here and if on ground/etc. and update 
