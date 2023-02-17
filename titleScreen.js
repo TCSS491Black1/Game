@@ -4,6 +4,10 @@ class TitleScreen {
         Object.assign(this, { game});
         this.game = game;
         // coords: offsetX,offsetY, params.canvasWidth-500, params.canvasHeight-300
+        
+        /* TODO: add some nice fluffy clouds to title screen. */
+        // var asset = "./assets/backgrounds/clouds.png";
+        // this.cloudComponent = new Animator();
 
         const startBtn = document.getElementById('start-btn');
         startBtn.onclick = () => {
