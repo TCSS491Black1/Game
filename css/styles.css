@@ -8,9 +8,9 @@ html {
 
 body {
     background-color:black;
-    font-family: 'Minecraftia', serif;
+    font-family: 'Baskerville', serif;
     font-size: 28px;
-    color: rgb(255, 0, 0);
+    /* Red, but... ? color: rgb(255, 0, 0); */
     padding: 0px;
     margin: 0px;
     height: 100%;

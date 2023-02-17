@@ -1,6 +1,6 @@
 class SoundEngine {
 
-    constructor(game, x, y, volume = 0.4) {
+    constructor(game, x = 0, y = 0, volume = 0.4) {
         Object.assign(this, { game, x, y });
         // this.audioCtx = new (window.audioCtx || window.webkitaudioCtx)();
 

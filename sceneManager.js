@@ -10,7 +10,7 @@ class SceneManager{
         this.y = 0 ;
         this.score = 0;
         this.gameOver = false;
-        this.soundEngine = new SoundEngine(this.game, 0, 0);
+        this.soundEngine = new SoundEngine(this.game);
         this.player = new CharacterController(this.game,0,0);
         this.levelNum = 0;
         
