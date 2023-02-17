@@ -13,22 +13,28 @@ class SoundEngine {
         this.musicGainNode.gain.setValueAtTime(volume, this.audioCtx.currentTime);
         this.effectsGainNode = this.audioCtx.createGain();
         this.effectsGainNode.gain.setValueAtTime(volume, this.audioCtx.currentTime);
+
+        this.channelMerger = this.audioCtx.createChannelMerger();
+        this.musicGainNode.connect(this.channelMerger, 0, 1);
+        this.effectsGainNode.connect(this.channelMerger, 0, 2);
+
         this.parentGainNode = this.audioCtx.createGain();
         this.parentGainNode.gain.setValueAtTime(volume, this.audioCtx.currentTime);
 
         // AudioBuffer/SourceNode --> gain node --> destination.
-        this.musicGainNode.connect(this.audioCtx.destination);
-        this.effectsGainNode.connect(this.audioCtx.destination);
+        // this.musicGainNode.connect(this.audioCtx.destination);
+        // this.effectsGainNode.connect(this.audioCtx.destination);
+        this.channelMerger.connect(this.parentGainNode);
         this.parentGainNode.connect(this.audioCtx.destination);
 
-        this.vol = document.querySelector("#volume");
+        const vol = document.querySelector("#volume");
         const mute = document.querySelector("#mute");
-        this.bgvol = document.querySelector('#bgvolume');
-        this.fxvol = document.querySelector('#fxvolume');
+        const bgvol = document.querySelector('#bgvolume');
+        const fxvol = document.querySelector('#fxvolume');
         const bgmute = document.querySelector('#bgmute');
         const fxmute = document.querySelector('#fxmute');
 
-        this.vol.onclick = () => {
+        vol.onclick = () => {
             this.parentGainNode.gain.setValueAtTime(vol.value, this.audioCtx.currentTime);
         };
         mute.onclick = () => {
@@ -42,21 +48,21 @@ class SoundEngine {
               mute.textContent = "Mute";
             }
         };
-        this.bgvol.onclick = () => {
+        bgvol.onclick = () => {
             this.musicGainNode.gain.setValueAtTime(bgvol.value, this.audioCtx.currentTime);
         };
         bgmute.onclick = () => {
             if (bgmute.id === "") {
-              this.musicGainNode.gain.setValueAtTime(0, this.audioCtx.currentTime);
+              this.musicGainNode.gain.setValueAtTime(0, audioCtx.currentTime);
               bgmute.id = "activated";
               bgmute.textContent = "Unmute";
             } else {
-              this.musicGainNode.gain.setValueAtTime(0.8, this.audioCtx.currentTime);
+              this.musicGainNode.gain.setValueAtTime(0.8, audioCtx.currentTime);
               bgmute.id = "";
               bgmute.textContent = "Mute";
             }
         };
-        this.fxvol.onclick = () => {
+        fxvol.onclick = () => {
             this.effectsGainNode.gain.setValueAtTime(fxvol.value, this.audioCtx.currentTime);
         };
         fxmute.onclick = () => {
