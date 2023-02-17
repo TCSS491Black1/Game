@@ -1,3 +1,6 @@
+@import url("./assets/fonts/alagard.ttf");
+@import url("./assets/fonts/minecraftia.ttf");
+
 html {
     padding: 0px;
     margin: 0px;
@@ -5,9 +8,9 @@ html {
 
 body {
     background-color:black;
-    font-family: 'Baskerville', serif;
+    font-family: 'Minecraftia', serif;
     font-size: 28px;
-    color: red;
+    color: rgb(255, 0, 0);
     padding: 0px;
     margin: 0px;
     height: 100%;
@@ -29,8 +32,6 @@ canvas {
     left: 250px;
     width: 1020px;
     height: 464px;
-    border: 3px solid red;
-    background-color: black;
     display: none;
     z-index: 5;
 }
