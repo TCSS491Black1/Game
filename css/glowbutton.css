@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Raleway");
-
 :root {
   --glow-color: hsl(186 100% 69%);
 }
@@ -26,7 +24,7 @@ body {
 }
 
 .glowing-btn {
-  position: relative;
+  position: absolute;
   color: var(--glow-color);
   cursor: pointer;
   padding: 0.35em 1em;
@@ -34,10 +32,13 @@ body {
   border-radius: 0.45em;
   background: none;
   perspective: 2em;
-  font-family: "Raleway", sans-serif;
+  font-family: "Minecraftia", serif;
   font-size: 2em;
   font-weight: 900;
   letter-spacing: 1em;
+
+  left: 300px;
+  top: 300px;
 
   -webkit-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
     0px 0px 0.5em 0px var(--glow-color);

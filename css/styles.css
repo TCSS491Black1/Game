@@ -1,5 +1,5 @@
-@import url("./assets/fonts/alagard.ttf");
-@import url("./assets/fonts/minecraftia.ttf");
+@import url(glowbutton.css) layer(glower);
+@import url(typewriter.css) layer(typer);
 
 html {
     padding: 0px;
@@ -8,9 +8,8 @@ html {
 
 body {
     background-color:black;
-    font-family: 'Baskerville', serif;
+    font-family: 'Minecraftia', serif;
     font-size: 28px;
-    /* Red, but... ? color: rgb(255, 0, 0); */
     padding: 0px;
     margin: 0px;
     height: 100%;
@@ -23,6 +22,18 @@ canvas {
     margin: 0%;
     display: block;
     font-size: 14px;
+}
+
+#title {
+    margin: auto;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    display: grid;
+    z-index: 3;
 }
 
 #configsMenu {
@@ -60,65 +71,12 @@ canvas {
     top: -8px;
 }
 
-.holder {
-  position: absolute;
-  top: 45%;
-  left: 45%;
-}
-  
-.bar {
-  background: #d0f0dd;
-  box-shadow: 0px 0px 0 #40ff22,
-    0px 0px 4px #30ff1f,
-    0px 0px 8px #20ff1b,
-    0px 0px 16px #10ff18;
-  border-radius: 4px;
-  position: absolute;
+@layer glower {
+
+  /* To apply to other in-game text. */
 }
 
-.left {
-  width: 4px;
-  animation: left 2s linear infinite;
-}
+@layer typer {
 
-@keyframes left {
-  0%  {height: 0; top: 96px; left: 0;}
-  20% {height: 100px; top: 0; left: 0;}
-  40% {height: 0; top: 0; left: 0;}
-}
-
-.top {
-  height: 4px;
-  animation: top 2s linear infinite;
-}
-
-@keyframes top {
-  0%  {width: 0; top: 0; left: 0;}
-  20% {width: 0; top: 0; left: 0;}
-  40% {width: 100px; top: 0; left: 0;}
-  60% {width: 0; top:0; left: 100px;}
-}
-
-.right {
-  width: 4px;
-  animation: right 2s linear infinite;
-}
-
-@keyframes right {
-  0%  {height: 0; top: 0; left: 96px;}
-  40% {height: 0; top: 0; left: 96px;}
-  60% {height: 100px; top: 0; left: 96px;}
-  80% {height: 0; top: 100px;left: 96px;}
-}
-
-.bottom {
-  height: 4px;
-  animation: bottom 2s linear infinite;
-}
-
-@keyframes bottom {
-  0%  {width: 0; top: 96px; left: 96px;}
-  60% {width: 0; top: 96px; left: 96px;}
-  80% {width: 100px; top:96px; left: 0px;}
-  100% {width: 0px; top:96px; left: 0px;}
+  /* To apply to other in-game text. */
 }
