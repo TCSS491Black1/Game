@@ -7,18 +7,50 @@ class HiveKnight extends Enemy {
 
         // ---------------------------------------------------------------
         // new Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth, xoffset, yoffset, scale)
-        // ------------ Sprite sheet setup ------------
+        // ------------------------- Sprite sheet setup -------------------------
         this.scale = 0.5;
         this.state = "IDLE";
 
         this.animationList = {
-            "IDLE": new Animator(this.asset, 496, 19, 213, 348, 5, 0.2, 1, 3, 0, 0, this.scale),
-            "TELEPORT-IN": new Animator(this.asset, 2083, 6788, 413, 311, 6, 0.1, 1, 3, 0, 0, this.scale),
-        },
-          
-        // ------------ Sprite sheet setup complete. ------------
+            "INTRO": new Animator(this.asset, 0, 19, 235, 522, 2, 0.4, true, 3, 0, 0, this.scale),
+            "TURN": new Animator(this.asset, 1608, 19, 228, 350, 1, 0.6, false, 3, 0, 0, this.scale),
+            "IDLE": new Animator(this.asset, 496, 19, 213, 348, 5, 0.1, true, 3, 0, 0, this.scale),
+            "DEAD": new Animator(this.asset, 0, 6502, 369, 281, 4, 0.1, true, 3, 0, 0, this.scale),
+            
+            "TELEPORTOUT1": new Animator(this.asset, 815, 557, 236, 454, 2, 0.1, true, 3, 0, 0, this.scale),
+            // FIXME: Needs TP2 to be fixed.
+            "TELEPORTOUT2": new Animator(this.asset, 2083, 6788, 413, 311, 6, 0.1, true, 3, 0, 0, this.scale),
+            
+            "AIR": new Animator(this.asset, 1, 3373, 300, 407, 5, 0.1, true, 3, 0, 0, this.scale),
+            "TELEPORTIN1": new Animator(this.asset, 1325, 557, 328, 204, 2.2, 5, false, 3, 0, 0, this.scale),
+            "TELEPORTIN2": new Animator(this.asset, 0, 1033, 413, 311, 0.1, 1, true, 3, 0, 0, this.scale),
+            // FIXME: Needs fixing.
+            "TELEPORTSLASH": new Animator(this.asset, 0, 1366, 1102, 245, 1, 2.2, false, 3, 0, 0, this.scale),
+            "TELEPORTSLASHRECOVERY": new Animator(this.asset, 1137, 1366, 260, 326, 2, 0.1, true, 3, 0, 0, this.scale),
+            "JUMP": new Animator(this.asset, 0, 1713, 346, 290, 3, 0.12, true, 3, 0, 0, this.scale),
 
-        // Set up other Hive Knight properties.
+            "STABANTICIPATE": new Animator(this.asset, 0, 2026, 487, 356, 4, 0.12, true, 3, 0, 0, this.scale),
+            "GSTABANTICIPATE1": new Animator(this.asset, 0, 3802, 254, 520, 2, 0.2, true, 3, 0, 0, this.scale),
+            // FIXME: Needs fixing.
+            "GSTABANTICIPATE2": new Animator(this.asset, 2083, 6788, 559, 235, 4, 0.2, true, 3, 0, 0, this.scale),
+            "GSTAB": new Animator(this.asset, 0, 4344, 279, 408, 7, 0.08, true, 3, 0, 0, this.scale),
+            
+            "ROARANTICIPATE": new Animator(this.asset, 0, 4935, 272, 353, 2, 0.2, true, 3, 0, 0, this.scale),
+            "ROAR": new Animator(this.asset, 582, 4935, 272, 353, 2, 0.1, true, 3, 0, 0, this.scale),
+            "ROAR2": new Animator(this.asset, 582, 4935, 303, 366, 4, 0.1, true, 3, 0, 0, this.scale),
+            // FIXME: Needs fixing.
+            "STUNAIR": null,
+            "STUNLAND": null,
+            "DEATHAIR": null,
+            "DEATHLAND": null,
+            "DEATHIN": null,
+            "GLOBUP": null,
+            "GLOBFORM1": null,
+            "GLOBFORM2": null,
+            "GLOBBURST": null
+        },
+        // ------------ Sprite sheet setup complete. ------------
+        
         this.alpha = 1;
         this.HP = 10;
         this.runFrameCount = 1;
@@ -35,46 +67,26 @@ class HiveKnight extends Enemy {
 
     onCollision(entity) {
 
-        // Check if HiveKnight is colliding with a ground entity.
-        //      If so, set isGrounded to true and 
-        //      set HiveKnight's y position to top of entity.BB.
         if(entity instanceof Ground && (this.lastBB.bottom-14 <= entity.BB.top)){
             this.isGrounded = true;
             //Keep enemy on surface
-            this.y = entity.BB.top-this.BB.height-14;
-
-            //Keep from falling off ledges if not in follow character mode
-            //Left side stop or turn
-            if(entity.BB.x - this.BB.x > 0 && this.movingDirection == 0){
-                if(super.withinRange()){
-                    this.halt = true;
-                    this.state = "IDLE";
-                }else{
-                    this.halt = false;
-                    this.state = "TURN"
-                    this.movingDirection = 1;
-                    this.x += 10
-                }
-            //Right side stop or turn
-            }else if(entity.BB.x+entity.BB.width - this.BB.x < 200 && this.movingDirection == 1){
-                if(super.withinRange()){
-                    this.halt = true;
-                    this.state = "IDLE";
-
-                }else{
-                    this.halt = false;
-                    this.state = "TURN"
-                    this.movingDirection = 0;
-                    this.x -= 10
-                }
-            }
-            
+            this.y = entity.BB.top-this.BB.height;
         }
-        // Check if HiveKnight is colliding with the player.
-        //     If so, deal damage to the player based on state.
+
         if(entity instanceof CharacterController) {
-            entity.HP -= 1;
+            if(entity.state == "ATTACK"){
+                this.HP -= 10;
+            } else {
+                entity.HP -=1;
+                // this.state = "TELEPORTSLASHRECOVERY"
+                this.state = "JUMP"
+            }
+
             console.log("Hornet collided with HiveKnight. Hornet HP: ", entity.HP);
+        } else {
+            // Set state to in-air.
+            // this.state = "TELEPORTSLASHRECOVERY"
+            this.state = "AIR";
         }
     }
 
@@ -105,13 +117,13 @@ class HiveKnight extends Enemy {
 
         if(this.state == "DEAD") {
             this.BB = undefined;
-            this.y = this.y - 10;
+            this.removeFromWorld = true;
             return;
 
         } else if(this.state == "IDLE") {
             // Do a floating effect while waiting idling.
-            this.velocity.x = 0;
-            this.velocity.y = 0;
+            this.velocity.x = this.plotSine(100, 1000, 200, 50);
+            this.velocity.y = this.plotSine(15, 20, 20, 20);
 
         } else if(this.state == "WALK") {
             // Walk back and forth.
@@ -119,8 +131,6 @@ class HiveKnight extends Enemy {
             this.velocity.y = this.plotSine(this.velocity.y, 20, 20, 20);
 
         }
-        // TODO: check all states here and if on ground/etc. and update 
-        // velocities accordingly.
 
         this.y += (this.speed * this.game.clockTick);    
         this.updateBB();

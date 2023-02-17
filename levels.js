@@ -1,5 +1,5 @@
 const levelOne = {
-    music: "./assets/sounds/music/intro.mp3",
+    music: "./assets/sounds/music/dream-requiem-intro.mp3",
     background: ["./assets/Overworld_Level_1_blue.png","./assets/Overworld_Level_1.png"],
     foreground: ["./assets/Level1ParallaxFlowers.png",],
     pillars: [],
@@ -35,6 +35,8 @@ const levelOne = {
         {name: "Uoma" , x: 1400, y:1250},
         {name: "Uoma" , x: 1600, y:1250},
         {name: "Uoma" , x: 1800, y:1250},
+        {name: "HiveKnight" , x: 2000, y:200},
+        {name: "HiveKnight" , x: 550, y:300}, // for testing
     ],
     powerUps:  [
         {name: "Lightseed", x: 299, y:402},
@@ -43,7 +45,7 @@ const levelOne = {
 
 }
 const levelTwo = {
-    music: "./assets/sounds/music/main-1-quiet.mp3",
+    music: "./assets/sounds/music/dream-requiem-fluteup.mp3",
     background: ["./assets/Underground_Level_2.png","./assets/Underground_Level_2.png"],
     foreground: ["./assets/Level2ParallaxBoulders.png",],
     pillars: [],
@@ -204,7 +206,7 @@ const levelTwo = {
 
 }
 const levelThree = {
-    music: "./assets/sounds/music/main-2-quiet.mp3",
+    music: "./assets/sounds/music/dream-requiem-sparkle.mp3",
     spawnPoint: [150 , 0],
     background: ["./assets/IceLevel_3_black.png","./assets/IceLevel3.png"],
     foreground: [],
@@ -242,7 +244,7 @@ const levelThree = {
 }
 
 const levelFour = {
-    music: "./assets/sounds/music/ver-2.mp3",
+    music: "./assets/sounds/music/dream-requiem-strfkr.mp3",
     spawnPoint: [150 , 0],
     background: ["./assets/HellLevel4.png"],
     foreground: [],
@@ -282,6 +284,8 @@ const levelFour = {
         {name: "Uoma" , x: 5200, y:450},
         {name: "Uoma" , x: 6200, y:350},
         {name: "HiveKnight" , x: 2000, y:200},
+        {name: "HiveKnight" , x: 2000, y:200},
+        {name: "HiveKnight" , x: 1000, y:150},
     ],
     powerUps:  [{}]
 
