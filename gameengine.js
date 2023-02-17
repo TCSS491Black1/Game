@@ -71,9 +71,12 @@ class GameEngine {
             e.preventDefault(); // Prevent Context Menu
             this.rightclick = getXandY(e);
         });
-
+        
         this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
         this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+        window.addEventListener("keydown", event => {
+            if(event.key == "Escape") this.toggleConfigs();
+        });
 
         document.getElementById("debug").addEventListener("input", e => {
             this.options.debugging = e.target.checked;
@@ -110,7 +113,15 @@ class GameEngine {
         this.update();
         this.draw();
     };
-
+    toggleConfigs() {
+        const menu = document.getElementById("configsMenu");
+        if(menu.style.display == "none"||menu.style.display == "")
+            menu.style.display = "block";
+        else {
+            menu.style.display = "none";
+            document.getElementById("gameWorld").focus();
+        }
+    }
 };
 
 // KV Le was here :)

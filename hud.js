@@ -17,6 +17,7 @@ class HUD {
     draw(ctx) {
         ctx.save();
         // draw game symbol, upper left.
+        ctx.font = "50px Baskerville";
         ctx.fillStyle = "black"
         ctx.fillText("ψ",24,49);
         ctx.fillStyle = "red";
