@@ -27,6 +27,10 @@ const levelOne = {
     targetblock: [{x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
         {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}
     ],
+
+    pitglow: [{x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
+        {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}], // just put it on the block for now.
+
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 1200, y:450},
@@ -36,11 +40,14 @@ const levelOne = {
         {name: "Uoma" , x: 1600, y:1250},
         {name: "Uoma" , x: 1800, y:1250},
     ],
-    powerUps:  [{}]
+    powerUps:  [
+        {name: "Lightseed", x: 299, y:402},
+        {name: "Lightseed", x: 811, y:1404},
+    ],
 
 }
 const levelTwo = {
-    music: "./assets/sounds/music/main-1.mp3",
+    music: "./assets/sounds/music/main-1-quiet.mp3",
     background: ["./assets/Underground_Level_2.png","./assets/Underground_Level_2.png"],
     foreground: ["./assets/Level2ParallaxBoulders.png",],
     pillars: [],
@@ -195,14 +202,15 @@ const levelTwo = {
         {x:221*32,y:8*32 ,size: 18}],
 
     targetblock: [{x: 32, y: 47*32, xScale: 3.5 , yScale: 1}],
-    enemies: [{name: "Heavy_Sentry" , x: 3200, y:500}],
+    pitglow: [{x: 32, y: 47*32, xScale: 1 , yScale: 1}],
+    enemies: [{name: "Heavy_Sentry" , x: 800, y:400}],
    // {name: "Heavy_Sentry" , x: 2200, y:550*2},
     //{name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
-    powerUps:  [{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
+    powerUps:  [{name: "Lightseed" , x: 800, y:400},{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
 
 }
 const levelThree = {
-    music: "./assets/sounds/music/main-2.mp3",
+    music: "./assets/sounds/music/main-2-quiet.mp3",
     spawnPoint: [150 , 0],
     background: ["./assets/IceLevel_3_black.png","./assets/IceLevel3.png"],
     foreground: [],
@@ -232,10 +240,11 @@ const levelThree = {
         {x:32*276, y:params.canvasHeight*2-32*13, size: 8 }],
     wall: [{x:-32,y:0,size: 24}],
     targetblock: [{x: 700, y: params.canvasHeight+32*12,xScale:1,yScale:1}],
+    pitglow: [{x: 700, y: params.canvasHeight+32*12,xScale:1,yScale:1}],
     enemies: [{name: "Heavy_Sentry" , x: 1200, y:550*2},
     {name: "Heavy_Sentry" , x: 2200, y:550*2},
     {name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
-    powerUps:  [{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
+    powerUps:  [{name: "Lightseed" , x: 800, y:400},{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
 
 }
 
@@ -271,6 +280,7 @@ const levelFour = {
     ],
     wall: [{x:-32,y:0,size: 24}],
     targetblock: [{x: 700, y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
+    pitglow: [{x: 700, y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 2200, y:450},

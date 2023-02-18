@@ -10,6 +10,7 @@ class SceneManager{
         this.y = 0 ;
         this.score = 0;
         this.gameOver = false;
+        this.soundEngine = new SoundEngine(this.game, 0, 0);
         this.player = new CharacterController(this.game,0,0);
         this.levelNum = 0;
         
@@ -18,23 +19,20 @@ class SceneManager{
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
         this.marker = 0;
-        this.updateAudio();
-        document.getElementById('volume').addEventListener('input', this.updateAudio);
-        document.getElementById('mute').addEventListener('input', this.updateAudio);
+        // this.soundEngine.updateAudio();
+        // document.getElementById('volume').addEventListener('input', this.soundEngine.updateAudio);
+        // document.getElementById('mute').addEventListener('input', this.soundEngine.updateAudio);
     };
 
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
-            ASSET_MANAGER.pauseBackgroundMusic();
-        });
+            this.soundEngine.pauseBackgroundMusic();
+        }.bind(this));
     };
 
     loadLevel(level , x, y){
-        // This code is beginning to refactor loading with level.js due
-        // to the current music implementation. Here, the level 
-        // property can manage level-specific items. -Griffin
-
+        // Setup of level properties here.
         this.level = level;
         this.game.entities = [this] // TODO: this does not clear/unload entities.
         this.x = 0;
@@ -50,11 +48,12 @@ class SceneManager{
         this.player.state = "IDLE";
         
         console.log("zoning in @ ", x, y);
-        // To change based on professor's "title" technique.
+
         if(level.music) {
-            ASSET_MANAGER.pauseBackgroundMusic(); // stop previous bg music.
-            ASSET_MANAGER.playAsset(level.music);
+            this.soundEngine.pauseBackgroundMusic();
+            this.soundEngine.playBackgroundMusic(level.music);
         }
+
         //Custom level starting point
         this.player.x = level.spawnPoint[0];
         this.player.y = level.spawnPoint[1];  
@@ -82,6 +81,11 @@ class SceneManager{
             console.log("added flagblock", [entry.x, entry.y, entry.size]);
         }
 
+        for(const entry of level.pitglow) {
+            this.game.addEntity(new Pit_Glow(this.game, entry.x, entry.y, entry.xScale, entry.yScale));
+            console.log("added pitglow", [entry.x, entry.y, entry.size]);
+        }
+
         for(const entry of level.enemies) {
             if(entry.name == "Uoma"){
                 this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
@@ -95,14 +99,13 @@ class SceneManager{
         for(const entry of level.powerUps) {
             if(entry.name == "Charged_Lumafly"){
                 this.game.addEntity(new Charged_Lumafly(this.game, entry.x, entry.y));
-
-
             }
             if(entry.name == "Gathering_Swarm"){
                 this.game.addEntity(new Gathering_Swarm(this.game, entry.x, entry.y));
-
             }
-
+            if(entry.name == "Lightseed") {
+                this.game.addEntity(new Lightseed(this.game, entry.x, entry.y));
+            }
         }      
         this.game.addEntity(this.player);
         this.game.addEntity(new HUD());
@@ -116,17 +119,6 @@ class SceneManager{
         console.log(["loading level", this.levelNum, this.levels[this.levelNum]]);
         this.loadLevel(this.levels[this.levelNum], x, y);
 
-    }
-
-    /**
-     * Adds audio context to sceneManager.
-     */
-    updateAudio() {
-        var mute = document.getElementById("mute").checked;
-        var volume = document.getElementById("volume").value;
-
-        ASSET_MANAGER.muteAudio(mute);
-        ASSET_MANAGER.adjustVolume(volume);
     }
 
     update() {

@@ -651,3 +651,21 @@ class Flag_Block {
         this.BB.draw(ctx);
     };
 }
+class Pit_Glow {
+    //An animation to signal the appropriate pit to jump into in order to descend to the next level.
+    constructor(game, x, y, xScale, yScale) {
+        Object.assign(this, { game, x, y, xScale, yScale});
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Pit_Glow.png"),
+            0, 0, 129, 130, 64, 0.04, 1, 0)
+        this.speed = 0;
+    }
+
+    update() {
+        
+    }
+
+    draw(ctx) {
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-this.game.camera.y)
+    };
+}
+

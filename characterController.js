@@ -18,9 +18,12 @@ class CharacterController {
         this.state = "WALK";
 
         this.HP = 10;
+        this.maxHP = 10;
+        this.timeOfLastDamage = 0;
+        this.invulnLength = 3;
         this.dead = false;
         this.updateBB();
-        this.attackBeginTime = undefined;
+        this.attackBeginTime = 0;
 
         this.scale = 0.5;
         this.animationList = {};
@@ -41,6 +44,9 @@ class CharacterController {
         //******************** */
         // jump/gravity math variables:
         // credit for gravity formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
+        this.jumps = 0;     // number of jumps counted mid-air.
+        this.jumpsTotal = 1; // number of jumps possible mid-air
+
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
         const t_h = 0.25;                           // time to apex of jump in seconds. jump duration = 0.5    
         this.g = 2 * h / (t_h ** 2);                     // acceleration due to gravity.
@@ -84,26 +90,81 @@ class CharacterController {
         const MAXRUN = 600;
 
         // Jump trigger
-        if (this.game.keys["w"] && this.onGround && this.state != "JUMP" && this.state != "ATTACK") {
+        if (this.game.keys["w"]
+            && ((this.onGround && this.state != "JUMP") || this.jumps < this.jumpsTotal)
+            && this.state != "ATTACK") {
+            this.game.keys["w"] = false;
+
             this.changeState("JUMP", 84);
+            this.jumps += 1;
             this.velocity.y = this.v_0; // add upwards velocity 'cause that's what jumps are.
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
         }
 
         const t = this.game.clockTick;                // time elapsed since last frame
         this.velocity.y = this.velocity.y + this.g * t; // accelerate due to gravity.
         this.y += this.velocity.y * t;                // calculate new Y position from velocity.
 
+        //****************** */
+        // attack animation code.
+        // This section is responsible for going into and leaving "ATTACK" state.
+        let attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
+        const attackDuration = 0.1;
+        const attackCooldown = 0.5;
+
+        if (this.game.click && attackTimeElapsed > attackCooldown) { // check if not on cooldown
+            this.attackBeginTime = this.game.timer.gameTime;
+            attackTimeElapsed = 0;
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
+        } else {
+            // attack on cooldown. Flash or something?
+        }
+        this.game.click = undefined;
+        
+        if (attackTimeElapsed <= attackDuration) {                                                     
+            this.game.click == undefined;
+            this.changeState("ATTACK", 141);
+            //if(this.onGround) this.velocity.x = 0;
+
+            if (this.facingDirection == 0) {
+                this.animationList["ATTACK"].xoffset = 200 * this.scale;
+            } else {
+                this.animationList["ATTACK"].xoffset = 0;
+            }
+            this.updateAttackBB();
+            for (const entity of this.game.entities.filter(e => e instanceof Enemy && e.BB !== undefined)) {
+                // TODO: some of this logic should(?) probably be in the Enemy class
+                if (this.attackBB.collide(entity.BB)) {
+                    entity.HP--;
+                    if (entity.HP <= 0) entity.state = "DEAD";
+                }
+            }
+        } else if (attackTimeElapsed >= attackDuration) { // cleanup after attack
+            this.attackBeginTime = undefined;
+            this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.05, 0, 0, 0, 100 * this.scale, this.scale);
+            
+            if (!this.onGround)
+                this.changeState("JUMP", 159);
+            else {
+                this.changeState("IDLE", 162);
+            }
+        }
+        // end of attack code
+        // ****************
+
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
             if(this.state != "ATTACK")
                 this.facingDirection = 1;                             // facing the right
-            if (this.onGround) this.changeState("WALK", 91);          // walk if not mid-air
+            if (this.onGround && this.state != "ATTACK")
+                this.changeState("WALK", 91);          // walk if not mid-air
             this.velocity.x = Math.min(this.velocity.x + 10, MAXRUN); // increase velocity by 10, up to MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
         else if (this.game.keys["a"]) {                               // Move/accelerate character left
             if(this.state != "ATTACK")
                 this.facingDirection = 0;                             // face left
-            if (this.onGround) this.changeState("WALK", 99);          // walk if not mid-air
+            if (this.onGround && this.state != "ATTACK")
+                 this.changeState("WALK", 99);          // walk if not mid-air
             
             this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
@@ -119,43 +180,7 @@ class CharacterController {
             this.phase = false;
         }
 
-        //****************** */
-        // attack animation code.
-        // This section is responsible for going into and leaving "ATTACK" state.
-        if (this.game.click && this.attackBeginTime === undefined) { // begin attacking now on click.
-            this.attackBeginTime = this.game.timer.gameTime;
-            this.game.click = undefined;
-        }
-        const attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
-        if (attackTimeElapsed < 0.3) { // attacks should last 0.3s                                                        
-            this.game.click == undefined;
-            this.changeState("ATTACK", 141);
-            if(this.onGround) this.velocity.x = 0;
-
-            if (this.facingDirection == 0) {
-                this.animationList["ATTACK"].xoffset = 200 * this.scale;
-            } else {
-                this.animationList["ATTACK"].xoffset = 0;
-            }
-            this.updateAttackBB();
-            for (const entity of this.game.entities.filter(e => e instanceof Enemy && e.BB !== undefined)) {
-                // TODO: some of this logic should(?) probably be in the Enemy class
-                if (this.attackBB.collide(entity.BB)) {
-                    entity.HP--;
-                    if (entity.HP <= 0) entity.state = "DEAD";
-                }
-            }
-        } else if (attackTimeElapsed >= 0.4) { // cleanup after attack + internal cooldown of 0.1s
-            this.attackBeginTime = undefined;
-            this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.05, 0, 0, 0, 100 * this.scale, this.scale);
-            if (!this.onGround)
-                this.changeState("JUMP", 159);
-            else {
-                this.changeState("IDLE", 162);
-            }
-        }
-        // end of attack code
-        // ****************
+        
 
         if (this.game.keys["g"]) { // cheat/reset character location/state
             this.velocity = { x: 0, y: 0 };
@@ -185,7 +210,12 @@ class CharacterController {
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Enemy) {
                     console.log("Hornet collided with " + entity.constructor.name);
-                    this.HP--;
+                    const t = this.game.timer.gameTime;
+                    if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
+                        this.HP--;
+                        this.timeOfLastDamage = t;
+                        this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
+                    }
                     if (this.HP <= 0) {
                         this.changeState("DEATH")
                         this.dead = true;
@@ -206,6 +236,7 @@ class CharacterController {
                 else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
                     this.y = entity.BB.top - this.BB.height;
                     this.velocity.y = 0;
+                    this.jumps = 0;
                     this.onGround = true;
                     this.updateBB();
                 } else if (entity instanceof Wall) {
@@ -230,6 +261,7 @@ class CharacterController {
                 }
                 else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
                     this.changeState("IDLE", 226);
+                    this.game.soundEngine.playSound("./assets/sounds/sfx/flag.wav");
                     this.game.camera.loadNextLevel(0, 0);
                 }
             }
@@ -250,7 +282,12 @@ class CharacterController {
         if (this.state == 'ATTACK') {
             this.attackBB.draw(ctx);
         }
-        this.BB.draw(ctx);
+        const t = this.game.timer.gameTime;
+        if(t - this.timeOfLastDamage > this.invulnLength) {
+            this.BB.draw(ctx); // no BB if we're invuln.
+        } else {
+            ctx.globalAlpha = 0.5;
+        }
 
         // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);
