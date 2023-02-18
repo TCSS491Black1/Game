@@ -4,6 +4,7 @@ const ASSET_MANAGER = new AssetManager();
 // queue all assets.
 [
 	"./assets/hornet.png", // main character
+	"./assets/hornetattack.png",
 	
 	"./assets/Uoma.png", // enemies
 	"./assets/Heavy_Sentry.png",
