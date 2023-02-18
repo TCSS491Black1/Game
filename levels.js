@@ -195,7 +195,7 @@ const levelTwo = {
         {x:221*32,y:8*32 ,size: 18}],
 
     targetblock: [{x: 32, y: 47*32, xScale: 3.5 , yScale: 1}],
-    enemies: [{name: "Heavy_Sentry" , x: 800, y:400}],
+    enemies: [{name: "Heavy_Sentry" , x: 3200, y:500}],
    // {name: "Heavy_Sentry" , x: 2200, y:550*2},
     //{name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
     powerUps:  [{name: "Gathering_Swarm" , x: 1200 , y:1000  }]
