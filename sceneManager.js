@@ -81,6 +81,11 @@ class SceneManager{
             console.log("added flagblock", [entry.x, entry.y, entry.size]);
         }
 
+        for(const entry of level.pitglow) {
+            this.game.addEntity(new Pit_Glow(this.game, entry.x, entry.y, entry.xScale, entry.yScale));
+            console.log("added pitglow", [entry.x, entry.y, entry.size]);
+        }
+
         for(const entry of level.enemies) {
             if(entry.name == "Uoma"){
                 this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
