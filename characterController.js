@@ -212,12 +212,13 @@ class CharacterController {
                     console.log("Hornet collided with " + entity.constructor.name);
                     const t = this.game.timer.gameTime;
                     if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
-                        this.HP--;
+                        console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
+                        this.HP -= entity.damage;
                         this.timeOfLastDamage = t;
                         this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
                     } else if(t - this.timeOfLastDamage <= this.invulnLength) {
                         // no enemy collision if we're invulnerable
-                        return;
+                        //return;
                     }
                     if (this.HP <= 0) {
                         this.changeState("DEATH")
@@ -272,7 +273,7 @@ class CharacterController {
             // deal damage if attack hits enemy:
             if (this.state == "ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {
                 if (entity instanceof Enemy) {
-                    entity.HP--;
+                    entity.HP -= this.damage;
                 }
             }
         });

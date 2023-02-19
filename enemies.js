@@ -163,10 +163,10 @@ class Heavy_Sentry extends Enemy {
     attackRange(){
         if(super.withinRange()){
             if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 300))){
-                console.log("true")
+                // console.log("true")
                 return true;
             }else if(this.game.player.onGround == this.onGround && ((this.facingDirection == 0 && this.x - this.game.player.x < 75))){
-                console.log("true")
+                // console.log("true")
                 return true;
             }
         }
@@ -246,7 +246,7 @@ class Heavy_Sentry extends Enemy {
 
         if (entity instanceof CharacterController) {
             //entity.dead = true;
-            entity.HP -= this.damage;
+            //entity.HP -= this.damage;
             //this.state = "DEAD";
             //console.log(this.name + " collision with Hornet = LOSS");
         }
@@ -260,7 +260,7 @@ class Heavy_Sentry extends Enemy {
             return;
         //Stand wating at end of platform if player is within sight    
         }
-        console.log(this.attackTime);
+        //console.log(this.attackTime);
 
         if(this.attackTime == 0){
             this.focused = super.withinRange();
@@ -317,7 +317,7 @@ class Heavy_Sentry extends Enemy {
                     }
 
                     if(this.attackRange()){
-                        console.log(this.attackRange());
+                        //console.log(this.attackRange());
                         this.attack();
                     }
 
@@ -491,7 +491,7 @@ class Hive_Knight extends Enemy {
 
         if (entity instanceof CharacterController) {
             //entity.dead = true;
-            entity.HP -= this.damage;
+            //entity.HP -= this.damage;
             console.log(this.name + " collision with Hornet = LOSS");
         }
     }
