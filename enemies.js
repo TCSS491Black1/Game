@@ -10,6 +10,7 @@ class Enemy {
         // default values, probably overwritten for different subclasses
         this.facingDirection = 0;
         this.HP = 10; 
+        this.damage = 1;
         this.speed = 100;
         this.state = "WALK";
         this.animationList = {}
@@ -154,6 +155,7 @@ class Heavy_Sentry extends Enemy {
         this.attackTime = 0;
         this.startleTime = 0;
         this.state = "WALK";
+        this.damage = 3;
         this.updateBB();
         //this.updateLedgeCheck();
     }
@@ -293,9 +295,10 @@ class Heavy_Sentry extends Enemy {
         }
 
         if (entity instanceof CharacterController) {
-            entity.dead = true;
+            //entity.dead = true;
+            entity.HP -= this.damage;
             //this.state = "DEAD";
-            console.log(this.name + " collision with Hornet = LOSS");
+            //console.log(this.name + " collision with Hornet = LOSS");
         }
     }
     
@@ -585,7 +588,8 @@ class Hive_Knight extends Enemy {
     onCollision(entity) {
 
         if (entity instanceof CharacterController) {
-            entity.dead = true;
+            //entity.dead = true;
+            entity.HP -= this.damage;
             console.log(this.name + " collision with Hornet = LOSS");
         }
     }
