@@ -295,9 +295,6 @@ class Heavy_Sentry extends Enemy {
                     if(!this.halt){
                         this.x -= (this.speed*1.5 * this.game.clockTick);
                     }
-
-                
-                  
                    
                     if(this.attackRange()){
                         this.attack();
