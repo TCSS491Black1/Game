@@ -20,7 +20,7 @@ class CharacterController {
         this.HP = 10;
         this.maxHP = 10;
         this.timeOfLastDamage = 0;
-        this.invulnLength = 3;
+        this.invulnLength = 2;
         this.dead = false;
         this.updateBB();
         this.attackBeginTime = 0;
@@ -214,6 +214,9 @@ class CharacterController {
                         this.HP--;
                         this.timeOfLastDamage = t;
                         this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
+                    } else if(t - this.timeOfLastDamage <= this.invulnLength) {
+                        // no enemy collision if we're invulnerable
+                        return;
                     }
                     if (this.HP <= 0) {
                         this.changeState("DEATH")
