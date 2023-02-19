@@ -1,5 +1,6 @@
 class Animator {
     constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth=0, xoffset=0, yoffset=0, scale=1, rowCount=1, lineEnd, rowOffset=0) {
+        if(lineEnd === undefined) lineEnd = frameCount; // # 
         Object.assign(this, { spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop , spriteBorderWidth, xoffset, yoffset, scale, rowCount, lineEnd, rowOffset}); //offset = {x:0, y:0} is another option.
 //rowOffset
 //rowCount
