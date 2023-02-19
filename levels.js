@@ -27,6 +27,10 @@ const levelOne = {
     targetblock: [{x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
         {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}
     ],
+
+    pitglow: [{x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
+        {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}], // just put it on the block for now.
+
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 1200, y:450},
@@ -52,6 +56,7 @@ const levelTwo = {
     groundType: UnderGround,
     wallType: UnderWall,
     ground: [
+        //Starting
         {x:32*9, y:47*32, size: 10 }, 
         {x:32*95, y:47*32, size: 1 }, 
         {x:32*100, y:47*32, size: 1 }, 
@@ -80,6 +85,7 @@ const levelTwo = {
         {x:32*65, y:29*32, size: 4 }, 
         {x:32*9, y:26*32, size: 105 }, 
 
+        //Stairs down
         {x:32*117, y:28*32, size: 3 }, 
         {x:32*120, y:29*32, size: 3 }, 
         {x:32*123, y:30*32, size: 3 }, 
@@ -93,7 +99,7 @@ const levelTwo = {
         {x:32*154, y:38*32, size: 4 }, 
         {x:32*158, y:39*32, size: 4 }, 
 
-
+        //Straigt away
         {x:32*221, y:26*32, size: 89 }, 
         {x:32*315, y:26*32, size: 1 }, 
         {x:32*321, y:26*32, size: 18 }, 
@@ -106,6 +112,7 @@ const levelTwo = {
         {x:32*397, y:42*32, size: 1 }, 
         {x:32*398, y:41*32, size: 1 }, 
 
+        //Bottom right corner
         {x:32*414, y:37*32, size: 4 }, 
         {x:32*409, y:35*32, size: 4 }, 
         {x:32*415, y:34*32, size: 4 }, 
@@ -122,6 +129,7 @@ const levelTwo = {
         {x:32*401, y:8*32, size: 4 }, 
         {x:32*408, y:7*32, size: 10 }, 
 
+        //Top Right
         {x:32*16, y:7*32, size: 4 }, 
         {x:32*22, y:6*32, size: 3 }, 
         {x:32*27, y:3*32, size: 3 }, 
@@ -152,7 +160,7 @@ const levelTwo = {
         {x:32*214, y:7*32, size: 1 }, 
         {x:32*217, y:7*32, size: 51 }, 
 
-
+        //Top middle to right
         {x:32*270, y:4*32, size: 5 }, 
         {x:32*270, y:12*32, size: 5 }, 
         {x:32*272, y:8*32, size: 1 }, 
@@ -194,6 +202,7 @@ const levelTwo = {
         {x:221*32,y:8*32 ,size: 18}],
 
     targetblock: [{x: 32, y: 47*32, xScale: 3.5 , yScale: 1}],
+    pitglow: [{x: 32, y: 47*32, xScale: 1 , yScale: 1}],
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400}],
    // {name: "Heavy_Sentry" , x: 2200, y:550*2},
     //{name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
@@ -231,6 +240,7 @@ const levelThree = {
         {x:32*276, y:params.canvasHeight*2-32*13, size: 8 }],
     wall: [{x:-32,y:0,size: 24}],
     targetblock: [{x: 700, y: params.canvasHeight+32*12,xScale:1,yScale:1}],
+    pitglow: [{x: 700, y: params.canvasHeight+32*12,xScale:1,yScale:1}],
     enemies: [{name: "Heavy_Sentry" , x: 1200, y:550*2},
     {name: "Heavy_Sentry" , x: 2200, y:550*2},
     {name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
@@ -270,6 +280,7 @@ const levelFour = {
     ],
     wall: [{x:-32,y:0,size: 24}],
     targetblock: [{x: 700, y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
+    pitglow: [{x: 700, y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 2200, y:450},

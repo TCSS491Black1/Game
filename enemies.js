@@ -48,13 +48,19 @@ class Enemy {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.game,this.x + 45, this.y + 35, 70, 90, "red");
     }
-    // Check for if player is close enough to focus on
+    // Check for if player is close enough to focus on must be facing each other.
     withinRange(){
+        //Check for distance between player and enemy 
         if(Math.abs(this.game.player.x + this.game.player.BB.width/2 - this.x + this.BB.width/2) < 1000 &&
-           Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2) < 600){
-            return true;
+           Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2) < 400 ){
+
+            //Check for if enemy is facing player if so we can focus on player
+           // if((this.game.player.x > this.x && this.facingDirection == 1)||(this.game.player.x <= this.x && this.facingDirection == 0)){
+                return true;
+          //  }
         }
         return false;
+        
     }
     //Fix work in progress
     /*
@@ -124,60 +130,168 @@ class Heavy_Sentry extends Enemy {
 
         // TODO: adjust Animator arguments for sprite sheet
         //this.animator = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
-         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration,loop, spriteBorderWidth){
+         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop , spriteBorderWidth, xoffset, yoffset, scale, rowCount, rowOffset){
        // console.log(this.asset  )
         this.animationList["IDLE"] = new Animator(this.asset, 4, 325, 208, 263, 6, 0.1, 1, 3 );
         this.animationList["WALK"] = new Animator(this.asset, 4, 610, 226, 259, 8, 0.15, 1, 3);
         this.animationList["DEAD"] = new Animator(this.asset, 371, 3600, 154, 164, 3, 0.2, 0, 3);
-        this.animationList["RUN"] = new Animator(this.asset, 4, 1191, 264, 246, 8, 0.1 , 1, 3);
+        this.animationList["RUN"] = new Animator(this.asset, 4, 1192, 264, 245, 8, 0.1 , 1, 3);
         this.animationList["TURN"] = new Animator(this.asset, 6, 902, 242, 230, 2, 0.1 , 0, 3);
+        this.animationList["STARTLE"] = new Animator(this.asset, 532, 903, 250, 266, 4, 0.2, 0, 3.2);
+        this.animationList["ATTACK"] = new Animator(this.asset, 4, 1460, 406, 331, 12, 0.1, 0, 3,0,0,1,2,6,335);
+        this.animationList["CHARGE"] = new Animator(this.asset, 4, 3065, 352, 200, 6, 1, 1, 3);
+        this.animationList["CHARGE_END"] = new Animator(this.asset, 4, 3290, 341, 287, 5, 1, 1, 3);
 
         // ATTACK
         // JUMP
+        this.focused = false;
 
         this.runFrameCount = 1;
         this.halt = false;
-        this.isGrounded = false;
+        this.onGround = false;
         this.movingDirection = 0;
         this.turnTime = 0;
-        this.state = "RUN";
+        this.attackTime = 0;
+        this.startleTime = 0;
+        this.state = "WALK";
         this.updateBB();
         //this.updateLedgeCheck();
     }
+
+    attackRange(){
+        if(super.withinRange()){
+            if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 300))){
+                console.log("true")
+                return true;
+            }else if(this.game.player.onGround == this.onGround && ((this.facingDirection == 0 && this.x - this.game.player.x < 75))){
+                console.log("true")
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    attack(){
+        this.state = "ATTACK";
+        this.halt = true;
+        this.attackTime = this.game.timer.gameTime;
+    }
+
+    chargeRange(){
+        if(super.withinRange()){
+            if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 600))){
+                console.log("true")
+                return true;
+            }else if(this.game.player.onGround == this.onGround && ((this.facingDirection == 0 && this.x - this.game.player.x < 375))){
+                console.log("true")
+                return true;
+            }
+        }
+        return false;
+    }
+
+    charge(){
+        this.state = "CHARGE";
+        this.attackTime = this.game.timer.gameTime;
+    }
+
+
     onCollision(entity) {
         
         if(entity instanceof Ground && (this.lastBB.bottom-14 <= entity.BB.top)){
-            this.isGrounded = true;
+            this.onGround = true;
             //Keep enemy on surface
-            this.y = entity.BB.top-this.BB.height-14;
+            
 
             //Keep from falling off ledges if not in follow character mode
             //Left side stop or turn
-            if(entity.BB.x - this.BB.x > 0 && this.movingDirection == 0){
-                if(super.withinRange()){
-                    this.halt = true;
-                    this.state = "IDLE";
-                }else{
-                    this.halt = false;
-                    this.state = "TURN"
-                    this.movingDirection = 1;
-                    this.x += 10
-                }
-            //Right side stop or turn
-            }else if(entity.BB.x+entity.BB.width - this.BB.x < 200 && this.movingDirection == 1){
-                if(super.withinRange()){
-                    this.halt = true;
-                    this.state = "IDLE";
+            if(this.state != "ATTACK"){
+                
+                this.y = entity.BB.top-this.BB.height-14;
+                if(entity.BB.x - this.BB.x > 0 && this.movingDirection == 0){
+                    if(super.withinRange()){
+                        this.halt = true;
+                        console.log("halted here")
+                        this.state = "IDLE";
+                    }else{
+                        this.halt = false;
+                        this.state = "TURN";                      
+                        this.movingDirection = 1;
+                        this.x += 10;
+                    }
+                //Right side stop or turn
+                }else if(entity.BB.x+entity.BB.width - this.BB.x < 200 && this.movingDirection == 1){
+                    if(super.withinRange()){
+                        console.log("halted here")
+                        this.halt = true;
+                        this.state = "IDLE";
 
+                    }else{
+                        this.halt = false;
+                        this.state = "TURN";
+                        this.movingDirection = 0;
+                        this.x -= 10;
+                    }
+                }
+            }else if (this.state == "ATTACK"){
+                if(this.facingDirection==0){
+                    if(this.animationList["ATTACK"].currentFrame()<1){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<2){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<3){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<4){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<5){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<6){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<7){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<8){
+                        this.y = entity.BB.top-this.BB.height-20;
+                    }else if(this.animationList["ATTACK"].currentFrame()<9){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<10){
+                        this.y = entity.BB.top-this.BB.height-155;
+                    }else if(this.animationList["ATTACK"].currentFrame()<11){
+                        this.y = entity.BB.top-this.BB.height-155;
+                    }else if(this.animationList["ATTACK"].currentFrame()<12){
+                        this.y = entity.BB.top-this.BB.height-155;
+                    }
                 }else{
-                    this.halt = false;
-                    this.state = "TURN"
-                    this.movingDirection = 0;
-                    this.x -= 10
+                    if(this.animationList["ATTACK"].currentFrame()<1){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<2){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<3){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<4){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<5){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<6){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<7){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<8){
+                        this.y = entity.BB.top-this.BB.height-20;
+                    }else if(this.animationList["ATTACK"].currentFrame()<9){
+                        this.y = entity.BB.top-this.BB.height-75;
+                    }else if(this.animationList["ATTACK"].currentFrame()<10){
+                        this.y = entity.BB.top-this.BB.height-155;
+                    }else if(this.animationList["ATTACK"].currentFrame()<11){
+                        this.y = entity.BB.top-this.BB.height-155;
+                    }else if(this.animationList["ATTACK"].currentFrame()<12){
+                        this.y = entity.BB.top-this.BB.height-155;
+                    }
                 }
             }
             
         }
+
         if (entity instanceof CharacterController) {
             entity.dead = true;
             //this.state = "DEAD";
@@ -186,53 +300,134 @@ class Heavy_Sentry extends Enemy {
     }
     
     update() {
-   
-        // Mechanics for how / where the enemy moves:
+        //console.log(this.focused+" "+this.attackTime+" "+super.withinRange());
         if(this.state == "DEAD") {  // TODO: sound on death?
             this.BB = undefined;
             this.y = this.y+3;
             return;
-        //Stand wating at end of platform is player is within sight    
-        }else if(this.state == "IDLE" && !super.withinRange()){
-            this.state = "TURN";
-        //Turn and go other way
-        }else if(this.state == "TURN"){
-            if(this.game.timer.gameTime-this.turnTime > 0.25){
-                this.animationList["TURN"] = new Animator(this.asset, 6, 902, 242, 230, 2, 0.1 , 0, 3);
+        //Stand wating at end of platform if player is within sight    
+        }
+        console.log(this.attackTime);
+
+        if(this.attackTime == 0){
+            this.focused = super.withinRange();
+        }
+        //Focused on Player
+        if(this.focused){
+            //Found player so run now
+            if(this.state == "WALK"){
+                this.state = "STARTLE";
+                this.startleTime = this.game.timer.gameTime;
+            }
+            else if(this.state == "STARTLE" && this.game.timer.gameTime - this.startleTime >  1.2   ){
+                this.animationList["STARTLE"] = new Animator(this.asset, 532, 903, 250, 266, 4, 0.2, 0, 3.2);
+                this.halt = false;
                 this.state = "RUN";
             }
-        //Follow player if within sight else pace back and forth
-        }else if(this.state == "RUN" && this.isGrounded){
-            
+            //Turn to follow and resume running
+            else if(this.state == "TURN"){
+                this.attackTime =0;
+                this.startleTime =0;
+                if(this.game.timer.gameTime-this.turnTime > 0.25){
+                    this.animationList["TURN"] = new Animator(this.asset, 6, 902, 242, 230, 2, 0.1 , 0, 3);
+                    this.halt = false;
+                    this.state = "RUN";
+                }
+            //Follow player if within sight
+            }else if(this.state == "RUN" && this.onGround){
                 //Movement Left
+                this.startleTime = 0;
                 if(this.movingDirection == 0){
                     this.facingDirection = 0;
                     if(!this.halt){
-                        this.x -= (this.speed * this.game.clockTick);
+                        this.x -= (this.speed*1.5 * this.game.clockTick);
                     }
+
+                
+                  
+                   
+                    if(this.attackRange()){
+                        this.attack();
+                        this.x -= 100;
+                    }
+
                     //To far left turn and go right
-                    if(super.withinRange()&&this.game.player.x-(this.x+this.BB.width) > 100){
+                    if(this.game.player.x-(this.x+this.BB.width) > 100){
                         this.state="TURN"
+                        this.x +=50;
                         this.turnTime = this.game.timer.gameTime;
                         this.movingDirection =1;
                     }
+
                 //Movement Right    
-                }else if(this.movingDirection==1){
+                }else if(this.movingDirection == 1){
                     this.facingDirection = 1;
                     if(!this.halt){
-                        this.x += (this.speed * this.game.clockTick);
+                        this.x += (this.speed*1.5 * this.game.clockTick);
                     }
+
+                    if(this.attackRange()){
+                        console.log(this.attackRange());
+                        this.attack();
+                    }
+
                     //To far right turn and go left
-                    if(super.withinRange() && this.game.player.x-(this.x) < -100){
+                    if(this.game.player.x-(this.x) < -100){
                         this.state="TURN"
                         this.turnTime = this.game.timer.gameTime;
                         this.movingDirection = 0;
                     }
-                    
-                }
-            
 
+
+
+                }
+            }else if(this.state == "ATTACK"){
+                //console.log("In update attack")
+
+                if(this.game.timer.gameTime-this.attackTime > 1.3){
+                    this.animationList["ATTACK"] = new Animator(this.asset, 4, 1462, 406, 330, 12, 0.1, 0, 3,0,0,1,2,6,335);
+                    if(this.attackRange()){
+                        this.state = "ATTACK";
+                        this.attackTime = this.game.timer.gameTime;
+
+                    }else{
+                        console.log("EndedAttack");
+                        this.attackTime = 0;
+                        this.state = "RUN";
+                        this.y += 60;
+                        this.halt = false;
+                    }
+                }
+
+            }
+        //Not focused movements    
+        }else{
+            this.attackTime = 0;
+            this.startleTime = 0;
+            this.state = "WALK";
+            if(this.state == "IDLE"){
+                this.state = "TURN";
+            }else if(this.state == "TURN"){
+                if(this.game.timer.gameTime-this.turnTime > 0.25){
+                    this.animationList["TURN"] = new Animator(this.asset, 6, 902, 242, 230, 2, 0.1 , 0, 3);
+                    this.state = "WALK";
+                }
+            //Follow player if within sight else pace back and forth
+            }else if(this.state == "WALK" && this.onGround){
+                //Movement Left
+                if(this.movingDirection == 0){
+                    this.facingDirection = 0;
+                    this.x -= (this.speed * this.game.clockTick);
+                    
+                //Movement Right    
+                }else if(this.movingDirection==1){
+                    this.facingDirection = 1;
+                    this.x += (this.speed * this.game.clockTick);
+            
+                }
+            }
         }
+
         this.y += (this.speed * this.game.clockTick);    
         this.updateBB();
         this.collisionChecks();
@@ -251,8 +446,16 @@ class Heavy_Sentry extends Enemy {
                          [20,20,210,240],
                          [30,20,200,240]];
 
-        if(this.state == "IDLE" || this.state == "WALK" || this.state == "TURN"){
+        if(this.state == "IDLE" || this.state == "WALK" || this.state == "TURN" || this.state == "STARTLE"){
             this.BB = new BoundingBox(this.game,this.x+40, this.y+20, 140,240, "red");
+
+        }else if(this.state == "CHARGE"){
+            this.BB = new BoundingBox(this.game,this.x+25, this.y+20, 195,160, "red");
+
+        }else if(this.state == "CHARGE_END"){
+            this.BB = new BoundingBox(this.game,this.x+110, this.y+40, 140,240, "red");
+
+
         }else if(this.state == "RUN"){
             
             //TODO refactoring adjustable bounding boxes; current fix attempt failed
@@ -294,6 +497,62 @@ class Heavy_Sentry extends Enemy {
                     this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 210,240, "red");
                 }else if(this.animationList["RUN"].currentFrame()<8){
                     this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 200,240, "red");
+                }
+            }
+        }else if(this.state == "ATTACK"){
+            //Left
+            if(this.facingDirection==0){
+                if(this.animationList["ATTACK"].currentFrame()<1){
+                    this.BB = new BoundingBox(this.game,this.x+180, this.y+80, 140,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<2){
+                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<3){
+                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<4){
+                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<5){
+                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<6){
+                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 180,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<7){
+                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<8){
+                    this.BB = new BoundingBox(this.game,this.x+120, this.y+20, 240,300, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<9){
+                    this.BB = new BoundingBox(this.game,this.x+10, this.y+80, 310,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<10){
+                    this.BB = new BoundingBox(this.game,this.x+10, this.y+160, 310,160, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<11){
+                    this.BB = new BoundingBox(this.game,this.x+10, this.y+160, 310,160, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<12){
+                    this.BB = new BoundingBox(this.game,this.x+30, this.y+160, 290,160, "red");
+                }
+            //Right
+            }else{
+                if(this.animationList["ATTACK"].currentFrame()<1){
+                    this.BB = new BoundingBox(this.game,this.x+90, this.y+80, 140,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<2){
+                    this.BB = new BoundingBox(this.game,this.x+60, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<3){
+                    this.BB = new BoundingBox(this.game,this.x+50, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<4){
+                    this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<5){
+                    this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<6){
+                    this.BB = new BoundingBox(this.game,this.x+20, this.y+80, 180,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<7){
+                    this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<8){
+                    this.BB = new BoundingBox(this.game,this.x+70, this.y+20, 240,300, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<9){
+                    this.BB = new BoundingBox(this.game,this.x+100, this.y+80, 310,240, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<10){
+                    this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 310,160, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<11){
+                    this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 310,160, "red");
+                }else if(this.animationList["ATTACK"].currentFrame()<12){
+                    this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 290,160, "red");
                 }
             }
         }
@@ -392,3 +651,21 @@ class Flag_Block {
         this.BB.draw(ctx);
     };
 }
+class Pit_Glow {
+    //An animation to signal the appropriate pit to jump into in order to descend to the next level.
+    constructor(game, x, y, xScale, yScale) {
+        Object.assign(this, { game, x, y, xScale, yScale});
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Pit_Glow.png"),
+            0, 0, 129, 130, 64, 0.04, 1, 0)
+        this.speed = 0;
+    }
+
+    update() {
+        
+    }
+
+    draw(ctx) {
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-this.game.camera.y)
+    };
+}
+
