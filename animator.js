@@ -52,10 +52,17 @@ class Animator {
             this.frameSwappedTime = this.elapsedTime;
             this.frameIndex = (this.frameIndex + 1) % this.frameCount;
         }
+        
         return this.frameIndex;
     };
 
     isDone() {
         return (this.elapsedTime >= this.totalTime);
+    };
+    reset() {
+        this.elapsedTime = 0;
+        this.frameIndex = 0;
+        this.frameSwappedTime = 0;
+        this.rOffset = 0;
     };
 };
