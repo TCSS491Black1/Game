@@ -237,56 +237,57 @@ class Heavy_Sentry extends Enemy {
                     }
                 }
             }else if (this.state == "ATTACK"){
+                const frame = this.animationList["ATTACK"].currentFrame();
                 if(this.facingDirection==0){
-                    if(this.animationList["ATTACK"].currentFrame()<1){
+                    if(frame <1){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<2){
+                    }else if(frame <2){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<3){
+                    }else if(frame <3){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<4){
+                    }else if(frame <4){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<5){
+                    }else if(frame <5){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<6){
+                    }else if(frame <6){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<7){
+                    }else if(frame <7){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<8){
+                    }else if(frame <8){
                         this.y = entity.BB.top-this.BB.height-20;
-                    }else if(this.animationList["ATTACK"].currentFrame()<9){
+                    }else if(frame <9){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<10){
+                    }else if(frame <10){
                         this.y = entity.BB.top-this.BB.height-155;
-                    }else if(this.animationList["ATTACK"].currentFrame()<11){
+                    }else if(frame <11){
                         this.y = entity.BB.top-this.BB.height-155;
-                    }else if(this.animationList["ATTACK"].currentFrame()<12){
+                    }else if(frame <12){
                         this.y = entity.BB.top-this.BB.height-155;
                     }
                 }else{
-                    if(this.animationList["ATTACK"].currentFrame()<1){
+                    if(frame <1){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<2){
+                    }else if(frame <2){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<3){
+                    }else if(frame <3){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<4){
+                    }else if(frame <4){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<5){
+                    }else if(frame <5){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<6){
+                    }else if(frame <6){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<7){
+                    }else if(frame <7){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<8){
+                    }else if(frame <8){
                         this.y = entity.BB.top-this.BB.height-20;
-                    }else if(this.animationList["ATTACK"].currentFrame()<9){
+                    }else if(frame <9){
                         this.y = entity.BB.top-this.BB.height-75;
-                    }else if(this.animationList["ATTACK"].currentFrame()<10){
+                    }else if(frame <10){
                         this.y = entity.BB.top-this.BB.height-155;
-                    }else if(this.animationList["ATTACK"].currentFrame()<11){
+                    }else if(frame <11){
                         this.y = entity.BB.top-this.BB.height-155;
-                    }else if(this.animationList["ATTACK"].currentFrame()<12){
+                    }else if(frame <12){
                         this.y = entity.BB.top-this.BB.height-155;
                     }
                 }
@@ -504,57 +505,59 @@ class Heavy_Sentry extends Enemy {
             }
         }else if(this.state == "ATTACK"){
             //Left
+            const frame = this.animationList["ATTACK"].currentFrame();
             if(this.facingDirection==0){
-                if(this.animationList["ATTACK"].currentFrame()<1){
+                if(frame <1){
                     this.BB = new BoundingBox(this.game,this.x+180, this.y+80, 140,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<2){
+                }else if(frame <2){
                     this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<3){
+                }else if(frame <3){
                     this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<4){
+                }else if(frame <4){
                     this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<5){
+                }else if(frame <5){
                     this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<6){
+                }else if(frame <6){
                     this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 180,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<7){
+                }else if(frame <7){
                     this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<8){
+                }else if(frame <8){
                     this.BB = new BoundingBox(this.game,this.x+120, this.y+20, 240,300, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<9){
+                }else if(frame <9){
                     this.BB = new BoundingBox(this.game,this.x+10, this.y+80, 310,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<10){
+                }else if(frame <10){
                     this.BB = new BoundingBox(this.game,this.x+10, this.y+160, 310,160, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<11){
+                }else if(frame <11){
                     this.BB = new BoundingBox(this.game,this.x+10, this.y+160, 310,160, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<12){
+                }else if(frame <12){
                     this.BB = new BoundingBox(this.game,this.x+30, this.y+160, 290,160, "red");
                 }
             //Right
             }else{
-                if(this.animationList["ATTACK"].currentFrame()<1){
+                const frame = this.animationList["ATTACK"].currentFrame();
+                if(frame <1){
                     this.BB = new BoundingBox(this.game,this.x+90, this.y+80, 140,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<2){
+                }else if(frame <2){
                     this.BB = new BoundingBox(this.game,this.x+60, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<3){
+                }else if(frame <3){
                     this.BB = new BoundingBox(this.game,this.x+50, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<4){
+                }else if(frame <4){
                     this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<5){
+                }else if(frame <5){
                     this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<6){
+                }else if(frame <6){
                     this.BB = new BoundingBox(this.game,this.x+20, this.y+80, 180,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<7){
+                }else if(frame <7){
                     this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<8){
+                }else if(frame <8){
                     this.BB = new BoundingBox(this.game,this.x+70, this.y+20, 240,300, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<9){
+                }else if(frame <9){
                     this.BB = new BoundingBox(this.game,this.x+100, this.y+80, 310,240, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<10){
+                }else if(frame <10){
                     this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 310,160, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<11){
+                }else if(frame <11){
                     this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 310,160, "red");
-                }else if(this.animationList["ATTACK"].currentFrame()<12){
+                }else if(frame <12){
                     this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 290,160, "red");
                 }
             }
