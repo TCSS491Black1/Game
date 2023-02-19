@@ -146,7 +146,7 @@ class Heavy_Sentry extends Enemy {
         // ATTACK
         // JUMP
         this.focused = false;
-
+        this.HP = 10;
         this.runFrameCount = 1;
         this.halt = false;
         this.onGround = false;
@@ -238,61 +238,10 @@ class Heavy_Sentry extends Enemy {
                 }
             }else if (this.state == "ATTACK"){
                 const frame = this.animationList["ATTACK"].currentFrame();
-                if(this.facingDirection==0){
-                    if(frame <1){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <2){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <3){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <4){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <5){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <6){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <7){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <8){
-                        this.y = entity.BB.top-this.BB.height-20;
-                    }else if(frame <9){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <10){
-                        this.y = entity.BB.top-this.BB.height-155;
-                    }else if(frame <11){
-                        this.y = entity.BB.top-this.BB.height-155;
-                    }else if(frame <12){
-                        this.y = entity.BB.top-this.BB.height-155;
-                    }
-                }else{
-                    if(frame <1){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <2){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <3){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <4){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <5){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <6){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <7){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <8){
-                        this.y = entity.BB.top-this.BB.height-20;
-                    }else if(frame <9){
-                        this.y = entity.BB.top-this.BB.height-75;
-                    }else if(frame <10){
-                        this.y = entity.BB.top-this.BB.height-155;
-                    }else if(frame <11){
-                        this.y = entity.BB.top-this.BB.height-155;
-                    }else if(frame <12){
-                        this.y = entity.BB.top-this.BB.height-155;
-                    }
-                }
+                const deltay = entity.BB.top-this.BB.height;
+                const yOffsets =  [ 75, 75, 75, 75, 75, 75, 75, 20, 75, 155, 155, 155];
+                this.y = deltay - yOffsets[frame];
             }
-            
         }
 
         if (entity instanceof CharacterController) {
@@ -440,126 +389,79 @@ class Heavy_Sentry extends Enemy {
  
     updateBB(){
         this.lastBB = this.BB;
-        //For potential refactoring
-        this.runRight = [[50,20,180,240],
-                         [50,20,180,240],
-                         [50,20,180,240],
-                         [30,20,200,240],
-                         [20,20,210,240],
-                         [15,20,215,240],
-                         [20,20,210,240],
-                         [30,20,200,240]];
 
+        const moveBB = (deltaX, deltaY, w, h) => { // moves the BB by given deltas, width and height
+            this.BB = new BoundingBox(this.game, this.x + deltaX, this.y + deltaY, w, h, "red");
+        }
         if(this.state == "IDLE" || this.state == "WALK" || this.state == "TURN" || this.state == "STARTLE"){
-            this.BB = new BoundingBox(this.game,this.x+40, this.y+20, 140,240, "red");
-
+            moveBB(40, 20, 140, 240);
         }else if(this.state == "CHARGE"){
-            this.BB = new BoundingBox(this.game,this.x+25, this.y+20, 195,160, "red");
-
+            moveBB(25, 20, 195, 160);
         }else if(this.state == "CHARGE_END"){
-            this.BB = new BoundingBox(this.game,this.x+110, this.y+40, 140,240, "red");
-
-
+            moveBB(110, 40, 140, 240);
         }else if(this.state == "RUN"){
-            
-            //TODO refactoring adjustable bounding boxes; current fix attempt failed
+            const frame = this.animationList["RUN"].currentFrame();
             //Left
-            if(this.facingDirection==0){
-                //super.movingBB("RUN",this.runRight,8);             
-                if(this.animationList["RUN"].currentFrame()<1){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 180,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<2){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 180,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<3){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 180,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<4){
-                    this.BB = new BoundingBox(this.game,this.x+30, this.y+20, 200,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<5){
-                    this.BB = new BoundingBox(this.game,this.x+20, this.y+20, 210,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<6){
-                    this.BB = new BoundingBox(this.game,this.x+15, this.y+20, 215,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<7){
-                    this.BB = new BoundingBox(this.game,this.x+20, this.y+20, 210,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<8){
-                    this.BB = new BoundingBox(this.game,this.x+30, this.y+20, 200,240, "red");
-                }
-            //Right 
-            }else {
-                if(this.animationList["RUN"].currentFrame()<1){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 180,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<2){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 180,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<3){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 180,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<4){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 200,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<5){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 210,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<6){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 215,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<7){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 210,240, "red");
-                }else if(this.animationList["RUN"].currentFrame()<8){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+20, 200,240, "red");
-                }
+            if (this.facingDirection == 0) {
+                const runLeft = [
+                    [50, 20, 180, 240],
+                    [50, 20, 180, 240],
+                    [50, 20, 180, 240],
+                    [30, 20, 200, 240],
+                    [20, 20, 210, 240],
+                    [15, 20, 215, 240],
+                    [20, 20, 210, 240],
+                    [30, 20, 200, 240]];
+                moveBB(...runLeft[frame]);
+                
+            } else { //Right 
+                const runRight = [
+                    [50, 20, 180, 240],
+                    [50, 20, 180, 240],
+                    [50, 20, 180, 240],
+                    [30, 20, 200, 240],
+                    [20, 20, 210, 240],
+                    [15, 20, 215, 240],
+                    [20, 20, 210, 240],
+                    [30, 20, 200, 240]];
+
+                moveBB(...runRight[frame]);
             }
         }else if(this.state == "ATTACK"){
             //Left
             const frame = this.animationList["ATTACK"].currentFrame();
             if(this.facingDirection==0){
-                if(frame <1){
-                    this.BB = new BoundingBox(this.game,this.x+180, this.y+80, 140,240, "red");
-                }else if(frame <2){
-                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(frame <3){
-                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(frame <4){
-                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(frame <5){
-                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(frame <6){
-                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 180,240, "red");
-                }else if(frame <7){
-                    this.BB = new BoundingBox(this.game,this.x+200, this.y+80, 160,240, "red");
-                }else if(frame <8){
-                    this.BB = new BoundingBox(this.game,this.x+120, this.y+20, 240,300, "red");
-                }else if(frame <9){
-                    this.BB = new BoundingBox(this.game,this.x+10, this.y+80, 310,240, "red");
-                }else if(frame <10){
-                    this.BB = new BoundingBox(this.game,this.x+10, this.y+160, 310,160, "red");
-                }else if(frame <11){
-                    this.BB = new BoundingBox(this.game,this.x+10, this.y+160, 310,160, "red");
-                }else if(frame <12){
-                    this.BB = new BoundingBox(this.game,this.x+30, this.y+160, 290,160, "red");
-                }
+                const leftAttacks = [
+                    [180, 80, 140, 240],
+                    [200, 80, 160, 240],
+                    [200, 80, 160, 240],
+                    [200, 80, 160, 240],
+                    [200, 80, 160, 240],
+                    [200, 80, 180, 240],
+                    [200, 80, 160, 240],
+                    [120, 20, 240, 300],
+                    [10, 80, 310, 240],
+                    [10, 160, 310, 160],
+                    [10, 160, 310, 160],
+                    [30, 160, 290, 160],
+                ];
+                moveBB(...leftAttacks[frame]);
             //Right
             }else{
-                const frame = this.animationList["ATTACK"].currentFrame();
-                if(frame <1){
-                    this.BB = new BoundingBox(this.game,this.x+90, this.y+80, 140,240, "red");
-                }else if(frame <2){
-                    this.BB = new BoundingBox(this.game,this.x+60, this.y+80, 160,240, "red");
-                }else if(frame <3){
-                    this.BB = new BoundingBox(this.game,this.x+50, this.y+80, 160,240, "red");
-                }else if(frame <4){
-                    this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
-                }else if(frame <5){
-                    this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
-                }else if(frame <6){
-                    this.BB = new BoundingBox(this.game,this.x+20, this.y+80, 180,240, "red");
-                }else if(frame <7){
-                    this.BB = new BoundingBox(this.game,this.x+40, this.y+80, 160,240, "red");
-                }else if(frame <8){
-                    this.BB = new BoundingBox(this.game,this.x+70, this.y+20, 240,300, "red");
-                }else if(frame <9){
-                    this.BB = new BoundingBox(this.game,this.x+100, this.y+80, 310,240, "red");
-                }else if(frame <10){
-                    this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 310,160, "red");
-                }else if(frame <11){
-                    this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 310,160, "red");
-                }else if(frame <12){
-                    this.BB = new BoundingBox(this.game,this.x+100, this.y+160, 290,160, "red");
-                }
+                const rightAttacks = [
+                    [90, 80, 140, 240],
+                    [60, 80, 160, 240],
+                    [50, 80, 160, 240],
+                    [40, 80, 160, 240],
+                    [40, 80, 160, 240],
+                    [20, 80, 180, 240],
+                    [40, 80, 160, 240],
+                    [70, 20, 240, 300],
+                    [100, 80, 310, 240],
+                    [100, 160, 310, 160],
+                    [100, 160, 310, 160],
+                    [100, 160, 290, 160]];
+                moveBB(...rightAttacks[frame]);
             }
         }
     }
