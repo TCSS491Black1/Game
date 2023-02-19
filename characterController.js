@@ -36,7 +36,7 @@ class CharacterController {
         this.animationList["WALK"] = new Animator(spritesheet, 4, 1191, 159, 191, 8, 0.1, 1, 3, 0, 0, this.scale);
         this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.3, 0, 3, 0, 0, this.scale);
 
-        this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.02, 0, 0, 0, 100 * this.scale, this.scale);
+        this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.04, 0, 0, 0, 100 * this.scale, this.scale);
         
         this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10, this.scale);
         this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10, this.scale);
@@ -109,8 +109,8 @@ class CharacterController {
         // attack animation code.
         // This section is responsible for going into and leaving "ATTACK" state.
         let attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
-        const attackDuration = 0.1;
-        const attackCooldown = 0.5;
+        const attackDuration = this.animationList["ATTACK"].totalTime;//0.1;
+        const attackCooldown = attackDuration;//0.5;
 
         if (this.game.click && attackTimeElapsed > attackCooldown) { // check if not on cooldown
             this.attackBeginTime = this.game.timer.gameTime;
