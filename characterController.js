@@ -17,6 +17,7 @@ class CharacterController {
         this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
+        this.damage = 1;
         this.HP = 10;
         this.maxHP = 10;
         this.timeOfLastDamage = 0;
@@ -135,7 +136,7 @@ class CharacterController {
             for (const entity of this.game.entities.filter(e => e instanceof Enemy && e.BB !== undefined)) {
                 // TODO: some of this logic should(?) probably be in the Enemy class
                 if (this.attackBB.collide(entity.BB)) {
-                    entity.HP--;
+                    entity.HP -= this.damage;
                     if (entity.HP <= 0) entity.state = "DEAD";
                 }
             }
