@@ -1,30 +1,11 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
-    
-   
-    <style>
-        body {
-            background-color:black;
-            font-family: 'Baskerville',serif ;
-            font-size: 28px;
-        }
-        canvas {
-            padding-left: 0;
-            padding-right: 0;
-            margin-left: auto;
-            margin-right: auto;
-            display: block;
-            font-size: 14px;
-            
-        }
-        div {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="./util.js"></script>
+    <script type="text/javascript" src="./floatingText.js"></script>
     <script type="text/javascript" src="./enemies.js"></script>
     <script type="text/javascript" src="./powerUps.js"></script>
     <script type="text/javascript" src="./tiles.js"></script>
@@ -44,21 +25,57 @@
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./main.js"></script>
 </head>
+
 <body>
-    <div>
-        
-        <h1><FONT COLOR=red> HELLΨSCAPE</h1>
-    </div>    
+    <!--    <div>
 
-    <canvas id="gameWorld" width="1524" height="768" style="background: black; border: 1px solid black" tabindex="0" autofocus></canvas>
-    
-    <div>
-        <br />
-        <h3>Left  - A   Right - D  Move down - S </h3>
-        <h3>Jump  - W   Attack- R</h3>
-        
-
-        <input type="checkbox" id="debug" checked="false"> Debug <input type="checkbox" id="mute" checked="true"> Mute <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05"> Volume
+        <h1>
+            <FONT COLOR=red> HELLΨSCAPE
+        </h1>
     </div>
+-->
+
+    <canvas id="gameWorld" width="1524" height="768" style="background: black; border: 1px solid black" tabindex="0"
+        autofocus></canvas>
+    <div id="configsMenu">
+        Configs:
+        <hr />
+        <div id="soundConfigs" class="container">
+            <div>
+                Master: <br/>
+                <input type="range" id="volume" min="0" max="1" value="0.1" step="0.01">
+                <span class="subtext">Mute <input type="checkbox" id="mute">
+            </div></span>
+            <div>
+                Music: <br/>
+                <input type="range" id="musicVolume" min="0" max="1" value="0.1" step="0.01">
+                <span class="subtext">Mute <input type="checkbox" id="musicMute">
+            </div>
+            <div>SoundFX: <br />
+                <input type="range" id="FXVolume" min="0" max="1" value="0.1" step="0.01">
+                <span class="subtext">Mute <input type="checkbox" id="FXMute">
+            </div>
+        </div>
+        <hr />
+        Controls:
+        <div id="controlsMenu" class="container">
+            <div class="left-child">Move Left</div>
+            <div class="mid-child">A</div>
+            <div class="left-child">Move Right</div>
+            <div class="mid-child">D</div>
+            <div class="left-child">Move Down</div>
+            <div class="mid-child">S</div>
+            <div class="left-child">Jump</div>
+            <div class="mid-child">W</div>
+            <div class="left-child">Attack</div>
+            <div class="mid-child">Left Click</div>
+        </div>
+        <br />
+        <hr/>
+        Debug<input type="checkbox" id="debug">
+    </div>
+    </div>
+    <div>
 </body>
+
 </html>

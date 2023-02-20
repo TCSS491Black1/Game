@@ -21,14 +21,10 @@ class SoundEngine {
             this.parentGainNode.gain.setValueAtTime(vol.value, this.audioCtx.currentTime);
         };
         mute.onclick = () => {
-            if (mute.id === "") {
+            if (mute.checked) {
               this.parentGainNode.gain.setValueAtTime(0, this.audioCtx.currentTime);
-              mute.id = "activated";
-              mute.textContent = "Unmute";
             } else {
-              this.parentGainNode.gain.setValueAtTime(1, this.audioCtx.currentTime);
-              mute.id = "";
-              mute.textContent = "Mute";
+              this.parentGainNode.gain.setValueAtTime(vol.value, this.audioCtx.currentTime);
             }
         };
     

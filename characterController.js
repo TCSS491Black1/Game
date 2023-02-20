@@ -17,10 +17,11 @@ class CharacterController {
         this.facingDirection = 1; // 1 is right, 0 is left? sprites happen to face left by default.
         this.state = "WALK";
 
+        this.damage = 1;
         this.HP = 10;
         this.maxHP = 10;
         this.timeOfLastDamage = 0;
-        this.invulnLength = 3;
+        this.invulnLength = 2;
         this.dead = false;
         this.updateBB();
         this.attackBeginTime = 0;
@@ -33,10 +34,10 @@ class CharacterController {
 
         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth, xoffset, yoffset){
         this.animationList["IDLE"] = new Animator(spritesheet, 4, 954, 184, 214, 6, 0.1, 1, 3, 0, 0, this.scale);
-        this.animationList["WALK"] = new Animator(spritesheet, 4, 1191, 159, 191, 8, 0.1, 1, 3, 0, 0, this.scale);
+        this.animationList["WALK"] = new Animator(spritesheet, 4, 1191, 159, 191, 8, 0.1, 1, 3, 0, -10, this.scale);
         this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.3, 0, 3, 0, 0, this.scale);
 
-        this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.1, 0, 0, 0, 100 * this.scale, this.scale);
+        this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.04, 0, 0, 0, 120 * this.scale, this.scale);
         
         this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10, this.scale);
         this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10, this.scale);
@@ -109,8 +110,8 @@ class CharacterController {
         // attack animation code.
         // This section is responsible for going into and leaving "ATTACK" state.
         let attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
-        const attackDuration = 0.1;
-        const attackCooldown = 0.5;
+        const attackDuration = this.animationList["ATTACK"].totalTime;//0.1;
+        const attackCooldown = attackDuration;//0.5;
 
         if (this.game.click && attackTimeElapsed > attackCooldown) { // check if not on cooldown
             this.attackBeginTime = this.game.timer.gameTime;
@@ -133,15 +134,14 @@ class CharacterController {
             }
             this.updateAttackBB();
             for (const entity of this.game.entities.filter(e => e instanceof Enemy && e.BB !== undefined)) {
-                // TODO: some of this logic should(?) probably be in the Enemy class
+                // tell enemy class how much damage to take
                 if (this.attackBB.collide(entity.BB)) {
-                    entity.HP--;
+                    entity.takeDamage(this.damage);
                     if (entity.HP <= 0) entity.state = "DEAD";
                 }
             }
         } else if (attackTimeElapsed >= attackDuration) { // cleanup after attack
-            this.attackBeginTime = undefined;
-            this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.05, 0, 0, 0, 100 * this.scale, this.scale);
+            this.animationList["ATTACK"].reset();
             
             if (!this.onGround)
                 this.changeState("JUMP", 159);
@@ -212,14 +212,24 @@ class CharacterController {
                     console.log("Hornet collided with " + entity.constructor.name);
                     const t = this.game.timer.gameTime;
                     if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
-                        this.HP--;
+                        console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
+                        this.HP -= entity.damage;
+                        
                         this.timeOfLastDamage = t;
                         this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
+
+                        // floating combat text:
+                        this.game.addEntity(new FloatingText("-" + entity.damage, this.x, this.y, "red", 1));
+                        
+                        if (this.HP <= 0) {
+                            this.changeState("DEATH")
+                            this.dead = true;
+                        }
+                    } else if(t - this.timeOfLastDamage <= this.invulnLength) {
+                        // no enemy collision if we're invulnerable
+                        return;
                     }
-                    if (this.HP <= 0) {
-                        this.changeState("DEATH")
-                        this.dead = true;
-                    }
+
                     if(this.lastBB.bottom <= entity.BB.top) { // if hit enemy from above, bounce.
                         this.y = entity.BB.top - this.BB.height;
                         this.velocity.y = -this.velocity.y;
@@ -263,13 +273,6 @@ class CharacterController {
                     this.changeState("IDLE", 226);
                     this.game.soundEngine.playSound("./assets/sounds/sfx/flag.wav");
                     this.game.camera.loadNextLevel(0, 0);
-                }
-            }
-
-            // deal damage if attack hits enemy:
-            if (this.state == "ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {
-                if (entity instanceof Enemy) {
-                    entity.HP--;
                 }
             }
         });
