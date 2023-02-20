@@ -16,6 +16,7 @@ class BoundingBox {
     draw(ctx) {
         ctx.strokeStyle = this.color;
         ctx.lineWidth = 3;
-        ctx.strokeRect(this.x-this.game.camera.x, this.y-this.game.camera.y, this.width, this.height);
+        if(this.game.options.debugging)
+            ctx.strokeRect(this.x-this.game.camera.x, this.y-this.game.camera.y, this.width, this.height);
     }
 }
