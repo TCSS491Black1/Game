@@ -24,11 +24,11 @@ const levelOne = {
     ],
     wall:[{x:-32,y:0,size: 47}],
 
-    targetblock: [{x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
+    targetblock: [{x: 9500, y: params.canvasHeight*2-32*4+600, xScale: 30 , yScale: 1},
         {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}
     ],
 
-    pitglow: [{x: 1200, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
+    pitglow: [{x: 9600, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
         {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}], // just put it on the block for now.
 
     enemies: [
@@ -192,8 +192,8 @@ const levelTwo = {
 
     // easily can add a "platform" or "obstacle" option here too
     ],
-    wall:[{x:0, y:0, size: 48},
-        {x:8*32, y:8*32, size: 47},
+    wall:[{x:0, y:0, size: 70},
+        {x:8*32, y:8*32, size: 70},
         {x:9*32, y:7*32, size: 2},
         {x:10*32, y:6*32, size: 2},
         {x:11*32, y:4*32, size: 3},
@@ -201,8 +201,8 @@ const levelTwo = {
         {x:420*32,y:0,size: 41},
         {x:221*32,y:8*32 ,size: 18}],
 
-    targetblock: [{x: 32, y: 47*32, xScale: 3.5 , yScale: 1}],
-    pitglow: [{x: 32, y: 47*32, xScale: 1 , yScale: 1}],
+    targetblock: [{x: 0, y: 65*32, xScale: 4.5 , yScale: 1}],
+    pitglow: [{x: 64, y: 47*32, xScale: 1 , yScale: 1}],
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400}],
    // {name: "Heavy_Sentry" , x: 2200, y:550*2},
     //{name: "Heavy_Sentry" , x: 3200, y:550*2},  ],
