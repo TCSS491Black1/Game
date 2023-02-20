@@ -261,27 +261,69 @@ const levelFour = {
         {x:0, y:params.canvasHeight-32, size: 736 }, 
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },
         {x:32*24, y:params.canvasHeight-32*9, size: 8 },
-        {x:32*46, y:params.canvasHeight-32*13, size: 8 },
-
         {x:32*36, y:params.canvasHeight-32*13, size: 8 },
+
+        {x:32*46, y:params.canvasHeight-32*13, size: 8 },
         {x:32*72, y:params.canvasHeight-32*5, size: 8 },
         {x:32*85, y:params.canvasHeight-32*9, size: 8 },
         {x:32*95, y:params.canvasHeight-32*12, size: 8 },
 
-        {x:32*200, y:params.canvasHeight-32*1, size: 8 },
-        {x:32*202, y:params.canvasHeight-32*5, size: 8 },
-        {x:32*204, y:params.canvasHeight-32*9, size: 8 },
-        {x:32*206, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*105, y:params.canvasHeight-32*13, size: 8 },
+        {x:32*120, y:params.canvasHeight-32*5, size: 8 },
+        {x:32*135, y:params.canvasHeight-32*9, size: 8 },
+        {x:32*138, y:params.canvasHeight-32*12, size: 8 },
 
-        {x:32*226, y:params.canvasHeight-32*13, size: 8 },
-        {x:32*246, y:params.canvasHeight-32*13, size: 8 },
-        {x:32*276, y:params.canvasHeight-32*13, size: 8 },
+        {x:5976, y:params.canvasHeight-32*1, size: 4 },  // stairs to boss room
+        {x:6232, y:params.canvasHeight-32*3, size: 4 }, 
+        {x:6488, y:params.canvasHeight-32*5, size: 4 }, 
+        {x:6744, y:params.canvasHeight-32*7, size: 4 }, 
+        {x:6860, y:params.canvasHeight-32*12, size: 4 },
+
+        {x:7700, y:32*2, size: 4 },  // Boss room platforms  
+        {x:8000, y:32*5, size: 4 }, 
+        {x:8500, y:32*12, size: 6 }, 
+        {x:9225, y:32*13, size: 2 },
+        {x:9000, y:32*6, size: 4 },
+        {x:9500, y:32*10, size: 4 },
 
     ],
-    wall: [{x:-32,y:0,size: 24}],
+
+    wall: [{x:-32,y:0,size: 24},
+
+        {x:7000, y:32*2, size: 24}, // Assumed end wall...
+
+        {x:10500, y:0, size: 500}, // Actuall end wall.
+        {x:10500+(32*1), y:0, size: 500}, // extended wall
+        {x:10500+(32*2), y:0, size: 500}, 
+        {x:10500+(32*3), y:0, size: 500}, 
+        {x:10500+(32*4), y:0, size: 500}, 
+        {x:10500+(32*5), y:0, size: 500}, 
+        {x:10500+(32*6), y:0, size: 500}, 
+        {x:10500+(32*7), y:0, size: 500}, 
+        {x:10500+(32*8), y:0, size: 500}, 
+        {x:10500+(32*9), y:0, size: 500}, 
+        {x:10500+(32*10), y:0, size: 500}, 
+        {x:10500+(32*11), y:0, size: 500}, 
+        {x:10500+(32*12), y:0, size: 500}, 
+        {x:10500+(32*13), y:0, size: 500}, 
+        {x:10500+(32*14), y:0, size: 500}, 
+        {x:10500+(32*15), y:0, size: 500}, 
+        {x:10500+(32*16), y:0, size: 500}, 
+        {x:10500+(32*17), y:0, size: 500}, 
+        {x:10500+(32*18), y:0, size: 500}, 
+        {x:10500+(32*19), y:0, size: 500}, 
+        {x:10500+(32*20), y:0, size: 500}, 
+        {x:10500+(32*21), y:0, size: 500}, 
+        {x:10500+(32*22), y:0, size: 500}, 
+        {x:10500+(32*23), y:0, size: 500}, 
+        {x:10500+(32*24), y:0, size: 500}, 
+        {x:10500+(32*25), y:0, size: 500}, 
+    ],
+
     targetblock: [{x: 700, y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
     pitglow: [{x: 700, y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
     enemies: [
+        //{name: "Heavy_Sentry" , x: 10000, y: 32*20},
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 2200, y:450},
         {name: "Uoma" , x: 3200, y:350},
