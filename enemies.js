@@ -571,6 +571,48 @@ class Flag_Block {
         this.BB.draw(ctx);
     };
 }
+class Massive_Jelly extends Enemy {
+    constructor(game, x, y) {
+        super(game, x, y);
+        this.asset = ASSET_MANAGER.getAsset("./assets/Uoma.png");
+        this.scale = 5;
+        //(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth=0, xoffset=0, yoffset=0, scale=1, rowCount=1, lineEnd, rowOffset=0) 
+        this.animationList["WALK"] = new Animator(this.asset, 4, 22, 172, 147, 6, 0.09, 1, 4, 0, 0, this.scale);
+        this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 147, 6, 0.09, 1, 4, 0, 0, this.scale);
+        this.speed = 2;
+        this.damage = 2;
+        this.updateBB();
+        this.HP = 10;
+        this.tint = `rgb(255, 0, 0)`;
+        this.width = 172 * 5;
+        this.height = 147 * 5;
+    }
+    draw(ctx) {
+        ctx.save();
+        ctx.fillStyle = this.tint;
+
+        super.draw(ctx);
+        ctx.restore();
+    }
+    updateBB() {
+        this.lastBB = this.BB;
+        const s = this.scale;
+        this.BB = new BoundingBox(this.game, this.x + 45 * s, this.y + 35 * s, 70 * s, 90 * s, "red");
+    }
+    update() {
+        const direction = gameEngine.player.x < this.x + this.width / 2;
+        if (direction) {
+            this.x -= this.speed;
+        } else {
+            this.x += this.speed;
+        }
+        this.updateBB();
+        if (this.HP <= 0) {
+            console.log("Boss jelly defeated!");
+            this.removeFromWorld = true;
+        }
+    }
+}
 class Pit_Glow {
     //An animation to signal the appropriate pit to jump into in order to descend to the next level.
     constructor(game, x, y, xScale, yScale) {
