@@ -214,16 +214,22 @@ class CharacterController {
                     if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
                         console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
                         this.HP -= entity.damage;
+                        
                         this.timeOfLastDamage = t;
                         this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
+
+                        // floating combat text:
+                        this.game.addEntity(new FloatingText("-" + entity.damage, this.x, this.y, "red", 1));
+                        
+                        if (this.HP <= 0) {
+                            this.changeState("DEATH")
+                            this.dead = true;
+                        }
                     } else if(t - this.timeOfLastDamage <= this.invulnLength) {
                         // no enemy collision if we're invulnerable
-                        //return;
+                        return;
                     }
-                    if (this.HP <= 0) {
-                        this.changeState("DEATH")
-                        this.dead = true;
-                    }
+
                     if(this.lastBB.bottom <= entity.BB.top) { // if hit enemy from above, bounce.
                         this.y = entity.BB.top - this.BB.height;
                         this.velocity.y = -this.velocity.y;
