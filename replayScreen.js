@@ -17,8 +17,6 @@ class ReplayScreen{
     };
     
     draw(ctx){ 
-            
-
         ctx.drawImage(ASSET_MANAGER.getAsset("./assets/Overworld_Level_1.png"), 0,0, 1920, 768,);
 
         const offsetX = 250;
@@ -47,12 +45,6 @@ class ReplayScreen{
         if ((this.game.mouse && this.game.mouse.y > 255 && this.game.mouse.y < 430)) {
             ctx.fillText("ψ", 585, 340);
         }
-        
-
         ctx.fillStyle = 'Black';
-
-    
-
-
     };
 }
