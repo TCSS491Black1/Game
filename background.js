@@ -22,7 +22,7 @@ class ParallaxLayer {
         // i for horizontal position 
         for (var j = 0; j < this.images.length; j++) {
             let image = this.images[j];
-            for (var i = 0; i < 15; i++) {
+            for (var i = 0; i < 9; i++) {
                 ctx.drawImage(
                     image,
                     this.x + i * image.width - this.game.camera.x,
