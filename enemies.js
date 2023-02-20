@@ -9,8 +9,11 @@ class Enemy {
         //console.log("./assets/" + this.name + ".png")
         // default values, probably overwritten for different subclasses
         this.facingDirection = 0;
-        this.HP = 10; 
+        this.HP = 5; 
         this.damage = 1;
+        this.timeDamageLastTaken = 0;
+        this.damageTakenCooldown = 0.25; // only take damage once per 0.25 seconds
+
         this.speed = 100;
         this.state = "WALK";
         this.animationList = {}
@@ -41,6 +44,14 @@ class Enemy {
                 this.onCollision(entity); /* NOTE: Enemy requires onCollision() */
             }
         });
+    }
+    takeDamage(amount) {
+        const t = this.game.timer.gameTime;
+        if(t - this.timeDamageLastTaken > this.damageTakenCooldown) {
+            this.timeDamageLastTaken = t;
+            this.HP -= amount;
+            console.log(this.constructor.name, " taking " + amount + " dmg ", this.HP);
+        }
     }
     isDead() {
         return this.HP <= 0;
@@ -82,6 +93,7 @@ class Uoma extends Enemy {
         this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4); // TODO: change/correct parameters.
         this.alpha = 1;
         this.updateBB();
+        this.HP = 1;
     }
 
 
@@ -492,7 +504,7 @@ class Hive_Knight extends Enemy {
         if (entity instanceof CharacterController) {
             //entity.dead = true;
             //entity.HP -= this.damage;
-            console.log(this.name + " collision with Hornet = LOSS");
+            //console.log(this.name + " collision with Hornet = LOSS");
         }
     }
     update() {
