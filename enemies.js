@@ -50,7 +50,9 @@ class Enemy {
         if(t - this.timeDamageLastTaken > this.damageTakenCooldown) {
             this.timeDamageLastTaken = t;
             this.HP -= amount;
-            console.log(this.constructor.name, " taking " + amount + " dmg ", this.HP);
+            if(this.game.options.debugging) {
+                console.log(this.constructor.name, " taking " + amount + " dmg ", this.HP);
+            }
         }
     }
     isDead() {

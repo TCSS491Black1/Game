@@ -134,7 +134,7 @@ class CharacterController {
             }
             this.updateAttackBB();
             for (const entity of this.game.entities.filter(e => e instanceof Enemy && e.BB !== undefined)) {
-                // TODO: some of this logic should(?) probably be in the Enemy class
+                // tell enemy class how much damage to take
                 if (this.attackBB.collide(entity.BB)) {
                     entity.takeDamage(this.damage);
                     if (entity.HP <= 0) entity.state = "DEAD";
@@ -275,13 +275,6 @@ class CharacterController {
                     this.game.camera.loadNextLevel(0, 0);
                 }
             }
-
-            // // deal damage if attack hits enemy:
-            // if (this.state == "ATTACK" && this != entity && entity.BB && this.attackBB.collide(entity.BB)) {
-            //     if (entity instanceof Enemy) {
-            //         entity.HP -= this.damage;
-            //     }
-            // }
         });
         this.updateBB(); // updating BB due to collision-based movement
     };
