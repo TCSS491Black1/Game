@@ -21,6 +21,52 @@ const levelOne = {
         {x:32*12, y:32*5+450, size: 8 },
         {x:32*14, y:32*9+450, size: 8 },
         {x:32*16, y:32*13+450, size: 8 },
+
+      
+        // added for MVD
+        {x:32*46, y:32*13, size: 8 },
+        {x:32*72, y:32*5, size: 8 },
+        {x:32*815, y:32*9, size: 8 },
+        {x:32*95, y:32*12, size: 8 },
+        {x:32*105, y:32*27, size: 2 },
+        {x:32*120, y:32*35, size: 8 },
+        {x:32*135, y:32*18, size: 6 },
+        {x:32*138, y:32*29, size: 8 },
+        {x:32*40, y:32*40, size: 2 },
+        {x:32*24, y:32*39, size: 8 },
+        {x:32*36, y:32*43, size: 8 },
+        {x:32*49, y:32*33, size: 8 },
+        {x:32*79, y:32*36, size: 5 },
+        {x:32*85, y:32*9, size: 8 },
+        {x:32*95, y:32*12, size: 8 },
+        {x:32*105, y:32*33, size: 8 },
+        {x:32*120, y:32*25, size: 3 },
+        {x:32*139, y:32*39, size: 8 },
+        {x:32*140, y:32*22, size: 8 },
+
+        //second half. just multiplied the x by 2
+        {x:32*46*2, y:32*13, size: 8 },
+        {x:32*72*2, y:32*5, size: 8 },
+        {x:32*815*2, y:32*9, size: 8 },
+        {x:32*95*2, y:32*12, size: 8 },
+        {x:32*105*2, y:32*27, size: 2 },
+        {x:32*120*2, y:32*35, size: 8 },
+        {x:32*135*2, y:32*18, size: 6 },
+        {x:32*128*2, y:32*29, size: 8 },
+        {x:32*40*2, y:32*40, size: 12 },
+        {x:32*24*2, y:32*39, size: 8 },
+        {x:32*36*2, y:32*43, size: 8 },
+        {x:32*49*2, y:32*33, size: 8 },
+        {x:32*79*2, y:32*36, size: 5 },
+        {x:32*85*2, y:32*9, size: 8 },
+        {x:32*95*2, y:32*12, size: 8 },
+        {x:32*105*2, y:32*33, size: 8 },
+        {x:32*120*2, y:32*25, size: 3 },
+        {x:32*139*2, y:32*39, size: 8 },
+        {x:32*140*2, y:32*22, size: 8 },
+
+        
+
     ],
     wall:[{x:-32,y:0,size: 47}],
 
@@ -33,16 +79,58 @@ const levelOne = {
 
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
-        {name: "Uoma" , x: 1200, y:450},
-        {name: "Uoma" , x: 1200, y:350},
-        {name: "Uoma" , x: 1200, y:1250},
-        {name: "Uoma" , x: 1400, y:1250},
-        {name: "Uoma" , x: 1600, y:1250},
+        {name: "Uoma" , x: 1400, y:450},
+        {name: "Uoma" , x: 1600, y:350},
+        {name: "Uoma" , x: 1200*2, y:1250},
+        {name: "Uoma" , x: 1400*3, y:1250},
+        {name: "Uoma" , x: 1600*4, y:1250},
         {name: "Uoma" , x: 1800, y:1250},
+
+        {name: "Uoma" , x: 1700*2, y:950},
+        {name: "Uoma" , x: 1800*3, y:850},
+        {name: "Uoma" , x: 1900*4, y:750},
+
+        {name: "Uoma" , x: 2400, y:1250},
+        {name: "Uoma" , x: 1900, y:1190},
+        {name: "Uoma" , x: 1200, y:1110},
+        {name: "Uoma" , x: 1800, y:1250},
+
+        {name: "Uoma" , x: 5400, y:1250},
+        {name: "Uoma" , x: 4900, y:1190},
+        {name: "Uoma" , x: 4200, y:1110},
+        {name: "Uoma" , x: 4800, y:1250},
+
+        {name: "Uoma" , x: 6400, y:1250},
+        {name: "Uoma" , x: 5900, y:1190},
+        {name: "Uoma" , x: 5200, y:1110},
+        {name: "Uoma" , x: 5800, y:1250},
+
+        {name: "Uoma" , x: 9400, y:1250},
+        {name: "Uoma" , x: 10900, y:1190},
+        {name: "Uoma" , x: 10200, y:1110},
+        {name: "Uoma" , x: 10800, y:1250},
+
+        
+        {name: "Uoma" , x: 11000, y:1350},
+        {name: "Uoma" , x: 11540, y:1190},
+        {name: "Uoma" , x: 12040, y:1010},
+        {name: "Uoma" , x: 12500, y:1250},
+        {name: "Uoma" , x: 11070, y:250},
+        {name: "Uoma" , x: 11500, y:180},
+        {name: "Uoma" , x: 12070, y:110},
+        {name: "Uoma" , x: 12500, y:290},
+
+        {name: "Uoma" , x: 5000, y:1350},
+        {name: "Uoma" , x: 9000, y:1350},
+        {name: "Uoma" , x: 10000, y:1350},
+        {name: "Uoma" , x: 3000, y:1350},
     ],
     powerUps:  [
         {name: "Lightseed", x: 299, y:402},
         {name: "Lightseed", x: 811, y:1404},
+        {name: "Lightseed", x: 811, y:1404},
+        {name: "Lightseed", x: 2500, y:500},
+        {name: "Lightseed", x: 7000, y:60},
     ],
 
 }
