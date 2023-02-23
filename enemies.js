@@ -9,7 +9,7 @@ class Enemy {
         //console.log("./assets/" + this.name + ".png")
         // default values, probably overwritten for different subclasses
         this.facingDirection = 0;
-        this.HP = 1;
+        this.HP = this.MAXHP = 1;
         this.damage = 1;
         this.timeDamageLastTaken = 0;
         this.damageTakenCooldown = 0.25; // only take damage once per 0.25 seconds
@@ -98,7 +98,7 @@ class Uoma extends Enemy {
         this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4); // TODO: change/correct parameters.
         this.alpha = 1;
         this.updateBB();
-        this.HP = 1;
+        this.HP = this.MAXHP = 1;
     }
 
 
@@ -163,7 +163,7 @@ class Heavy_Sentry extends Enemy {
         // ATTACK
         // JUMP
         this.focused = false;
-        this.HP = 3;
+        this.HP = this.MAXHP = 5;
         this.runFrameCount = 1;
         this.halt = false;
         this.onGround = false;
@@ -592,10 +592,10 @@ class Pit_Glow {
 }
 
 class Healthbar {
-    constructor(parent, width) {
-        this.parent = parent;
+    constructor(owner, width) {
+        this.owner = owner;
         this.game = gameEngine;
-        this.max = parent.HP; // should start with max HP (assumptions made.)
+        //this.max = owner.HP; // should start with max HP (assumptions made.)
         this.width = width;
     }
     update() {
@@ -603,15 +603,17 @@ class Healthbar {
     }
     draw(ctx) {
         ctx.save();  
-        
-        const width = this.width | 20*this.max; // provide a default/standardized bar size.
-        const ratio = this.parent.HP / this.max;
+        const max = this.owner.MAXHP;
+        const HP = this.owner.HP;
+        const width = this.width | 20*max; // provide a default/standardized bar size.
+        const ratio = HP / max;
         ctx.fillStyle="black"; // black background for empty health.
         // fillRect(startx, starty, width, height)
-        ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, width, 3);
+        ctx.fillRect(this.owner.x - this.game.camera.x, this.owner.y-this.game.camera.y, width, 3);
 
         ctx.fillStyle="#66161c"; // dark red for full health.
-        ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, ratio*width, 3);
+        console.log(this.owner.constructor.name, ratio*width, width);
+        ctx.fillRect(this.owner.x - this.game.camera.x, this.owner.y-this.game.camera.y, Math.ceil(ratio*width), 3);
         ctx.restore();
     }
     
