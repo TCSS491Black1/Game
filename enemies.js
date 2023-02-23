@@ -602,15 +602,16 @@ class Healthbar {
            
     }
     draw(ctx) {
-        ctx.save();
-        //draw me a wire frame cross    
-        ctx.fillStyle="black";
-        //ctx.fillRect(70, 500, 3, 75); // vertical line
-        const width = this.width | 20*this.max;
+        ctx.save();  
+        
+        const width = this.width | 20*this.max; // provide a default/standardized bar size.
         const ratio = this.parent.HP / this.max;
-        ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, width, 3); // horizontal line
-        ctx.fillStyle="#66161c";
-        ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, ratio*width, 3); // horizontal line
+        ctx.fillStyle="black"; // black background for empty health.
+        // fillRect(startx, starty, width, height)
+        ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, width, 3);
+
+        ctx.fillStyle="#66161c"; // dark red for full health.
+        ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, ratio*width, 3);
         ctx.restore();
     }
     
