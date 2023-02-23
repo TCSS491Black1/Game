@@ -596,7 +596,7 @@ class Healthbar {
         this.parent = parent;
         this.game = gameEngine;
         this.max = parent.HP; // should start with max HP (assumptions made.)
-        
+        this.width = width;
     }
     update() {
            
@@ -606,7 +606,7 @@ class Healthbar {
         //draw me a wire frame cross    
         ctx.fillStyle="black";
         //ctx.fillRect(70, 500, 3, 75); // vertical line
-        const width = 20*this.max;
+        const width = this.width | 20*this.max;
         const ratio = this.parent.HP / this.max;
         ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, width, 3); // horizontal line
         ctx.fillStyle="#66161c";
