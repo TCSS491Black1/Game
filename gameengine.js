@@ -120,7 +120,7 @@ class GameEngine {
     toggleConfigs() {
         const menu = document.getElementById("configsMenu");
         if(menu.style.display == "none"||menu.style.display == "") {
-            this.ctx.canvas.style.filter = "blur(3px)";
+            this.ctx.canvas.style.filter = "blur(3px) brightness(50%)";
             menu.style.display = "block";
             this.running = false;
         } else {
