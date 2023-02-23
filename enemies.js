@@ -9,7 +9,7 @@ class Enemy {
         //console.log("./assets/" + this.name + ".png")
         // default values, probably overwritten for different subclasses
         this.facingDirection = 0;
-        this.HP = 5; 
+        this.HP = 1;
         this.damage = 1;
         this.timeDamageLastTaken = 0;
         this.damageTakenCooldown = 0.25; // only take damage once per 0.25 seconds
@@ -18,6 +18,7 @@ class Enemy {
         this.state = "WALK";
         this.animationList = {}
         this.alpha = 1;
+        this.healthbar = new Healthbar(this);//this.HP, this.HP, this.width, this.x, this.y);
         this.updateBB();
     }
     draw(ctx) {
@@ -33,6 +34,8 @@ class Enemy {
             destX,
             destY);
         ctx.restore();
+
+        this.healthbar.draw(ctx);
         //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
         if(this.BB) this.BB.draw(ctx);
         if(this.ledgeCheckBox) this.ledgeCheckBox.draw(ctx);
@@ -51,8 +54,9 @@ class Enemy {
             this.timeDamageLastTaken = t;
             this.HP -= amount;
             if(this.game.options.debugging) {
-                console.log(this.constructor.name, " taking " + amount + " dmg ", this.HP);
+                console.log("enemy:", this.constructor.name, " taking " + amount + " dmg ", this.HP);
             }
+            this.game.addEntity(new FloatingText(amount, this.x, this.y, "white", 1));
         }
     }
     isDead() {
@@ -82,7 +86,6 @@ class Enemy {
             this.BB = new BoundingBox(this.game,this.x+frameOffsets[0],this.y+frameOffsets[1],frameOffsets[2],frameOffsets[3],"red");
     }
     */
-
 }
 class Uoma extends Enemy {
     /*****
@@ -91,7 +94,7 @@ class Uoma extends Enemy {
      */
     constructor(game, x, y) { // NOTE: why do we have "game" here, when that's always gameEngine in global scope?
         super(game, x, y);
-        this.animationList["WALK"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
+        this.animationList["WALK"] = this.animationList["IDLE"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
         this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4); // TODO: change/correct parameters.
         this.alpha = 1;
         this.updateBB();
@@ -111,7 +114,7 @@ class Uoma extends Enemy {
         // if (this.x < -200) this.x = 1500, this.y = 300;
         // if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100; // spawning allocated in levels.js now
         // end of movement code
-
+        
         this.updateBB();
         this.collisionChecks();
     }
@@ -160,7 +163,7 @@ class Heavy_Sentry extends Enemy {
         // ATTACK
         // JUMP
         this.focused = false;
-        this.HP = 10;
+        this.HP = 3;
         this.runFrameCount = 1;
         this.halt = false;
         this.onGround = false;
@@ -510,7 +513,6 @@ class Hive_Knight extends Enemy {
         }
     }
     update() {
-
         // mechanics for how / where the enemy moves:
         if(this.state == "DEAD") {  // TODO: sound on death?
             // we don't move on death, and can't do any damage, so no BB.
@@ -589,3 +591,27 @@ class Pit_Glow {
     };
 }
 
+class Healthbar {
+    constructor(parent, width) {
+        this.parent = parent;
+        this.game = gameEngine;
+        this.max = parent.HP; // should start with max HP (assumptions made.)
+        
+    }
+    update() {
+           
+    }
+    draw(ctx) {
+        ctx.save();
+        //draw me a wire frame cross    
+        ctx.fillStyle="black";
+        //ctx.fillRect(70, 500, 3, 75); // vertical line
+        const width = 20*this.max;
+        const ratio = this.parent.HP / this.max;
+        ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, width, 3); // horizontal line
+        ctx.fillStyle="#66161c";
+        ctx.fillRect(this.parent.x - this.game.camera.x, this.parent.y-this.game.camera.y, ratio*width, 3); // horizontal line
+        ctx.restore();
+    }
+    
+}
