@@ -89,6 +89,7 @@ class GameEngine {
     };
 
     draw() {
+        if(this.running) {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
@@ -97,15 +98,18 @@ class GameEngine {
         for(const entity of this.entities) {
             entity.draw(this.ctx, this);
         }
+    }
     };
 
     update() {
-        for(const entity of this.entities) {
-            if (!entity.removeFromWorld) {
-                entity.update();
+        if(this.running) {
+            for(const entity of this.entities) {
+                if (!entity.removeFromWorld) {
+                    entity.update();
+                }
             }
+            this.entities = this.entities.filter(e => !e.removeFromWorld);
         }
-        this.entities = this.entities.filter(e => !e.removeFromWorld);
     };
 
     loop() {
@@ -115,11 +119,15 @@ class GameEngine {
     };
     toggleConfigs() {
         const menu = document.getElementById("configsMenu");
-        if(menu.style.display == "none"||menu.style.display == "")
+        if(menu.style.display == "none"||menu.style.display == "") {
+            this.ctx.canvas.style.filter = "blur(3px)";
             menu.style.display = "block";
-        else {
+            this.running = false;
+        } else {
+            this.ctx.canvas.style.filter = "";
             menu.style.display = "none";
             document.getElementById("gameWorld").focus();
+            this.running = true;
         }
     }
 };
