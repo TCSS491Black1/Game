@@ -25,6 +25,7 @@ class CharacterController {
         this.dead = false;
         this.updateBB();
         this.attackBeginTime = 0;
+        this.dashBeginTime = 0;
 
         this.scale = 0.5;
         this.animationList = {};
@@ -38,6 +39,7 @@ class CharacterController {
         this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.3, 0, 3, 0, 0, this.scale);
 
         this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.04, 0, 0, 0, 120 * this.scale, this.scale);
+        this.animationList["DASH"] = new Animator(spritesheet, 0, 2780, 257, 135, 2, 0.3, 10, 3, 0,0, this.scale); 
         
         this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10, this.scale);
         this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10, this.scale);
@@ -112,7 +114,10 @@ class CharacterController {
         let attackTimeElapsed = this.game.timer.gameTime - this.attackBeginTime;
         const attackDuration = this.animationList["ATTACK"].totalTime;//0.1;
         const attackCooldown = attackDuration;//0.5;
-
+      
+        let dashTimeElapsed = this.game.timer.gameTime - this.dashBeginTime;
+        const dashDuration = this.animationList["DASH"].totalTime;
+        
         if (this.game.click && attackTimeElapsed > attackCooldown) { // check if not on cooldown
             this.attackBeginTime = this.game.timer.gameTime;
             attackTimeElapsed = 0;
@@ -140,6 +145,9 @@ class CharacterController {
                     if (entity.HP <= 0) entity.state = "DEAD";
                 }
             }
+        } else if (dashTimeElapsed <= dashDuration) {
+            //this.x += this.velocity.x * this.game.clockTick;
+
         } else if (attackTimeElapsed >= attackDuration) { // cleanup after attack
             this.animationList["ATTACK"].reset();
             
@@ -153,7 +161,7 @@ class CharacterController {
         // ****************
 
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
-            if(this.state != "ATTACK")
+            if(this.state != "ATTACK" || this.state != "DASH")
                 this.facingDirection = 1;                             // facing the right
             if (this.onGround && this.state != "ATTACK")
                 this.changeState("WALK", 91);          // walk if not mid-air
@@ -161,17 +169,36 @@ class CharacterController {
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
         }
         else if (this.game.keys["a"]) {                               // Move/accelerate character left
-            if(this.state != "ATTACK")
+            if(this.state != "ATTACK" || this.state != "DASH")
                 this.facingDirection = 0;                             // face left
             if (this.onGround && this.state != "ATTACK")
                  this.changeState("WALK", 99);          // walk if not mid-air
             
             this.velocity.x = Math.max(this.velocity.x - 10, -MAXRUN);// decrease velocity by 10 until -MAXRUN
             this.x += this.velocity.x * this.game.clockTick;          // increase position by appropriate speed
-        } else if (this.onGround && this.state != "ATTACK") {
+        } else if (this.onGround && this.state != "ATTACK" && this.state != "DASH") {
             this.changeState("IDLE", 104);
             this.velocity.x = 0;
         }
+
+
+        if (this.game.keys[" "] && (this.state != "DASH" || this.jumps < this.jumpsTotal) && this.state != "ATTACK") {
+            this.game.keys[" "] = false;
+            //this.game.clockTick = 0;
+            this.changeState("DASH", 84);
+            this.jumps += 1;
+            if(this.facingDirection == 1){
+                this.velocity.x = 1000;
+                this.x += 100+this.velocity.x * this.game.clockTick;
+            }else if (this.facingDirection == 0){
+                this.velocity.x = -1000;
+                this.x -= 100+this.velocity.x * this.game.clockTick;
+            }
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
+        }
+
+        // end of dash code
+        // ****************
 
         //Phasing through current platform to land below
         if (this.game.keys["s"] && this.y + this.BB.height < this.game.camera.worldSize * params.canvasHeight - 32) {
