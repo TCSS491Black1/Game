@@ -134,12 +134,7 @@ class Uoma extends Enemy {
         }
     }
     onCollision(entity) {
-        if (this.state != "DEAD" && entity instanceof CharacterController) { // TODO: check for instanceof CharacterWeapon?
-            //entity.dead = true;
-            //this.state = "DEAD";
-            //console.log(this.name + " collision with Hornet = LOSS");
-        }
-        // Need to handle collision with walls?
+        // handle wall collisions or something?
     }
 };
 class Heavy_Sentry extends Enemy {
@@ -612,7 +607,6 @@ class Healthbar {
         ctx.fillRect(this.owner.x - this.game.camera.x, this.owner.y-this.game.camera.y, width, 3);
 
         ctx.fillStyle="#66161c"; // dark red for full health.
-        console.log(this.owner.constructor.name, ratio*width, width);
         ctx.fillRect(this.owner.x - this.game.camera.x, this.owner.y-this.game.camera.y, Math.ceil(ratio*width), 3);
         ctx.restore();
     }

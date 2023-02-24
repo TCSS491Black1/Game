@@ -111,7 +111,6 @@ class CharacterController {
         // check if current animation is a Busy State, and clean up if necessary.
         if(this.BUSY_STATES.includes(this.state) && this.animationList[this.state].isDone()) {
             // no longer busy, as animation has completed.
-            console.log(this.state, this.busy);
             this.busy = false;
             this.animationList[this.state].reset();
             this.defaultState();
