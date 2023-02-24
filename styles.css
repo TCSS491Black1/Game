@@ -30,6 +30,8 @@ canvas {
     background-color: black;
     display: none;
     z-index: 5;
+    padding-left: 25px;
+    border-radius: 25px;
 }
 #controlsMenu {
     margin-left: 20px;
