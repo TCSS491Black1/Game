@@ -57,7 +57,7 @@ class Animator {
     };
 
     isDone() {
-        return (this.elapsedTime >= this.totalTime);
+        return (this.elapsedTime >= this.totalTime) && !this.loop;
     };
     reset() {
         this.elapsedTime = 0;
