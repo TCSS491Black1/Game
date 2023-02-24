@@ -79,7 +79,6 @@ canvas {
     text-align: center;
     height: fit-content;
     padding: 0.5em;
-    kerning: ;
 }
 .titleButton:hover {
     background-color: aquamarine;
