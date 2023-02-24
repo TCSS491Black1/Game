@@ -73,6 +73,15 @@ class HUD {
         const secs = String(time % 60).padStart(2,'0');
 
         ctx.fillText(`${mins}:${secs}`, params.canvasWidth -100, 50);
+
+        if(gameEngine.options.debugging) {
+        // calculate rough FPS
+        const fps = Math.round(1/gameEngine.clockTick);
+        if(fps !== Infinity) {
+            const fpsString = String(fps).padStart(5, ' ');
+            ctx.fillText(`${fpsString} fps`, params.canvasWidth -100, 100);
+        }
+    }
         ctx.restore();
     }
     
