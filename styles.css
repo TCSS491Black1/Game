@@ -69,18 +69,22 @@ canvas {
 }
 .titleText {
     padding-top: 20%;
-    font-size: 2em;
+    font-size: 2.5em;
     grid-column: 1/ span 2;
+    text-shadow: white 1px 0 0.2em;
 }
 .titleButton {
     border: 3px solid aquamarine;
     border-radius: 25px;
-    font-size: 2em;
+    font-size: 1.5em;
     text-align: center;
     height: fit-content;
     padding: 0.5em;
+    text-shadow: white 1px 0 0.5em;
+    box-shadow: white 1px 0 0.2em;
 }
 .titleButton:hover {
     background-color: aquamarine;
     color: black;
+    box-shadow: black 1px 0 0.5em;
 }
