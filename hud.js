@@ -30,7 +30,7 @@ class HUD {
         // draw the HP bar above the frame
         const startx = 85;
         const starty = 55;
-        const MAXHP = 10;
+        const MAXHP = gameEngine.player.maxHP;
         const playerHP = gameEngine.player.HP;
         const pipWidth = 15;
         const barHeight = 10;
@@ -47,13 +47,30 @@ class HUD {
             }
         }
 
+        // display pips for double jumps available
+        ctx.fillStyle = "white";
+        ctx.font = "bold 30px serif";
+        
+        const activePips = gameEngine.player.jumpsTotal - gameEngine.player.jumps;
+        ctx.fillStyle = "white";
+        for(let pip=0; pip < activePips; pip++ ) {
+            ctx.fillText("^", startx + 20*pip, 75 + 30);
+        }
+        // inactive pips
+        ctx.fillStyle = "grey";
+        for(let pip = activePips; pip < gameEngine.player.jumpsTotal; pip++) {
+            ctx.fillText("^", startx + 20*pip, 75 + 30);
+        }
+
+
         // display clocktime
+        ctx.fillStyle = "white";
+        ctx.font = "bold 20px serif";
+        
         const time = Math.floor(gameEngine.timer.gameTime);
         const mins = Math.floor(time / 60);
         const secs = String(time % 60).padStart(2,'0');
 
-        ctx.fillStyle = "white";
-        ctx.font = "bold 20px serif";
         ctx.fillText(`${mins}:${secs}`, params.canvasWidth -100, 50);
         ctx.restore();
     }

@@ -1,0 +1,14 @@
+# npm configs.
+package.json
+package-lock.json
+/node_modules/
+
+# VS Code configs.
+/.vs/
+/.vscode/
+
+# macOS configs.
+.DS_Store
+
+# misc configs.
+*.todo
