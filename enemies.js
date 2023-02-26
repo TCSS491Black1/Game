@@ -153,6 +153,7 @@ class Heavy_Sentry extends Enemy {
         this.animationList["STARTLE"] = new Animator(this.asset, 532, 903, 250, 266, 4, 0.2, 0, 3.2);
         this.animationList["ATTACK"] = new Animator(this.asset, 4, 1460, 406, 331, 12, 0.1, 0, 3,0,0,1,2,6,335);
         this.animationList["CHARGE"] = new Animator(this.asset, 4, 3065, 352, 200, 6, 1, 1, 3);
+        this.animationList["CHARGE_START"] = new Animator(this.asset, 4, 2776, 304, 265, 8, 0.1, 1, 3);
         this.animationList["CHARGE_END"] = new Animator(this.asset, 4, 3290, 341, 287, 5, 1, 1, 3);
 
         // ATTACK
@@ -165,6 +166,8 @@ class Heavy_Sentry extends Enemy {
         this.movingDirection = 0;
         this.turnTime = 0;
         this.attackTime = 0;
+        this.chargeEndTime = 0;
+        this.chargeStartTime = 0;
         this.startleTime = 0;
         this.state = "WALK";
         this.damage = 3;
@@ -204,7 +207,12 @@ class Heavy_Sentry extends Enemy {
         }
         return false;
     }
+    chargeStart(){
+        this.state = "CHARGE_START";
+        this.halt = true;
+        this.chargeStartTime = this.game.timer.gameTime;
 
+    }
     charge(){
         this.state = "CHARGE";
         this.attackTime = this.game.timer.gameTime;
@@ -220,7 +228,7 @@ class Heavy_Sentry extends Enemy {
 
             //Keep from falling off ledges if not in follow character mode
             //Left side stop or turn
-            if(this.state != "ATTACK"){
+            if(this.state != "ATTACK" && this.state != "CHARGE_END"){
                 
                 this.y = entity.BB.top-this.BB.height-14;
                 if(entity.BB.x - this.BB.x > 0 && this.movingDirection == 0){
@@ -228,6 +236,7 @@ class Heavy_Sentry extends Enemy {
                         this.halt = true;
                         console.log("halted here")
                         this.state = "IDLE";
+
                     }else{
                         this.halt = false;
                         this.state = "TURN";                      
@@ -283,14 +292,16 @@ class Heavy_Sentry extends Enemy {
             if(this.state == "WALK"){
                 this.state = "STARTLE";
                 this.startleTime = this.game.timer.gameTime;
-            }
-            else if(this.state == "STARTLE" && this.game.timer.gameTime - this.startleTime >  1.2   ){
+            }else if(this.state == "STARTLE" && this.game.timer.gameTime - this.startleTime >  1.2   ){
                 this.animationList["STARTLE"] = new Animator(this.asset, 532, 903, 250, 266, 4, 0.2, 0, 3.2);
                 this.halt = false;
                 this.state = "RUN";
-            }
+            }else if(this.state == "IDLE"){
+                if(this.attackRange()){
+                    this.attack();
+                }
             //Turn to follow and resume running
-            else if(this.state == "TURN"){
+            }else if(this.state == "TURN"){
                 this.attackTime =0;
                 this.startleTime =0;
                 if(this.game.timer.gameTime-this.turnTime > 0.25){
@@ -307,16 +318,18 @@ class Heavy_Sentry extends Enemy {
                     if(!this.halt){
                         this.x -= (this.speed*1.5 * this.game.clockTick);
                     }
-                   
+
                     if(this.attackRange()){
                         this.attack();
                         this.x -= 100;
+                    }else if(this.chargeRange()){
+                        this.chargeStart();
                     }
 
                     //To far left turn and go right
                     if(this.game.player.x-(this.x+this.BB.width) > 100){
                         this.state="TURN"
-                        this.x +=50;
+                        this.x +=150;
                         this.turnTime = this.game.timer.gameTime;
                         this.movingDirection =1;
                     }
@@ -331,6 +344,8 @@ class Heavy_Sentry extends Enemy {
                     if(this.attackRange()){
                         //console.log(this.attackRange());
                         this.attack();
+                    }else if(this.chargeRange()){
+                        this.chargeStart();
                     }
 
                     //To far right turn and go left
@@ -360,8 +375,92 @@ class Heavy_Sentry extends Enemy {
                         this.halt = false;
                     }
                 }
+            }else if (this.state == "CHARGE_START"){
+                //Movement Left
+                this.startleTime = 0;
+                if(this.movingDirection == 0){
+                    this.facingDirection = 0;
+                    
+                    if(this.attackRange()){
+                        
+                        this.state = "ATTACK";
+                    }
 
-            }
+                    if(this.game.timer.gameTime - this.chargeStartTime > 0.9){
+                        this.state="CHARGE"
+                        this.y += 80;
+                    }
+
+                //Movement Right    
+                }else if(this.movingDirection == 1){
+                    this.facingDirection = 1;                   
+                    //To far right turn and go left
+
+                    if(this.attackRange()){
+                        this.state = "ATTACK";
+                    }
+
+                    if(this.game.timer.gameTime - this.chargeStartTime > 0.9){
+                        this.state="CHARGE"
+                        this.y += 80;
+
+                    }
+
+                }
+            }else if (this.state == "CHARGE"){
+                 //Movement Left
+                 this.startleTime = 0;
+                 if(this.movingDirection == 0){
+                     this.facingDirection = 0;
+                     this.x -= (this.speed*2 * this.game.clockTick);
+                     
+ 
+                     //To far left turn and go right
+                     if(this.game.player.x-(this.x+this.BB.width) > 100){
+                         this.state="CHARGE_END";
+                         this.chargeEndTime = this.game.timer.gameTime;
+                     }
+ 
+                 //Movement Right    
+                 }else if(this.movingDirection == 1){
+                     this.facingDirection = 1;
+                     this.x += (this.speed*2 * this.game.clockTick);
+                    
+                     //To far right turn and go left
+                     if(this.game.player.x-(this.x) < -100){
+                         this.state="CHARGE_END"
+                        // this.y -=165;
+                         this.chargeEndTime = this.game.timer.gameTime;
+                     }
+ 
+                 }
+            }else if (this.state == "CHARGE_END"){
+                //Movement Left
+                this.startleTime = 0;
+                if(this.movingDirection == 0){
+                    this.facingDirection = 0;
+                    if(this.game.timer.gameTime-this.chargeEndTime < 2){
+                        this.x -= (this.speed*0.5 * this.game.clockTick);
+
+                    }else{
+                        this.state = "TURN";
+                        this.chargeEndTime = 0;
+                    }
+
+                //Movement Right    
+                }else if(this.movingDirection == 1){
+                    this.facingDirection = 1;
+                    if(this.game.timer.gameTime-this.chargeEndTime < 2){
+                        this.x += (this.speed*0.5 * this.game.clockTick);
+
+                    }else{
+                        this.state = "TURN";
+                        this.chargeEndTime = 0;
+                    }
+                }
+           }
+
+
         //Not focused movements    
         }else{
             this.attackTime = 0;
