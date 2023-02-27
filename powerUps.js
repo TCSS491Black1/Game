@@ -40,13 +40,14 @@ class PowerUp {
     }
 
 }
+//Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop , spriteBorderWidth, xoffset, yoffset, scale, rowCount, rowOffset){
 
 class Charged_Lumafly extends PowerUp {
    
     constructor(game, x, y) {
         super(game, x, y);
-        this.animationList["IDLE"] = new Animator(this.asset, 4, 254, 242 , 225 , 12 , 0.1, 1, 4);
-        this.animationList["COLLECTED"] = new Animator(this.asset, 4, 656, 252, 238 , 5 , 0.1, 1, 4);
+        this.animationList["IDLE"] = new Animator(this.asset, 4, 33, 243, 216, 24, 0.075, 1, 3,0,0,1,2,12,220);
+        this.animationList["COLLECTED"] = new Animator(this.asset, 4, 1142, 337, 317, 16, 0.05, 1, 3,0,0,1,2,8,321);
         this.updateBB();
     }
 
@@ -72,12 +73,11 @@ class Charged_Lumafly extends PowerUp {
     }
 };
 
-
 class Gathering_Swarm extends PowerUp {
     constructor(game, x, y) { 
         super(game, x, y);
-        this.animationList["IDLE"] = new Animator(this.asset, 4, 33, 100 , 90 , 4 , 0.1, 1, 4);
-        this.animationList["COLLECTED"] = new Animator(this.asset, 4, 33, 100 , 90 , 4 , 0.1, 1, 4);
+        this.animationList["IDLE"] = new Animator(this.asset, 4,33, 100, 90, 8, 0.1, 1, 4, 0 , 0 , 1 , 2 , 4 , 100);
+        this.animationList["COLLECTED"] = new Animator(this.asset, 4,33, 100, 90, 8, 0.1, 1, 4, 0 , 0 , 1 , 2 , 4 , 100);
          // TODO: change/correct parameters.
         this.updateBB();
     }

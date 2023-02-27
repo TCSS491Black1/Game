@@ -106,6 +106,7 @@ class CharacterController {
             this.changeState("JUMP", 99);
     }
     update() {
+        console.log(this.y);
         const MAXRUN = 600;
         
         // check if current animation is a Busy State, and clean up if necessary.
@@ -315,7 +316,7 @@ class CharacterController {
             this.BB.draw(ctx); // no BB if we're invuln.
         } else {
             ctx.globalAlpha = 0.5;
-        }
+        }''
 
         // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);

@@ -316,7 +316,7 @@ const levelTwo = {
 
     ],
     powerUps:  [{name: "Lightseed" , x: 800, y:400},
-        {name: "Gathering_Swarm" , x: 1200 , y:1000  }]
+        {name: "Charged_Lumafly" , x: 1200 , y:1000  }]
 
 }
 const levelThree = {
