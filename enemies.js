@@ -664,14 +664,20 @@ class Hive_Knight extends Enemy {
             console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
             ctx.globalAlpha = 1;
         }
+        // need a longer delay so that the death animation of the boss plays and THEN the credits screen pops up like 4 seconds later. 
+        // comment out this if statement if we need to debug it so that it doesn't get in the way - michael
+        if (this.dead === true) { // respawn character on death?
+            this.game.camera.clearEntities();
+            this.game.addEntity(new EndCreditsScreen(this.game));
+        }
     }
 }
 class Flag_Block {
     //Scalling added to allow single block to span any gap size
     constructor(game, x, y, xScale, yScale) {
         Object.assign(this, { game, x, y, xScale, yScale});
-        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Dirt_Block.png"),
-            2, 2, 62, 62, 1, 1, 1, 1)
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/block.png"),
+            1, 1, 62, 62, 1, 1, 1, 1)
 
         this.speed = 0;
         this.updateBB();
