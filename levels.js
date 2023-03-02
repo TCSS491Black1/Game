@@ -71,11 +71,10 @@ const levelOne = {
     wall:[{x:-32,y:0,size: 47}],
 
     targetblock: [{x: 9500, y: params.canvasHeight*2-32*4+600, xScale: 30 , yScale: 1},
-        {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}
     ],
 
-    pitglow: [{x: 9600, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
-        {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}], // just put it on the block for now.
+    pitglow: [{x: 9500, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
+    ], 
 
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
