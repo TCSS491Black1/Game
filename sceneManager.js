@@ -94,6 +94,9 @@ class SceneManager{
             if(entry.name == "Heavy_Sentry"){
                 this.game.addEntity(new Heavy_Sentry(this.game, entry.x, entry.y));
             }
+            if(entry.name == "Hive_Knight") {
+                this.game.addEntity(new Hive_Knight(this.game, entry.x, entry.y));
+            }
 
         }
         for(const entry of level.powerUps) {
