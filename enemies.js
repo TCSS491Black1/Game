@@ -671,7 +671,7 @@ class Hive_Knight extends Enemy {
         }
         // need a longer delay so that the death animation of the boss plays and THEN the credits screen pops up like 4 seconds later. 
         // comment out this if statement if we need to debug it so that it doesn't get in the way - michael
-        if (this.dead === true) { // respawn character on death?
+        if (this.removeFromWorld) { 
             this.game.camera.clearEntities();
             this.game.addEntity(new EndCreditsScreen(this.game));
         }
