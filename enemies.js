@@ -629,7 +629,12 @@ class Hive_Knight extends Enemy {
     constructor(game, x, y) {
         super(game, x, y);
         // TODO: adjust Animator arguments for sprite sheet
-        this.animator = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
+        const s = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
+        this.animationList = {
+            "IDLE": s,
+            "WALK": s,
+            "DEAD": s,
+        }
     }
 
     onCollision(entity) {
