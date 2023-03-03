@@ -48,8 +48,8 @@ class Hive_Knight extends Enemy {
             "GLOBUP": null,
             "GLOBFORM1": null,
             "GLOBFORM2": null,
-            "GLOBBURST": null
-        },
+            "GLOBBURST": null,
+        };
         // ------------ Sprite sheet setup complete. ------------
         
         this.alpha = 1;
@@ -62,7 +62,8 @@ class Hive_Knight extends Enemy {
         this.movingDirection = 0;
         this.turnTime = 0;
         this.velocity = {x:0, y:0};
-
+        this.damage = 5;
+        
         this.updateBB();
     }
 
@@ -76,14 +77,14 @@ class Hive_Knight extends Enemy {
 
         if(entity instanceof CharacterController) {
             if(entity.state == "ATTACK"){
-                this.HP -= 10;
+                //this.HP -= 10;
             } else {
-                entity.HP -=1;
+                //entity.HP -=1;
                 // this.state = "TELEPORTSLASHRECOVERY"
                 this.state = "JUMP"
             }
 
-            console.log("Hornet collided with HiveKnight. Hornet HP: ", entity.HP);
+            //console.log("Hornet collided with HiveKnight. Hornet HP: ", entity.HP);
         } else {
             // Set state to in-air.
             // this.state = "TELEPORTSLASHRECOVERY"
