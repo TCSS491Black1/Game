@@ -625,58 +625,58 @@ class Heavy_Sentry extends Enemy {
         }
     }
 }
-class Hive_Knight extends Enemy {
-    constructor(game, x, y) {
-        super(game, x, y);
-        // TODO: adjust Animator arguments for sprite sheet
-        const s = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
-        this.animationList = {
-            "IDLE": s,
-            "WALK": s,
-            "DEAD": s,
-        }
-    }
+// class Hive_Knight extends Enemy {
+//     constructor(game, x, y) {
+//         super(game, x, y);
+//         // TODO: adjust Animator arguments for sprite sheet
+//         const s = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
+//         this.animationList = {
+//             "IDLE": s,
+//             "WALK": s,
+//             "DEAD": s,
+//         }
+//     }
 
-    onCollision(entity) {
+//     onCollision(entity) {
 
-        if (entity instanceof CharacterController) {
-            //entity.dead = true;
-            //entity.HP -= this.damage;
-            //console.log(this.name + " collision with Hornet = LOSS");
-        }
-    }
-    update() {
-        // mechanics for how / where the enemy moves:
-        if(this.state == "DEAD") {  // TODO: sound on death?
-            // we don't move on death, and can't do any damage, so no BB.
-            this.BB = undefined;
-            return;
-        }
-        this.updateBB();
-        this.collisionChecks();
-    }
-    draw(ctx) {
-        ctx.save();
-        if(this.state == "DEAD") { // we want to fade out on death.
-            this.alpha -= this.game.clockTick; // time delay?
-        }
-        ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
-        super.draw(ctx);
-        ctx.restore();
+//         if (entity instanceof CharacterController) {
+//             //entity.dead = true;
+//             //entity.HP -= this.damage;
+//             //console.log(this.name + " collision with Hornet = LOSS");
+//         }
+//     }
+//     update() {
+//         // mechanics for how / where the enemy moves:
+//         if(this.state == "DEAD") {  // TODO: sound on death?
+//             // we don't move on death, and can't do any damage, so no BB.
+//             this.BB = undefined;
+//             return;
+//         }
+//         this.updateBB();
+//         this.collisionChecks();
+//     }
+//     draw(ctx) {
+//         ctx.save();
+//         if(this.state == "DEAD") { // we want to fade out on death.
+//             this.alpha -= this.game.clockTick; // time delay?
+//         }
+//         ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
+//         super.draw(ctx);
+//         ctx.restore();
 
-        if(this.alpha <= 0) {
-            this.removeFromWorld = true;
-            console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
-            ctx.globalAlpha = 1;
-        }
-        // need a longer delay so that the death animation of the boss plays and THEN the credits screen pops up like 4 seconds later. 
-        // comment out this if statement if we need to debug it so that it doesn't get in the way - michael
-        if (this.removeFromWorld) { 
-            this.game.camera.clearEntities();
-            this.game.addEntity(new EndCreditsScreen(this.game));
-        }
-    }
-}
+//         if(this.alpha <= 0) {
+//             this.removeFromWorld = true;
+//             console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
+//             ctx.globalAlpha = 1;
+//         }
+//         // need a longer delay so that the death animation of the boss plays and THEN the credits screen pops up like 4 seconds later. 
+//         // comment out this if statement if we need to debug it so that it doesn't get in the way - michael
+//         if (this.removeFromWorld) { 
+//             this.game.camera.clearEntities();
+//             this.game.addEntity(new EndCreditsScreen(this.game));
+//         }
+//     }
+// }
 class Flag_Block {
     //Scalling added to allow single block to span any gap size
     constructor(game, x, y, xScale, yScale) {

@@ -1,4 +1,4 @@
-class HiveKnight extends Enemy {
+class Hive_Knight extends Enemy {
 
     constructor(game, x, y) {
         super(game, x, y);
@@ -16,7 +16,8 @@ class HiveKnight extends Enemy {
             "TURN": new Animator(this.asset, 1608, 19, 228, 350, 1, 0.6, false, 3, 0, 0, this.scale),
             "IDLE": new Animator(this.asset, 496, 19, 213, 348, 5, 0.1, true, 3, 0, 0, this.scale),
             "DEAD": new Animator(this.asset, 0, 6502, 369, 281, 4, 0.1, true, 3, 0, 0, this.scale),
-            
+            "WALK": new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4),
+
             "TELEPORTOUT1": new Animator(this.asset, 815, 557, 236, 454, 2, 0.1, true, 3, 0, 0, this.scale),
             // FIXME: Needs TP2 to be fixed.
             "TELEPORTOUT2": new Animator(this.asset, 2083, 6788, 413, 311, 6, 0.1, true, 3, 0, 0, this.scale),
@@ -167,6 +168,13 @@ class HiveKnight extends Enemy {
             this.removeFromWorld = true;
             console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
             ctx.globalAlpha = 1;
+        }
+        
+        // need a longer delay so that the death animation of the boss plays and THEN the credits screen pops up like 4 seconds later. 
+        // comment out this if statement if we need to debug it so that it doesn't get in the way - michael
+        if (this.removeFromWorld) { 
+            this.game.camera.clearEntities();
+            this.game.addEntity(new EndCreditsScreen(this.game));
         }
     }
     
