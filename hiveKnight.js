@@ -118,7 +118,6 @@ class Hive_Knight extends Enemy {
 
         if(this.state == "DEAD") {
             this.BB = undefined;
-            this.removeFromWorld = true;
             return;
 
         } else if(this.state == "IDLE") {

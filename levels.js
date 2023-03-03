@@ -123,7 +123,6 @@ const levelOne = {
         {name: "Uoma" , x: 9000, y:1350},
         {name: "Uoma" , x: 10000, y:1350},
         {name: "Uoma" , x: 3000, y:1350},
-        //{name: "Hive_Knight", x: 500, y: 400},
     ],
     powerUps:  [
         {name: "Lightseed", x: 299, y:402},
