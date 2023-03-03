@@ -16,6 +16,7 @@ class TitleScreen {
             this.removeFromWorld = true;
             this.game.addEntity(new SceneManager(this.game));
             this.game.addEntity(new HUD());
+            document.getElementById("gameWorld").focus();
         }
     }
 
