@@ -69,13 +69,13 @@ class Enemy {
     // Check for if player is close enough to focus on must be facing each other.
     withinRange(){
         //Check for distance between player and enemy 
-        console.log("y  "+  Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2));
+       //' console.log("y  "+  Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2));
 
         if(Math.abs(this.game.player.x + this.game.player.BB.width/2 - this.x + this.BB.width/2) < 1000 &&
            (Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2) < 200 ||  
            Math.abs(this.y + this.BB.height/2 - this.game.player.y + this.game.player.BB.height/2) < 100 )){
             console.log("within range");
-''
+
             //Check for if enemy is facing player if so we can focus on player
            // if((this.game.player.x > this.x && this.facingDirection == 1)||(this.game.player.x <= this.x && this.facingDirection == 0)){
                 return true;
@@ -98,7 +98,7 @@ class Uoma extends Enemy {
      */
     constructor(game, x, y) { // NOTE: why do we have "game" here, when that's always gameEngine in global scope?
         super(game, x, y);
-        this.animationList["WALK"] = this.animationList["IDLE"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
+        this.animationList["WALK"] = this.animationList["IDLE"] = new Animator(this.asset, 4, 22, 172, 146, 6, 0.09, 1, 4);
         this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4); // TODO: change/correct parameters.
         this.alpha = 1;
         this.updateBB();
@@ -286,7 +286,7 @@ class Heavy_Sentry extends Enemy {
     }
     
     update() {
-        console.log(this.y+"  "+ this.attackTime);
+        //console.log(this.y+"  "+ this.attackTime);
         //console.log(this.focused+" "+this.attackTime+" "+super.withinRange());
         if(this.state == "DEAD") {  // TODO: sound on death?
             this.BB = undefined;
@@ -666,6 +666,62 @@ class Hive_Knight extends Enemy {
         }
     }
 }
+class Wheel{
+    constructor(game,name, x, y,r) {
+        this.game = game;
+        this.asset = ASSET_MANAGER.getAsset("./assets/" + name + ".png");
+        
+        //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop , spriteBorderWidth, xoffset, yoffset, scale, rowCount, rowOffset){
+        this.x = x;
+        this.y = y;
+        this.center = x ;
+        this.animation = new Animator(this.asset, 0, 0, 70, 72, 4, 0.05, 1, 3 );
+        this.range = r;
+        this.damage = 1;
+        this.facingDirection = 1;
+        this.updateBC();
+    }
+
+    update() {
+        //console.log(this.x+"  "+this.game.player.x);
+        let distance = Math.abs(this.x - this.center);
+        // Move left within range
+        if(this.facingDirection == 0 && distance < this.range){
+            this.x -=5;
+            //Reverse
+            if(Math.abs(this.x - this.center)>=this.range){
+                this.facingDirection = 1;
+                this.x+=10;
+            }
+        // Move right within range
+        }else if(this.facingDirection == 1 && distance < this.range){
+            this.x +=5;
+            //Reverse
+            if(Math.abs(this.x - this.center)>=this.range){
+                this.facingDirection = 0;
+                this.x-=10;
+            }
+        }
+
+
+
+        this.updateBC();
+    }
+
+ 
+    updateBC(){
+        
+        this.BC = new BoundingCircle(this.game,  this.x+36, this.y+37, 25,"red");
+    }
+
+
+    draw(ctx) {
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-this.game.camera.y)
+        this.BC.draw(ctx);
+    }
+}
+
+
 class Flag_Block {
     //Scalling added to allow single block to span any gap size
     constructor(game, x, y, xScale, yScale) {

@@ -18,6 +18,9 @@ class CharacterController {
         this.state = "WALK";
         
         this.damage = 1;
+        this.damageBuffTime = 0;
+
+
         this.HP = 10;
         this.maxHP = 10;
         this.timeOfLastDamage = 0;
@@ -105,8 +108,21 @@ class CharacterController {
         } else 
             this.changeState("JUMP", 99);
     }
+
+
     update() {
-        console.log(this.y);
+
+        if(this.damageBuffTime > 0){
+            console.log("Damage increased")
+
+            this.damage = 2;
+            this.damageBuffTime -= 0.05;
+        }else{
+           // console.log("Damaged ended")
+            this.damage = 1;
+        }
+
+
         const MAXRUN = 600;
         
         // check if current animation is a Busy State, and clean up if necessary.
@@ -231,8 +247,30 @@ class CharacterController {
         this.wasOnGround = this.onGround;
         this.onGround = false; // assume not on ground until we detect collision w/ Ground block
         this.game.entities.forEach((entity) => {
+            if (entity instanceof Wheel && this.BB.collide(entity.BC)) {
+                console.log("Hornet collided with " + entity.constructor.name);
+                const t = this.game.timer.gameTime;
+                if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
+                    console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
+                    this.HP -= entity.damage;
+                    
+                    this.timeOfLastDamage = t;
+                    this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
+
+                    // floating combat text:
+                    this.game.addEntity(new FloatingText("-" + entity.damage, this.x, this.y, "red", 1));
+                    
+                    if (this.HP <= 0) {
+                        this.changeState("DEATH")
+                        this.dead = true;
+                    }
+                } else if(t - this.timeOfLastDamage <= this.invulnLength) {
+                    // no enemy collision if we're invulnerable
+                    return;
+                }
+            }
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
-                if (entity instanceof Enemy) {
+               if (entity instanceof Enemy) {
                     console.log("Hornet collided with " + entity.constructor.name);
                     const t = this.game.timer.gameTime;
                     if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
@@ -266,8 +304,8 @@ class CharacterController {
                         this.x = entity.BB.left - this.BB.width;
                         this.velocity.x = -this.velocity.x;
                     }
-                }
-                else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
+               
+                }else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
                     this.y = entity.BB.top - this.BB.height;
                     this.velocity.y = 0;
                     this.jumps = 0;
@@ -294,12 +332,12 @@ class CharacterController {
                         this.x = entity.BB.left - this.BB.width - 25;
 
                     }
-                }
-                else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
+                }else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
                     this.changeState("IDLE", 226);
                     this.game.soundEngine.playSound("./assets/sounds/sfx/flag.wav");
                     this.game.camera.loadNextLevel(0, 0);
-                }
+                }              
+                
             }
         });
         this.updateBB(); // updating BB due to collision-based movement
@@ -316,7 +354,7 @@ class CharacterController {
             this.BB.draw(ctx); // no BB if we're invuln.
         } else {
             ctx.globalAlpha = 0.5;
-        }''
+        }
 
         // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);

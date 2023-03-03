@@ -8,6 +8,12 @@ const ASSET_MANAGER = new AssetManager();
 	
 	"./assets/Uoma.png", // enemies
 	"./assets/Heavy_Sentry.png",
+	"./assets/Fire_Wheel.png",
+	"./assets/Purple_Wheel.png",
+	"./assets/LightPurple_Wheel.png",
+	"./assets/Yellow_Wheel.png",
+	"./assets/Blue_Wheel.png",
+	"./assets/Green_Wheel.png",
 	"./assets/Hive_Knight.png",
 	"./assets/hiveknight.png", // modified version of Hive_Knight.png
 

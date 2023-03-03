@@ -7,6 +7,10 @@ const levelOne = {
     spawnPoint: [350 , 0],
     groundType: GrassGround,
     wallType: GrassWall,
+
+    wheels: [{name: "Yellow_Wheel",x:500, y:445, r:500}
+            ],
+
     ground: [
         {x:0, y:params.canvasHeight-32+768, size: 300 }, // base flat ground
         {x:32*10, y:params.canvasHeight-32*1+768, size: 8 },
@@ -77,6 +81,8 @@ const levelOne = {
     pitglow: [{x: 9600, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
         {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}], // just put it on the block for now.
 
+   
+
     enemies: [
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 1400, y:450},
@@ -143,6 +149,7 @@ const levelTwo = {
     spawnPoint: [350 , 1200],
     groundType: UnderGround,
     wallType: UnderWall,
+
     ground: [
         //Starting
         {x:32*9, y:47*32, size: 10 }, 
@@ -291,6 +298,8 @@ const levelTwo = {
 
     targetblock: [{x: 0, y: 65*32, xScale: 4.5 , yScale: 1}],
     pitglow: [{x: 64, y: 47*32, xScale: 1 , yScale: 1}],
+    wheels: [],
+
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400},
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 1400, y:450},
@@ -399,6 +408,8 @@ const levelThree = {
 
     pitglow: [{x: 9600, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
         {x: 32*300, y:params.canvasHeight*2 + 600, xScale: 1 , yScale: 1}], // just put it on the block for now.
+
+    wheels: [],
 
     enemies: [{name: "Heavy_Sentry" , x: 1200, y:550*2},
     {name: "Heavy_Sentry" , x: 2200, y:550*2},
@@ -529,9 +540,12 @@ const levelFour = {
         {x:10500+(32*50), y:0, size: 24}, // secret restart with all stats. Good for if you can't beat the boss? You can go through the whole thing again and get more power ups.
 
     ],
+    
 
     targetblock: [{x: 10500+(32*100), y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
     pitglow: [{x: 10500+(32*100), y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
+    wheels: [],
+
     enemies: [
         {name: "Heavy_Sentry" , x: 10000, y: 32*10},
         {name: "Uoma" , x: 1200, y:550},

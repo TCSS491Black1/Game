@@ -14,7 +14,7 @@ class SceneManager{
         this.player = new CharacterController(this.game,0,0);
         this.levelNum = 0;
         
-        this.loadLevel(levelOne,0,0); 
+        this.loadLevel(levelTwo,0,0); 
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 
@@ -85,7 +85,9 @@ class SceneManager{
             this.game.addEntity(new Pit_Glow(this.game, entry.x, entry.y, entry.xScale, entry.yScale));
             console.log("added pitglow", [entry.x, entry.y, entry.size]);
         }
-
+        for(const entry of level.wheels){
+            this.game.addEntity(new Wheel(this.game ,entry.name ,entry.x ,entry.y ,entry.r));
+        }
         for(const entry of level.enemies) {
             if(entry.name == "Uoma"){
                 this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
@@ -94,6 +96,7 @@ class SceneManager{
             if(entry.name == "Heavy_Sentry"){
                 this.game.addEntity(new Heavy_Sentry(this.game, entry.x, entry.y));
             }
+
 
         }
         for(const entry of level.powerUps) {

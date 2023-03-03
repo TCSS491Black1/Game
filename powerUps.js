@@ -1,5 +1,5 @@
 class PowerUp {
-    constructor(game, x=700, y=1199) {        
+    constructor(game, x, y) {        
         Object.assign(this, { game, x, y });
         this.name = this.constructor.name;
         this.asset = ASSET_MANAGER.getAsset("./assets/" + this.name + ".png");
@@ -31,9 +31,12 @@ class PowerUp {
         }
     }
     collisionChecks() {
+
         /* collision detection and resolution: */
         this.game.entities.forEach((entity) => {
             if (entity.BB && this.BB.collide(entity.BB)) {
+                        
+
                 this.onCollision(entity); /* NOTE: Could isolate the despawn perhaps. Okay for now*/
             }
         });
@@ -78,10 +81,10 @@ class Gathering_Swarm extends PowerUp {
         super(game, x, y);
         this.animationList["IDLE"] = new Animator(this.asset, 4,33, 100, 90, 8, 0.1, 1, 4, 0 , 0 , 1 , 2 , 4 , 100);
         this.animationList["COLLECTED"] = new Animator(this.asset, 4,33, 100, 90, 8, 0.1, 1, 4, 0 , 0 , 1 , 2 , 4 , 100);
-         // TODO: change/correct parameters.
         this.updateBB();
     }
 
+    
     update() {
         if(this.state == "COLLECTED") {
             this.BB = undefined;
@@ -94,11 +97,13 @@ class Gathering_Swarm extends PowerUp {
     updateBB() {
         this.BB = new BoundingBox(this.game , this.x+40 , this.y+30 , 30, 30, "red");
     }
-
     onCollision(entity) {
         if (this.state != "COLLECTED" && entity instanceof CharacterController) { 
             this.state = "COLLECTED";
             this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
+            entity.jumpsTotal += 1;
+            entity.damageBuffTime = 60;
+
         }
     }
 };
@@ -136,6 +141,8 @@ class Lightseed extends PowerUp {
             this.state = "COLLECTED";
             this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
             entity.jumpsTotal += 1;
+            entity.damageBuffTime = 60;
+
         }
     }
 }
