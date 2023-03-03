@@ -11,6 +11,8 @@ class SceneManager{
         this.score = 0;
         this.gameOver = false;
         this.soundEngine = new SoundEngine(this.game);
+        this.soundEngine.setVolumes(); // configure volumes to reflect configs.
+
         this.player = new CharacterController(this.game,0,0);
         this.levelNum = 0;
         
