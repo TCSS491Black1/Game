@@ -147,12 +147,12 @@ class Hive_Knight extends Enemy {
         
         // --------------- Sprite drawing. -------------------
         let destX = (this.x - this.game.camera.x);
-        let destY = (this.y- this.game.camera.y);
+        let destY = (this.y - this.game.camera.y);
 
         if (this.facingDirection) {// if facing right
             ctx.scale(-1, 1);
             destX *= -1;
-            destX -= this.animationList[this.state].width;
+            destX -= this.animationList[this.state].width * this.scale;
         }
         this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
             destX,
