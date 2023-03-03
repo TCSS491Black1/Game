@@ -9,7 +9,7 @@ class FloatingText {
         let destX = (this.x - this.game.camera.x);
         let destY = (this.y - this.game.camera.y);
         ctx.save();
-        // ctx.font = "50px Baskerville";
+        ctx.font = "50px Baskerville";
         ctx.fillStyle = "black"
         ctx.fillText(this.text,destX+2,destY+2);
         ctx.fillStyle = this.color;
