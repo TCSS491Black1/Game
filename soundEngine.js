@@ -96,6 +96,8 @@ class SoundEngine {
     playBackgroundMusic(assetName, volume = 0.4) {
         // Create AudioBuffer and set to AudioBufferSourceNode.
         let audioBuffer = ASSET_MANAGER.getAsset(assetName);
+        if(this.game.options.debugging)
+          console.log("Playing audio: ", assetName);
         this.backgroundMusicSource = this.audioCtx.createBufferSource();
         this.backgroundMusicSource.buffer = audioBuffer;
 
