@@ -234,10 +234,12 @@ class CharacterController {
         this.game.entities.forEach((entity) => {
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Enemy) {
-                    console.log("Hornet collided with " + entity.constructor.name);
                     const t = this.game.timer.gameTime;
                     if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
-                        console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
+                        if(this.game.debugging) {
+                            console.log("Hornet collided with " + entity.constructor.name);
+                            console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
+                        }
                         this.HP -= entity.damage;
                         
                         this.timeOfLastDamage = t;
