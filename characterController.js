@@ -321,7 +321,7 @@ class CharacterController {
             this.BB.draw(ctx); // no BB if we're invuln.
         } else {
             ctx.globalAlpha = 0.5;
-        }''
+        }
 
         // draw character sprite, based on camera and facing direction:
         let destX = (this.x - this.game.camera.x);
