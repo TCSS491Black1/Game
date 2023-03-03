@@ -182,14 +182,10 @@ class Heavy_Sentry extends Enemy {
     }
 
     attackRange(){
-        if(super.withinRange()){
-            console.log("within attack range");
-
+        if(super.withinRange()) {
             if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 300))){
-                // console.log("true")
                 return true;
             }else if(this.game.player.onGround == this.onGround && ((this.facingDirection == 0 && this.x - this.game.player.x < 75))){
-                // console.log("true")
                 return true;
             }
         }
@@ -206,10 +202,8 @@ class Heavy_Sentry extends Enemy {
     chargeRange(){
         if(super.withinRange()){
             if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 600))){
-                console.log("true")
                 return true;
             }else if(this.game.player.onGround == this.onGround && ((this.facingDirection == 0 && this.x - this.game.player.x < 375))){
-                console.log("true")
                 return true;
             }
         }
@@ -235,7 +229,6 @@ class Heavy_Sentry extends Enemy {
             this.onGround = true;
             //Keep enemy on surface
             
-
             //Keep from falling off ledges if not in follow character mode
             //Left side stop or turn
             if(this.state != "ATTACK" && this.state != "CHARGE_END"){
@@ -372,24 +365,20 @@ class Heavy_Sentry extends Enemy {
                         this.turnTime = this.game.timer.gameTime;
                         this.movingDirection = 0;
                     }
-
-
-
                 }
             }else if(this.state == "ATTACK"){
-                //console.log("In update attack")
 
                 if(this.game.timer.gameTime-this.attackTime > 1.3){
                     this.animationList["ATTACK"] = new Animator(this.asset, 4, 1462, 406, 330, 12, 0.1, 0, 3,0,0,1,2,6,335);
                     
                     if(this.attackRange()){
-                        console.log("attack loop in attack");
+                        //console.log("attack loop in attack");
 
                         this.state = "ATTACK";
                         this.attackTime = this.game.timer.gameTime;
 
                     }else{
-                        console.log("EndedAttack");
+                        //console.log("EndedAttack");
                         this.attackTime = 0;
                         this.state = "RUN";
                         this.y += 60;
