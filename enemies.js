@@ -69,13 +69,15 @@ class Enemy {
     // Check for if player is close enough to focus on must be facing each other.
     withinRange(){
         //Check for distance between player and enemy 
-        console.log("y  "+  Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2));
+        if(this.game.debugging)
+            console.log("y  "+  Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2));
 
         if(Math.abs(this.game.player.x + this.game.player.BB.width/2 - this.x + this.BB.width/2) < 1000 &&
            (Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2) < 200 ||  
            Math.abs(this.y + this.BB.height/2 - this.game.player.y + this.game.player.BB.height/2) < 100 )){
-            console.log("within range");
-''
+            if(this.game.debugging)
+                console.log("player within range of ", this.name);
+                
             //Check for if enemy is facing player if so we can focus on player
            // if((this.game.player.x > this.x && this.facingDirection == 1)||(this.game.player.x <= this.x && this.facingDirection == 0)){
                 return true;
