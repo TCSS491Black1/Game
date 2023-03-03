@@ -170,6 +170,8 @@ class CharacterController {
         // end of dash code
         // ****************
         this.x += this.velocity.x * clockTick;   // move horizontally as appropriate.
+        if(this.x <= 0) this.x = 0;
+        
         this.y += this.velocity.y * clockTick;   // calculate new Y position from velocity.
         this.updateAttackBB();
         //****************** */
