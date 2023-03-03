@@ -57,7 +57,7 @@ class CharacterController {
         // jump/gravity math variables:
         // credit for gravity formulae https://www.youtube.com/watch?v=hG9SzQxaCm8
         this.jumps = 0;     // number of jumps counted mid-air.
-        this.jumpsTotal = 1; // number of jumps possible mid-air
+        this.jumpsTotal = 40; // number of jumps possible mid-air
 
         const h = this.animationList["IDLE"].height; // desired height of jump (in pixels)
         const t_h = 0.25;                            // time to apex of jump in seconds. jump duration = 0.5    
@@ -111,16 +111,8 @@ class CharacterController {
 
 
     update() {
-
-        if(this.damageBuffTime > 0){
-            console.log("Damage increased")
-
-            this.damage = 2;
-            this.damageBuffTime -= 0.05;
-        }else{
-           // console.log("Damaged ended")
-            this.damage = 1;
-        }
+        console.log(this.damage);
+     
 
 
         const MAXRUN = 600;

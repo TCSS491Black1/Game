@@ -53,6 +53,9 @@ class Enemy {
         if(t - this.timeDamageLastTaken > this.damageTakenCooldown) {
             this.timeDamageLastTaken = t;
             this.HP -= amount;
+            if(this.HP < 0){
+                this.HP = 0;
+            }
             if(this.game.options.debugging) {
                 console.log("enemy:", this.constructor.name, " taking " + amount + " dmg ", this.HP);
             }
@@ -667,7 +670,7 @@ class Hive_Knight extends Enemy {
     }
 }
 class Wheel{
-    constructor(game,name, x, y,r) {
+    constructor(game,name, x, y,r,facingDirection) {
         this.game = game;
         this.asset = ASSET_MANAGER.getAsset("./assets/" + name + ".png");
         
@@ -678,7 +681,7 @@ class Wheel{
         this.animation = new Animator(this.asset, 0, 0, 70, 72, 4, 0.05, 1, 3 );
         this.range = r;
         this.damage = 1;
-        this.facingDirection = 1;
+        this.facingDirection = facingDirection;
         this.updateBC();
     }
 

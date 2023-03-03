@@ -99,10 +99,11 @@ class Gathering_Swarm extends PowerUp {
     }
     onCollision(entity) {
         if (this.state != "COLLECTED" && entity instanceof CharacterController) { 
+            entity.damage += 1;
+            console.log(entity.damage);
             this.state = "COLLECTED";
             this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
-            entity.jumpsTotal += 1;
-            entity.damageBuffTime = 60;
+           
 
         }
     }
@@ -141,7 +142,6 @@ class Lightseed extends PowerUp {
             this.state = "COLLECTED";
             this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
             entity.jumpsTotal += 1;
-            entity.damageBuffTime = 60;
 
         }
     }

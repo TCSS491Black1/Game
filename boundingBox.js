@@ -10,7 +10,6 @@ class BoundingBox {
     collide(other) {
         if(other.radius != null && other.left == null){
             //Other == Circle
-            console.log(other.y-other.radius+"  < "+this.bottom)
             return (other.x > this.left-other.radius && other.x < this.right+other.radius &&
                 other.y-other.radius < this.bottom && other.y+other.radius > this.top);
         }
@@ -45,19 +44,4 @@ class BoundingCircle {
         }
     }
 
-    update() {
-    
-    }
-
-    collide(other) {
-        console.log("in circle collision")
-        if(other.radius == null && other.left != null){
-            return (this.x > other.left-this.radius && this.x < other.right+this.radius &&
-                this.y-this.radius < other.bottom && this.y+this.radius > other.top);
-        }
-        return false;
-        //compare the distance to combined radii
-     
-        
-    }
 };

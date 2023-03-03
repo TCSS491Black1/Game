@@ -86,7 +86,7 @@ class SceneManager{
             console.log("added pitglow", [entry.x, entry.y, entry.size]);
         }
         for(const entry of level.wheels){
-            this.game.addEntity(new Wheel(this.game ,entry.name ,entry.x ,entry.y ,entry.r));
+            this.game.addEntity(new Wheel(this.game ,entry.name ,entry.x ,entry.y ,entry.r,entry.f));
         }
         for(const entry of level.enemies) {
             if(entry.name == "Uoma"){
