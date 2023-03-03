@@ -109,7 +109,7 @@ class Uoma extends Enemy {
 
     update() {
         // mechanics for how / where the enemy moves:
-        if(this.state == "DEAD") {  // TODO: sound on death?
+        if(this.state == "DEAD") {
             // we don't move on death, and can't do any damage, so no BB.
             this.BB = undefined;
             return;
@@ -286,9 +286,9 @@ class Heavy_Sentry extends Enemy {
     }
     
     update() {
-        console.log(this.y+"  "+ this.attackTime);
-        //console.log(this.focused+" "+this.attackTime+" "+super.withinRange());
-        if(this.state == "DEAD") {  // TODO: sound on death?
+   
+        // Mechanics for how / where the enemy moves:
+        if(this.state == "DEAD") {
             this.BB = undefined;
             this.y = this.y+3;
             return;
