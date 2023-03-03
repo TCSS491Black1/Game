@@ -1,6 +1,6 @@
 
 
-.container {
+.twContainer {
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
@@ -8,7 +8,7 @@
   display: flex;
   justify-content: top;
   align-items: top;
-  background-color: #00000000;
+  background-color: #000000;
 }
 
 .text span {
