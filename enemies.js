@@ -663,6 +663,7 @@ class Massive_Jelly extends Enemy {
         this.damage = 2;
         this.updateBB();
         this.HP = 10;
+        this.MAXHP = 10;
         this.tint = `rgb(255, 0, 0)`;
         this.width = 172 * 5;
         this.height = 147 * 5;
