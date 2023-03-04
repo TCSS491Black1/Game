@@ -114,7 +114,7 @@ class Uoma extends Enemy {
             this.BB = undefined;
             return;
         }
-        this.x -= (this.speed * this.game.clockTick);
+        this.x -= (this.speed * (0.25) * this.game.clockTick); // slowed them down. More "jellyfish-like". -Michael 
         // if (this.x < -200) this.x = 1500, this.y = 300;
         // if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100; // spawning allocated in levels.js now
         // end of movement code

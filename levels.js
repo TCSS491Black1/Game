@@ -4,112 +4,200 @@ const levelOne = {
     foreground: ["./assets/Level1ParallaxFlowers.png",],
     pillars: [],
     worldSize: 2,
-    spawnPoint: [350 , 0],
+    spawnPoint: [330 , 0],
     groundType: GrassGround,
     wallType: GrassWall,
     ground: [
-        {x:0, y:params.canvasHeight-32+768, size: 300 }, // base flat ground
-        {x:32*10, y:params.canvasHeight-32*1+768, size: 8 },
-        {x:32*10, y:params.canvasHeight-32*5+768, size: 8 },
-        {x:32*10, y:params.canvasHeight-32*9+768, size: 8 },
-        {x:32*100, y:params.canvasHeight-32*13+768, size: 8 },
-        {x:32*10, y:32*1+768, size: 8 },
-        {x:32*12, y:32*5+768, size: 8 },
-        {x:32*14, y:32*9+768, size: 8 },
-        {x:32*16, y:32*13+768, size: 8 },
-        {x:32*10, y:32*1+450, size: 8 },
-        {x:32*12, y:32*5+450, size: 8 },
-        {x:32*14, y:32*9+450, size: 8 },
-        {x:32*16, y:32*13+450, size: 8 },
+       
+        // THE GROUND
+        //{x:0, y:params.canvasHeight-32+768, size: 290 }, 
 
-      
-        // added for MVD
-        {x:32*46, y:32*13, size: 8 },
-        {x:32*72, y:32*5, size: 8 },
-        {x:32*815, y:32*9, size: 8 },
-        {x:32*95, y:32*12, size: 8 },
-        {x:32*105, y:32*27, size: 2 },
-        {x:32*120, y:32*35, size: 8 },
-        {x:32*135, y:32*18, size: 6 },
-        {x:32*138, y:32*29, size: 8 },
-        {x:32*40, y:32*40, size: 2 },
-        {x:32*24, y:32*39, size: 8 },
-        {x:32*36, y:32*43, size: 8 },
-        {x:32*49, y:32*33, size: 8 },
-        {x:32*79, y:32*36, size: 5 },
-        {x:32*85, y:32*9, size: 8 },
-        {x:32*95, y:32*12, size: 8 },
-        {x:32*105, y:32*33, size: 8 },
-        {x:32*120, y:32*25, size: 3 },
-        {x:32*139, y:32*39, size: 8 },
-        {x:32*140, y:32*22, size: 8 },
+        // THE INTRO
+        {x:32*11, y:params.canvasHeight-32*30+768, size: 1 },
+        {x:32*11, y:params.canvasHeight-32*25+768, size: 1 },
+        {x:32*12, y:params.canvasHeight-32*20+768, size: 2 },
+        {x:32*13, y:params.canvasHeight-32*16+768, size: 3 },
+        {x:32*15, y:params.canvasHeight-32*12+768, size: 5 },
+        {x:32*18, y:params.canvasHeight-32*9+768, size: 8 },
+        {x:32*23, y:params.canvasHeight-32*6+768, size: 13 },
+        {x:32*31, y:params.canvasHeight-32*3+768, size: 21 },
 
-        //second half. just multiplied the x by 2
-        {x:32*46*2, y:32*13, size: 8 },
-        {x:32*72*2, y:32*5, size: 8 },
-        {x:32*815*2, y:32*9, size: 8 },
-        {x:32*95*2, y:32*12, size: 8 },
-        {x:32*105*2, y:32*27, size: 2 },
-        {x:32*120*2, y:32*35, size: 8 },
-        {x:32*135*2, y:32*18, size: 6 },
-        {x:32*128*2, y:32*29, size: 8 },
-        {x:32*40*2, y:32*40, size: 12 },
-        {x:32*24*2, y:32*39, size: 8 },
-        {x:32*36*2, y:32*43, size: 8 },
-        {x:32*49*2, y:32*33, size: 8 },
-        {x:32*79*2, y:32*36, size: 5 },
-        {x:32*85*2, y:32*9, size: 8 },
-        {x:32*95*2, y:32*12, size: 8 },
-        {x:32*105*2, y:32*33, size: 8 },
-        {x:32*120*2, y:32*25, size: 3 },
-        {x:32*139*2, y:32*39, size: 8 },
-        {x:32*140*2, y:32*22, size: 8 },
+        {x:32*49, y:params.canvasHeight-32*6+768, size: 8 },
+        {x:32*57, y:params.canvasHeight-32*12+768, size: 5 },
+        {x:32*63, y:params.canvasHeight-32*20+768, size: 3 },
+
+        // MARIO BLOCKS
+        {x:32*105, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*105, y:params.canvasHeight-32*8+768, size: 2 },
+
+        {x:32*115, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*115, y:params.canvasHeight-32*8+768, size: 2 },
+        {x:32*117+2, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*117+2, y:params.canvasHeight-32*8+768, size: 2 },
+        {x:32*119+4, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*119+4, y:params.canvasHeight-32*8+768, size: 2 },
+        {x:32*121+6, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*121+6, y:params.canvasHeight-32*8+768, size: 2 },
+        {x:32*123+8, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*123+8, y:params.canvasHeight-32*8+768, size: 2 },
+
+        {x:32*119+4, y:params.canvasHeight-32*15+768, size: 2 },
+        {x:32*119+4, y:params.canvasHeight-32*16+768, size: 2 },
+
+        // HIDDEN LUMAFLY SPOT
+        {x:32*219, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*217, y:params.canvasHeight-32*5+768, size: 2 },
+        {x:32*215, y:params.canvasHeight-32*3+768, size: 2 },
+        {x:32*213, y:params.canvasHeight-32*1+768, size: 2 },
+    
+        {x:32*224, y:params.canvasHeight-32*9+768, size: 3 },
+        {x:32*220, y:params.canvasHeight-32*8+768, size: 8 },
+        {x:32*220, y:params.canvasHeight-32*7+768, size: 8 },
+        
+        {x:32*228, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*230, y:params.canvasHeight-32*5+768, size: 2 },
+        {x:32*232, y:params.canvasHeight-32*3+768, size: 2 },
+        {x:32*234, y:params.canvasHeight-32*1+768, size: 2 },
 
         
+        // PIT
+        {x:0, y:params.canvasHeight-32*1+768, size: 162 }, // START OF MAP, ENDS AT PIT 
+        {x:32*168, y:params.canvasHeight-32*1+768, size: 5 },  
+        {x:32*179, y:params.canvasHeight-32*1+768, size: 5 }, 
+        {x:32*189, y:params.canvasHeight-32*1+768, size: 5 },       
+        {x:32*185, y:params.canvasHeight-32*7+768, size: 3 }, 
+        {x:32*183, y:params.canvasHeight-32*19+768, size: 4 },
+        {x:32*173, y:params.canvasHeight-32*16+768, size: 4 },
+        {x:32*163, y:params.canvasHeight-32*10+768, size: 4 },
+        {x:32*228, y:params.canvasHeight-32*1+768, size: 60 }, // END OF PITS 
+
+        {x:32*265, y:params.canvasHeight-32*10+768, size: 3 },
+        {x:32*288, y:params.canvasHeight-32*15+768, size: 3 },
+        {x:32*243, y:params.canvasHeight-32*2+768, size: 40 }, 
 
     ],
-    wall:[{x:-32,y:0,size: 47}],
+    wall:[
+        // STARTING WALL        
+        {x:-32,y:0,size: 47},
+
+        // MARIO TUBE
+        {x:32*135.5, y:params.canvasHeight-32*6+768, size: 1 },
+        {x:32*136, y:params.canvasHeight-32*6+768, size: 6 },
+        {x:32*137, y:params.canvasHeight-32*6+768, size: 6 },
+        {x:32*138, y:params.canvasHeight-32*6+768, size: 6 },
+        {x:32*138.5, y:params.canvasHeight-32*6+768, size: 1 },
+
+        //HIDDEN LUMAFLY
+        {x:32*219, y:params.canvasHeight-32*7+768, size: 7 },
+        {x:32*218, y:params.canvasHeight-32*7+768, size: 7 },
+        {x:32*217, y:params.canvasHeight-32*5+768, size: 5 },
+        {x:32*216, y:params.canvasHeight-32*5+768, size: 5 },
+        {x:32*215, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*214, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*213, y:params.canvasHeight-32*1+768, size: 1 },
+        {x:32*212, y:params.canvasHeight-32*1+768, size: 1 },
+        
+        {x:32*228, y:params.canvasHeight-32*7+768, size: 7 },
+        {x:32*229, y:params.canvasHeight-32*7+768, size: 7 },
+        {x:32*230, y:params.canvasHeight-32*5+768, size: 5 },
+        {x:32*231, y:params.canvasHeight-32*5+768, size: 5 },
+        {x:32*232, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*233, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*234, y:params.canvasHeight-32*1+768, size: 1 },
+        {x:32*235, y:params.canvasHeight-32*1+768, size: 1 },
+
+        // OBSTACLES
+        {x:32*230, y:params.canvasHeight-32*4+768, size: 4 },
+        {x:32*245, y:params.canvasHeight-32*5+768, size: 5 },  
+        {x:32*257, y:params.canvasHeight-32*6+768, size: 6 },
+        {x:32*264, y:params.canvasHeight-32*4+768, size: 4 },
+        {x:32*270, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*282, y:params.canvasHeight-32*4+768, size: 4 },
+
+        // PIT WALLS
+        {x:32*168, y:params.canvasHeight-32*7+768, size: 7 }, 
+        {x:32*167, y:params.canvasHeight-32*8+768, size: 2 },  
+        {x:32*166, y:params.canvasHeight-32*9+768, size: 4 },  
+
+        {x:32*179, y:params.canvasHeight-32*11+768, size: 11 }, 
+        {x:32*178, y:params.canvasHeight-32*14+768, size: 4 }, 
+        {x:32*177, y:params.canvasHeight-32*16+768, size: 3 }, 
+
+        {x:32*189, y:params.canvasHeight-32*15+768, size: 15 }, 
+        {x:32*188, y:params.canvasHeight-32*17+768, size: 11 }, 
+        {x:32*187, y:params.canvasHeight-32*19+768, size: 5 }, 
+
+        // THE END OF LEVEL 1, WALL      
+        {x:32*350, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*351, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*352, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*353, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*354, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*355, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*356, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*357, y:params.canvasHeight-32*50+768, size: 200 }, 
+        {x:32*358, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*359, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*360, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*361, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*362, y:params.canvasHeight-32*50+768, size: 200 },
+        {x:32*363, y:params.canvasHeight-32*50+768, size: 200 },
+
+        // THE END OF LEVEL 1, DESCENT
+        {x:32*300, y:params.canvasHeight-32*(-34)+768, size: 200 },
+        {x:32*299, y:params.canvasHeight-32*(-21)+768, size: 144 },
+        {x:32*298, y:params.canvasHeight-32*(-13)+768, size: 89 },
+        {x:32*297, y:params.canvasHeight-32*(-8)+768, size: 55 },
+        {x:32*296, y:params.canvasHeight-32*(-5)+768, size: 34 },
+        {x:32*295, y:params.canvasHeight-32*(-3)+768, size: 8 },
+        {x:32*294, y:params.canvasHeight-32*(-2)+768, size: 8 },
+        {x:32*293, y:params.canvasHeight-32*(-1)+768, size: 5 },
+        {x:32*292, y:params.canvasHeight-32*(1)+768, size: 5 },
+        {x:32*291, y:params.canvasHeight-32*(1)+768, size: 3 },
+        {x:32*290, y:params.canvasHeight-32*1+768, size: 2 },
+        {x:32*289, y:params.canvasHeight-32*1+768, size: 1 },
+        {x:32*288, y:params.canvasHeight-32*1+768, size: 1 },
+
+    ],
 
     targetblock: [{x: 9500, y: params.canvasHeight*2-32*4+600, xScale: 30 , yScale: 5},
     ],
 
-    pitglow: [{x: 9500, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1},
+    pitglow: [{x: 9350, y: params.canvasHeight*2-32*3, xScale: 1 , yScale: 1},
     ], 
 
     enemies: [
-        {name: "Uoma" , x: 1200, y:550},
-        {name: "Uoma" , x: 1400, y:450},
-        {name: "Uoma" , x: 1600, y:350},
-        {name: "Uoma" , x: 1200*2, y:1250},
-        {name: "Uoma" , x: 1400*3, y:1250},
-        {name: "Uoma" , x: 1600*4, y:1250},
-        {name: "Uoma" , x: 1800, y:1250},
+        // Swarm of UOMA AT THE BEGINNING, "Don't stand there, run."
+        {name: "Uoma" , x:32*32, y:params.canvasHeight-32*30+768},
+        {name: "Uoma" , x:32*34, y:params.canvasHeight-32*24+768},
+        {name: "Uoma" , x:32*35, y:params.canvasHeight-32*36+768},
+        {name: "Uoma" , x:32*38, y:params.canvasHeight-32*25+768},
+        {name: "Uoma" , x:32*41, y:params.canvasHeight-32*30+768},
+        {name: "Uoma" , x:32*43, y:params.canvasHeight-32*32+768},
+        {name: "Uoma" , x:32*44, y:params.canvasHeight-32*28+768},
+        {name: "Uoma" , x:32*45, y:params.canvasHeight-32*26+768},
+        {name: "Heavy_Sentry" , x:32*270, y:400},
+
 
         {name: "Uoma" , x: 1700*2, y:950},
-        {name: "Uoma" , x: 1800*3, y:850},
+        {name: "Uoma" , x: 1800*3, y:850},  
         {name: "Uoma" , x: 1900*4, y:750},
-
         {name: "Uoma" , x: 2400, y:1250},
         {name: "Uoma" , x: 1900, y:1190},
         {name: "Uoma" , x: 1200, y:1110},
         {name: "Uoma" , x: 1800, y:1250},
-
         {name: "Uoma" , x: 5400, y:1250},
         {name: "Uoma" , x: 4900, y:1190},
         {name: "Uoma" , x: 4200, y:1110},
         {name: "Uoma" , x: 4800, y:1250},
-
         {name: "Uoma" , x: 6400, y:1250},
         {name: "Uoma" , x: 5900, y:1190},
         {name: "Uoma" , x: 5200, y:1110},
         {name: "Uoma" , x: 5800, y:1250},
-
         {name: "Uoma" , x: 9400, y:1250},
         {name: "Uoma" , x: 10900, y:1190},
         {name: "Uoma" , x: 10200, y:1110},
         {name: "Uoma" , x: 10800, y:1250},
-
-        
         {name: "Uoma" , x: 11000, y:1350},
         {name: "Uoma" , x: 11540, y:1190},
         {name: "Uoma" , x: 12040, y:1010},
@@ -118,19 +206,67 @@ const levelOne = {
         {name: "Uoma" , x: 11500, y:180},
         {name: "Uoma" , x: 12070, y:110},
         {name: "Uoma" , x: 12500, y:290},
-
         {name: "Uoma" , x: 5000, y:1350},
         {name: "Uoma" , x: 9000, y:1350},
         {name: "Uoma" , x: 10000, y:1350},
         {name: "Uoma" , x: 3000, y:1350},
-        //{name: "Hive_Knight", x: 500, y: 400},
+        
+        // MORE COMING FROM OFF THE MAP
+        // I duplicated them all and doubled 
+        // the distance away. Can pobably be 
+        // deleted after adding in a randomizer 
+        // or refactor.
+        {name: "Uoma" , x: 1700*2*(2), y:950},
+        {name: "Uoma" , x: 1800*3*(2), y:850},
+        {name: "Uoma" , x: 1900*4*(2), y:750},
+        {name: "Uoma" , x: 2400*(2), y:1250},
+        {name: "Uoma" , x: 1900*(2), y:1190},
+        {name: "Uoma" , x: 1200*(2), y:1110},
+        {name: "Uoma" , x: 1800*(2), y:1250},
+        {name: "Uoma" , x: 5400*(2), y:1250},
+        {name: "Uoma" , x: 4900*(2), y:1190},
+        {name: "Uoma" , x: 4200*(2), y:1110},
+        {name: "Uoma" , x: 4800*(2), y:1250},
+        {name: "Uoma" , x: 6400*(2), y:1250},
+        {name: "Uoma" , x: 5900*(2), y:1190},
+        {name: "Uoma" , x: 5200*(2), y:1110},
+        {name: "Uoma" , x: 5800*(2), y:1250},
+        {name: "Uoma" , x: 9400*(2), y:1250},
+        {name: "Uoma" , x: 10900*(2), y:1190},
+        {name: "Uoma" , x: 10200*(2), y:1110},
+        {name: "Uoma" , x: 10800*(2), y:1250},
+        {name: "Uoma" , x: 11000*(2), y:1350},
+        {name: "Uoma" , x: 11540*(2), y:1190},
+        {name: "Uoma" , x: 12040*(2), y:1010},
+        {name: "Uoma" , x: 12500*(2), y:1250},
+        {name: "Uoma" , x: 11070*(2), y:250},
+        {name: "Uoma" , x: 11500*(2), y:180},
+        {name: "Uoma" , x: 12070*(2), y:110},
+        {name: "Uoma" , x: 12500*(2), y:290},
+        {name: "Uoma" , x: 5000*(2), y:1350},
+        {name: "Uoma" , x: 9000*(2), y:1350},
+        {name: "Uoma" , x: 10000*(2), y:1350},
+        {name: "Uoma" , x: 3000*(2), y:1350}
+
     ],
     powerUps:  [
-        {name: "Lightseed", x: 299, y:402},
-        {name: "Lightseed", x: 811, y:1404},
-        {name: "Lightseed", x: 811, y:1404},
-        {name: "Lightseed", x: 2500, y:500},
-        {name: "Lightseed", x: 7000, y:60},
+        {name: "Lightseed", x: 32*9, y:params.canvasHeight-32*32+768}, //Start top
+        {name: "Lightseed", x: 32*30, y:params.canvasHeight-32*5+768}, //Start bottom
+        {name: "Lightseed", x: 32*31, y:params.canvasHeight-32*30+768}, //Start "in the distance"
+
+        {name: "Charged_Lumafly", x:32*34, y:params.canvasHeight-32*28+768}, //Starter Lumafly
+        {name: "Charged_Lumafly", x:32*220, y:params.canvasHeight-32*7+768}, //Hidden Lumafly
+        {name: "Charged_Lumafly", x:32*310, y:params.canvasHeight-32*3+768}, //Ending Lumafly1
+        {name: "Charged_Lumafly", x:32*316, y:params.canvasHeight-32*10+768}, //Ending Lumafly2
+        {name: "Charged_Lumafly", x:32*322, y:params.canvasHeight-32*5+768}, //Ending Lumafly3
+        {name: "Charged_Lumafly", x:32*325, y:params.canvasHeight-32*(-2)+768}, //Ending Lumafly4
+
+        {name: "Gathering_Swarm" , x:32*119, y:params.canvasHeight-32*18+768}, //Mario block
+        {name: "Gathering_Swarm" , x:32*187, y:params.canvasHeight-32*6+768}, //Ledge
+        {name: "Gathering_Swarm" , x:32*303, y:params.canvasHeight-32*(9)+768}, //Ending 
+
+
+
     ],
 
 }
