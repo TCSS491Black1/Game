@@ -7,7 +7,7 @@ const levelOne = {
     spawnPoint: [350 , 0],
     groundType: GrassGround,
     wallType: GrassWall,
-
+    arrows: [{}],
     wheels: [{name: "Yellow_Wheel",x:500, y:445, r:500}
             ],
 
@@ -146,10 +146,17 @@ const levelTwo = {
     foreground: [], //["./assets/Level2ParallaxBoulders.png",], no longer works now that floor is gone.
     pillars: [],
     worldSize: 2,
-    spawnPoint: [5350 , 1200],
+    spawnPoint: [350 , 1200],
     groundType: UnderGround,
     wallType: UnderWall,
-
+    arrows: [{name:"Down" , x:2*32, y:40*32},
+            {name:"Down" , x:2*32, y:25*32},
+            {name:"Down" , x:2*32, y:10*32},
+            {name:"Right" , x:21*32, y:33*32},
+            {name:"Right" , x:25*32, y:12*32},
+            {name:"Right" , x:75*32, y:12*32},
+            {name:"Up" ,  x: 395*32, y:30*32},
+            {name:"Left" ,  x: 386*32, y:12*32}],
     ground: [
         //Starting
         {x:32*9, y:47*32, size: 10 }, 
@@ -388,7 +395,9 @@ const levelTwo = {
     powerUps:  [{name: "Lightseed" , x: 800, y:400},
         {name: "Charged_Lumafly" , x: 404*32, y:41*32},
         {name: "Charged_Lumafly" , x: 410*32, y:41*32},
+        {name: "Charged_Lumafly" , x: 416*32, y:41*32},
         {name: "Charged_Lumafly" , x: 11*32, y:29*32},
+        {name: "Charged_Lumafly" , x: 228*32, y:21*32},
         {name: "Gathering_Swarm" , x: 222*32, y:22*32}]
 
 }
@@ -401,6 +410,9 @@ const levelThree = {
     worldSize: 2,
     groundType: IceGround,
     wallType: IceWall,
+
+    arrows: [{}],
+
     ground: [{x:0, y:params.canvasHeight*2-32, size: 300 }, 
         {x:32*12, y:params.canvasHeight*2-32*5, size: 8 },
         {x:32*12, y:params.canvasHeight*2-32*9, size: 8 },
@@ -516,6 +528,7 @@ const levelFour = {
     spawnPoint: [150 , 0],
     groundType: HellGround,
     wallType: HellWall,
+    arrows: [{}],
     ground: [
         {x:0, y:params.canvasHeight-32, size: 736 }, 
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },

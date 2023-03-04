@@ -18,7 +18,6 @@ class CharacterController {
         this.state = "WALK";
         
         this.damage = 1;
-        this.damageBuffTime = 0;
 
 
         this.HP = 10;
@@ -40,7 +39,7 @@ class CharacterController {
         this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.1, 0, 3, 0, 0, this.scale);
 
         this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.04, 0, 0, 0, 120 * this.scale, this.scale);
-        this.animationList["DASH"] = new Animator(spritesheet, 0, 2780, 257, 135, 2, 0.2, 0, 3, 0, 0, this.scale); 
+        this.animationList["DASH"] = new Animator(spritesheet, 4, 2780, 253, 135, 2, 0.2, 0, 3, 0, 0, this.scale); 
         
         this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10, this.scale);
         this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10, this.scale);
@@ -242,6 +241,7 @@ class CharacterController {
             if (entity instanceof Wheel && this.BB.collide(entity.BC)) {
                 console.log("Hornet collided with " + entity.constructor.name);
                 const t = this.game.timer.gameTime;
+                entity.state="DEAD"
                 if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
                     console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
                     this.HP -= entity.damage;
@@ -256,6 +256,7 @@ class CharacterController {
                         this.changeState("DEATH")
                         this.dead = true;
                     }
+                    
                 } else if(t - this.timeOfLastDamage <= this.invulnLength) {
                     // no enemy collision if we're invulnerable
                     return;

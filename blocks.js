@@ -98,3 +98,49 @@ class HellWall extends Wall {
         Object.assign(this, {spritex:368, spritey:192});
     };
 }
+
+
+class Arrow {
+    // Holds common collective functionality for Walls.
+    // Walls are build from top down IE (x:0 y:0 size: 10)
+    //                                  This starts top right corner and goes 10 blocks down
+
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+        this.spritesheet = ASSET_MANAGER.getAsset("./assets/arrows.png");
+    };
+    update(){
+        
+    }
+    draw(ctx) {
+        ctx.drawImage(this.spritesheet,
+                this.spritex, this.spritey, 175, 175,
+                this.x- this.game.camera.x, this.y - this.game.camera.y,
+                200, 200);
+    }
+    
+}
+class LeftArrow extends Arrow{
+    constructor(game,x,y){
+        super(game,x,y);
+        Object.assign(this,{spritex:220,spritey:210})
+    }
+}
+class RightArrow extends Arrow{
+    constructor(game,x,y){
+        super(game,x,y);
+        Object.assign(this,{spritex:220,spritey:0})
+    }
+}
+class UpArrow extends Arrow{
+    constructor(game,x,y){
+        super(game,x,y);
+        Object.assign(this,{spritex:430,spritey:400})
+    }
+}
+class DownArrow extends Arrow{
+    constructor(game,x,y){
+        super(game,x,y);
+        Object.assign(this,{spritex:430,spritey:210})
+    }
+}

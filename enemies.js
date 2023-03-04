@@ -38,7 +38,7 @@ class Enemy {
         this.healthbar.draw(ctx);
         //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
         if(this.BB) this.BB.draw(ctx);
-        if(this.ledgeCheckBox) this.ledgeCheckBox.draw(ctx);
+        //if(this.ledgeCheckBox) this.ledgeCheckBox.draw(ctx);
     };
     collisionChecks() {
         /* collision detection and resolution: */
@@ -670,45 +670,57 @@ class Hive_Knight extends Enemy {
     }
 }
 class Wheel{
-    constructor(game,name, x, y,r,facingDirection) {
+    // FacingDir 0 goes left 1 goes right
+    // r is the distance it will travel
+    // attack will fade out once range is reached
+
+    constructor(game,name, x, y,r,facingDirection,attack=false) {
         this.game = game;
         this.asset = ASSET_MANAGER.getAsset("./assets/" + name + ".png");
-        
+        this.attack = attack;
         //Animator(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop , spriteBorderWidth, xoffset, yoffset, scale, rowCount, rowOffset){
         this.x = x;
         this.y = y;
         this.center = x ;
+        this.state = "IDLE";
         this.animation = new Animator(this.asset, 0, 0, 70, 72, 4, 0.05, 1, 3 );
         this.range = r;
         this.damage = 1;
         this.facingDirection = facingDirection;
         this.updateBC();
+        this.alpha = 1;
     }
 
     update() {
         //console.log(this.x+"  "+this.game.player.x);
         let distance = Math.abs(this.x - this.center);
         // Move left within range
-        if(this.facingDirection == 0 && distance < this.range){
-            this.x -=5;
-            //Reverse
-            if(Math.abs(this.x - this.center)>=this.range){
-                this.facingDirection = 1;
-                this.x+=10;
+        if(this.state=="IDLE"){
+            if(this.facingDirection == 0 && distance < this.range){
+                this.x -=5;
+                //Reverse
+                if(Math.abs(this.x - this.center)>=this.range && !this.attack){
+                    this.facingDirection = 1;
+                    this.x+=10;
+                }else if(this.attack && Math.abs(this.x - this.center) >= this.range){
+                    this.state = "DEAD"
+                }
+            // Move right within range
+            }else if(this.facingDirection == 1 && distance < this.range){
+                this.x +=5;
+                //Reverse
+                if(Math.abs(this.x - this.center)>=this.range && !this.attack){
+                    this.facingDirection = 0;
+                    this.x-=10;
+                }else if(this.attack && Math.abs(this.x - this.center) >= this.range){
+                    this.state = "DEAD"
+                }
             }
-        // Move right within range
-        }else if(this.facingDirection == 1 && distance < this.range){
-            this.x +=5;
-            //Reverse
-            if(Math.abs(this.x - this.center)>=this.range){
-                this.facingDirection = 0;
-                this.x-=10;
-            }
+            this.updateBC();
+        }else{
+            
         }
-
-
-
-        this.updateBC();
+    
     }
 
  
@@ -719,8 +731,24 @@ class Wheel{
 
 
     draw(ctx) {
+        ctx.save();
+        if(this.state == "DEAD") { // we want to fade out on death.
+            this.alpha -= this.game.clockTick; // time delay?
+        }
+
+        
+        if(this.BC){
+            this.BC.draw(ctx);
+        }
+        ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
         this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-this.game.camera.y)
-        this.BC.draw(ctx);
+        ctx.restore();
+
+        if(this.alpha <= 0) {
+            this.removeFromWorld = true;
+            console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
+            ctx.globalAlpha = 1;
+        }
     }
 }
 

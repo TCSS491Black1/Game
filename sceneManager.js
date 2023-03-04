@@ -64,7 +64,7 @@ class SceneManager{
 
         this.worldSize = level.worldSize;
         // TODO: refactor/ generalize to handle more diverse blocks in the level design
-        
+
         for(const entry of level.ground) {
             // generate ground objects based on designated type in levels.js
             this.game.addEntity(new level['groundType'](this.game, entry.x, entry.y, entry.size));
@@ -81,13 +81,28 @@ class SceneManager{
             console.log("added flagblock", [entry.x, entry.y, entry.size]);
         }
 
+        for(const entry of level.arrows){
+            if(entry.name == "Down"){
+                    this.game.addEntity(new DownArrow(this.game,entry.x ,entry.y));
+            }else   if(entry.name == "Up"){
+                this.game.addEntity(new UpArrow(this.game,entry.x ,entry.y));
+            }else   if(entry.name == "Right"){
+                this.game.addEntity(new RightArrow(this.game,entry.x ,entry.y));
+            }else   if(entry.name == "Left"){
+                this.game.addEntity(new LeftArrow(this.game,entry.x ,entry.y));
+            }
+
+        }
+        
+        for(const entry of level.wheels){
+            this.game.addEntity(new Wheel(this.game ,entry.name ,entry.x ,entry.y ,entry.r,entry.f));
+        }
+
         for(const entry of level.pitglow) {
             this.game.addEntity(new Pit_Glow(this.game, entry.x, entry.y, entry.xScale, entry.yScale));
             console.log("added pitglow", [entry.x, entry.y, entry.size]);
         }
-        for(const entry of level.wheels){
-            this.game.addEntity(new Wheel(this.game ,entry.name ,entry.x ,entry.y ,entry.r,entry.f));
-        }
+        
         for(const entry of level.enemies) {
             if(entry.name == "Uoma"){
                 this.game.addEntity(new Uoma(this.game, entry.x, entry.y));

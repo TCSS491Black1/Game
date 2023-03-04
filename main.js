@@ -34,6 +34,8 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Environmental_Blocks.png", // various blocks/ground
 	"./assets/Dirt_Block.png",
 	"./assets/lava_7.png",
+	"./assets/arrows.png",
+	"./assets/sword.png",
 	"./assets/block.png",
 	"./assets/ice-block.png",
 	"./assets/Pit_Glow.png",
