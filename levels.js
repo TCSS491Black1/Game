@@ -9,7 +9,7 @@ const levelOne = {
     wallType: GrassWall,
     ground: [
        
-        // THE GROUND
+        // FULL GROUND WITH NO PITS
         //{x:0, y:params.canvasHeight-32+768, size: 290 }, 
 
         // THE INTRO
@@ -161,6 +161,7 @@ const levelOne = {
     ],
 
     targetblock: [{x: 9500, y: params.canvasHeight*2-32*4+600, xScale: 30 , yScale: 5},
+        {x: 10, y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
     ],
 
     pitglow: [{x: 9350, y: params.canvasHeight*2-32*3, xScale: 1 , yScale: 1},
@@ -425,7 +426,9 @@ const levelTwo = {
         {x:420*32,y:0,size: 41},
         {x:221*32,y:8*32 ,size: 18}],
 
-    targetblock: [{x: 0, y: 65*32, xScale: 4.5 , yScale: 3}],
+    targetblock: [{x: 0, y: 65*32, xScale: 4.5 , yScale: 3},
+        {x:32*20, y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
+    ],
     pitglow: [{x: 64, y: 47*32, xScale: 1 , yScale: 1}],
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400},
         {name: "Uoma" , x: 1200, y:550},
@@ -464,73 +467,70 @@ const levelThree = {
     worldSize: 2,
     groundType: IceGround,
     wallType: IceWall,
-    ground: [{x:0, y:params.canvasHeight*2-32, size: 300 }, 
-        {x:32*2, y:params.canvasHeight*2-32*20, size: 8 },
-        {x:32*12, y:params.canvasHeight*2-32*5, size: 8 },
-        {x:32*12, y:params.canvasHeight*2-32*9, size: 8 },
-        {x:32*46, y:params.canvasHeight*2-32*13, size: 8 },
+    ground: [
+        // FULL GROUND WITH NO PITS
+        // {x:0, y:params.canvasHeight*2-32, size: 300 }, 
 
-        {x:32*36, y:params.canvasHeight*2-32*13, size: 8 },
-        {x:32*72, y:params.canvasHeight*2-32*5, size: 8 },
-        {x:32*85, y:params.canvasHeight*2-32*9, size: 8 },
-        {x:32*95, y:params.canvasHeight*2-32*12, size: 8 },
+        // primary started ground will be a pit at start.
+        {x:32*2, y:params.canvasHeight-32*15+768, size: 8 },
+        {x:32*10, y:params.canvasHeight-32*10+768, size: 10 },
+        {x:32*30, y:params.canvasHeight-32*8+768, size: 2 },
+        {x:32*50, y:params.canvasHeight-32*6+768, size: 7 },
+        {x:32*65, y:params.canvasHeight-32*7+768, size: 5 },
+        {x:32*80, y:params.canvasHeight-32*9+768, size: 3 },
+        {x:32*85, y:params.canvasHeight-32*6+768, size: 5 },
 
-        {x:32*200, y:params.canvasHeight*2-32*1, size: 8 },
-        {x:32*202, y:params.canvasHeight*2-32*5, size: 8 },
-        {x:32*204, y:params.canvasHeight*2-32*9, size: 8 },
-        {x:32*206, y:params.canvasHeight*2-32*13, size: 8 },
+        {x:32*35, y:params.canvasHeight-32*1+768, size: 20 }, 
+        {x:32*60, y:params.canvasHeight-32*1+768, size: 40 }, 
+        {x:32*105, y:params.canvasHeight-32*2+768, size: 30 },
+        {x:32*150, y:params.canvasHeight-32*4+768, size: 30 }, 
+        {x:32*170, y:params.canvasHeight-32*8+768, size: 10 }, 
+        {x:32*190, y:params.canvasHeight-32*2+768, size: 10 }, 
+        {x:32*210, y:params.canvasHeight-32*1+768, size: 60 }, 
+        {x:32*280, y:params.canvasHeight-32*1+768, size: 20 }, // final
 
-        {x:32*226, y:params.canvasHeight*2-32*13, size: 8 },
-        {x:32*246, y:params.canvasHeight*2-32*13, size: 8 },
-        {x:32*276, y:params.canvasHeight*2-32*13, size: 8 },
-
-         // added for MVD
-         {x:32*46, y:32*13, size: 8 },
-         {x:32*72, y:32*5, size: 8 },
-         {x:32*815, y:32*9, size: 8 },
-         {x:32*95, y:32*12, size: 8 },
-         {x:32*105, y:32*27, size: 2 },
-         {x:32*120, y:32*35, size: 8 },
-         {x:32*135, y:32*18, size: 6 },
-         {x:32*138, y:32*29, size: 8 },
-         {x:32*40, y:32*40, size: 2 },
-         {x:32*24, y:32*39, size: 8 },
-         {x:32*36, y:32*43, size: 8 },
-         {x:32*49, y:32*33, size: 8 },
-         {x:32*79, y:32*36, size: 5 },
-         {x:32*85, y:32*9, size: 8 },
-         {x:32*95, y:32*12, size: 8 },
-         {x:32*105, y:32*33, size: 8 },
-         {x:32*120, y:32*25, size: 3 },
-         {x:32*139, y:32*39, size: 8 },
-         {x:32*140, y:32*22, size: 8 },
- 
-         //second half. just multiplied the x by 2
-         {x:32*46*2, y:32*13, size: 8 },
-         {x:32*72*2, y:32*5, size: 8 },
-         {x:32*815*2, y:32*9, size: 8 },
-         {x:32*95*2, y:32*12, size: 8 },
-         {x:32*105*2, y:32*27, size: 2 },
-         {x:32*120*2, y:32*35, size: 8 },
-         {x:32*135*2, y:32*18, size: 6 },
-         {x:32*128*2, y:32*29, size: 8 },
-         {x:32*40*2, y:32*40, size: 12 },
-         {x:32*24*2, y:32*39, size: 8 },
-         {x:32*36*2, y:32*43, size: 8 },
-         {x:32*49*2, y:32*33, size: 8 },
-         {x:32*79*2, y:32*36, size: 5 },
-         {x:32*85*2, y:32*9, size: 8 },
-         {x:32*95*2, y:32*12, size: 8 },
-         {x:32*105*2, y:32*33, size: 8 },
-         {x:32*120*2, y:32*25, size: 3 },
-         {x:32*139*2, y:32*39, size: 8 },
-         {x:32*140*2, y:32*22, size: 8 },
+        // HIDDEN LUMAFLY SPOT
+        {x:32*219, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*217, y:params.canvasHeight-32*5+768, size: 2 },
+        {x:32*215, y:params.canvasHeight-32*3+768, size: 2 },
+        {x:32*213, y:params.canvasHeight-32*1+768, size: 2 },
+    
+        {x:32*224, y:params.canvasHeight-32*9+768, size: 3 },
+        {x:32*220, y:params.canvasHeight-32*8+768, size: 8 },
+        {x:32*220, y:params.canvasHeight-32*7+768, size: 8 },
         
+        {x:32*228, y:params.canvasHeight-32*7+768, size: 2 },
+        {x:32*230, y:params.canvasHeight-32*5+768, size: 2 },
+        {x:32*232, y:params.canvasHeight-32*3+768, size: 2 },
+        {x:32*234, y:params.canvasHeight-32*1+768, size: 2 },
+
     ],
 
-    wall: [{x:-32,y:0,size: 24}],
+    wall: [{x:-32,y:0,size: 24},
+        //HIDDEN LUMAFLY
+        {x:32*219, y:params.canvasHeight-32*7+768, size: 7 },
+        {x:32*218, y:params.canvasHeight-32*7+768, size: 7 },
+        {x:32*217, y:params.canvasHeight-32*5+768, size: 5 },
+        {x:32*216, y:params.canvasHeight-32*5+768, size: 5 },
+        {x:32*215, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*214, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*213, y:params.canvasHeight-32*1+768, size: 1 },
+        {x:32*212, y:params.canvasHeight-32*1+768, size: 1 },
+        
+        {x:32*228, y:params.canvasHeight-32*7+768, size: 7 },
+        {x:32*229, y:params.canvasHeight-32*7+768, size: 7 },
+        {x:32*230, y:params.canvasHeight-32*5+768, size: 5 },
+        {x:32*231, y:params.canvasHeight-32*5+768, size: 5 },
+        {x:32*232, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*233, y:params.canvasHeight-32*3+768, size: 3 },
+        {x:32*234, y:params.canvasHeight-32*1+768, size: 1 },
+        {x:32*235, y:params.canvasHeight-32*1+768, size: 1 },
+
+    ],
     
-    targetblock: [{x: 9500, y: params.canvasHeight*2-32*4+600, xScale: 30 , yScale: 5}
+    targetblock: [{x: 9500, y: params.canvasHeight*2-32*4+600, xScale: 30 , yScale: 5},
+        {x: 10,  y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
+
     ],
 
     pitglow: [{x: 9600, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1}
@@ -562,11 +562,13 @@ const levelThree = {
     {name: "Heavy_Sentry" , x: 3200, y:550*2},
     {name: "Heavy_Sentry" , x: 5200, y:400},
     {name: "Heavy_Sentry" , x: 6200, y:400},
-    {name: "Heavy_Sentry" , x: 7200, y:400},
+    {name: "Heavy_Sentry" , x: 7850, y:400},
     ],
     powerUps:
     [{name: "Lightseed" , x: 800, y:400},
-     {name: "Gathering_Swarm" , x: 1200 , y:1000}]
+     {name: "Gathering_Swarm" , x: 1200 , y:1000},
+     {name: "Charged_Lumafly", x:32*220, y:params.canvasHeight-32*7+768}, //Hidden Lumafly
+    ]
 
 }
 
@@ -580,7 +582,10 @@ const levelFour = {
     groundType: HellGround,
     wallType: HellWall,
     ground: [
-        {x:0, y:params.canvasHeight-32, size: 736 }, 
+        
+        //{x:0, y:params.canvasHeight-32, size: 736 }, 
+        {x:0, y:params.canvasHeight-32, size: 215 }, 
+
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },
         {x:32*24, y:params.canvasHeight-32*9, size: 8 },
         {x:32*36, y:params.canvasHeight-32*13, size: 8 },
@@ -595,10 +600,10 @@ const levelFour = {
         {x:32*135, y:params.canvasHeight-32*9, size: 8 },
         {x:32*138, y:params.canvasHeight-32*12, size: 8 },
 
-        {x:5976, y:params.canvasHeight-32*1, size: 4 },  // stairs to boss room
-        {x:6232, y:params.canvasHeight-32*3, size: 4 }, 
-        {x:6488, y:params.canvasHeight-32*5, size: 4 }, 
-        {x:6744, y:params.canvasHeight-32*7, size: 4 }, 
+        {x:5976, y:params.canvasHeight-32*2, size: 4 },  // stairs to boss room
+        {x:6232, y:params.canvasHeight-32*4, size: 4 }, 
+        {x:6488, y:params.canvasHeight-32*6, size: 4 }, 
+        {x:6744, y:params.canvasHeight-32*8, size: 4 }, 
         {x:6860, y:params.canvasHeight-32*12, size: 4 },
 
         {x:7700, y:32*2, size: 4 },  // Boss room platforms  
@@ -607,14 +612,18 @@ const levelFour = {
         {x:9225, y:32*13, size: 2 },
         {x:9000, y:32*6, size: 4 },
         {x:9500, y:32*10, size: 4 },
+        {x:32*219, y:params.canvasHeight-32*1, size: 120}, // Assumed end wall...
+        {x:32*219, y:params.canvasHeight-32*2, size: 120}, // Assumed end wall...
+
 
     ],
 
     wall: [{x:-32,y:0,size: 24},
 
-        {x:7000, y:32*2, size: 22}, // Assumed end wall...
+        {x:32*219, y:32*2, size: 22}, // Assumed end wall...
+        {x:32*220, y:32*2, size: 22}, // Assumed end wall...
 
-        {x:10500, y:0, size: 24}, // Actuall end wall.
+        {x:10500, y:0, size: 24}, // Actually end wall.
         {x:10500+(32*1), y:0, size: 24}, // extended wall
         {x:10500+(32*2), y:0, size: 24}, 
         {x:10500+(32*3), y:0, size: 24}, 
@@ -664,11 +673,17 @@ const levelFour = {
         {x:10500+(32*47), y:0, size: 24},
         {x:10500+(32*48), y:0, size: 24},
         {x:10500+(32*49), y:0, size: 24},
-        {x:10500+(32*50), y:0, size: 24}, // secret restart with all stats. Good for if you can't beat the boss? You can go through the whole thing again and get more power ups.
+        {x:10500+(32*50), y:0, size: 24}, 
+        // secret restart with all stats. 
+        // Good for if you can't beat the boss? 
+        // You can go through the whole thing 
+        // again and get more power ups.
 
     ],
 
-    targetblock: [{x: 10500+(32*100), y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
+    targetblock: [{x: 10500+(32*100), y: params.canvasHeight-32*4, xScale: 1 , yScale: 1},
+        {x: 32*10,  y:params.canvasHeight-32*4, xScale: 1 , yScale: 1} //turn on and off for debug purposes
+    ],
     pitglow: [{x: 10500+(32*100), y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
     enemies: [
         {name: "Heavy_Sentry" , x: 10000, y: 32*10},
