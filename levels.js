@@ -161,7 +161,7 @@ const levelOne = {
     ],
 
     targetblock: [{x: 9500, y: params.canvasHeight*2-32*4+600, xScale: 30 , yScale: 5},
-        {x: 10, y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
+        //{x: 10, y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
     ],
 
     pitglow: [{x: 9350, y: params.canvasHeight*2-32*3, xScale: 1 , yScale: 1},
@@ -427,7 +427,7 @@ const levelTwo = {
         {x:221*32,y:8*32 ,size: 18}],
 
     targetblock: [{x: 0, y: 65*32, xScale: 4.5 , yScale: 3},
-        {x:32*20, y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
+        //{x:32*20, y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
     ],
     pitglow: [{x: 64, y: 47*32, xScale: 1 , yScale: 1}],
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400},
@@ -529,7 +529,7 @@ const levelThree = {
     ],
     
     targetblock: [{x: 9500, y: params.canvasHeight*2-32*4+600, xScale: 30 , yScale: 5},
-        {x: 10,  y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
+        //{x: 10,  y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
 
     ],
 
@@ -682,7 +682,7 @@ const levelFour = {
     ],
 
     targetblock: [{x: 10500+(32*100), y: params.canvasHeight-32*4, xScale: 1 , yScale: 1},
-        {x: 32*10,  y:params.canvasHeight-32*4, xScale: 1 , yScale: 1} //turn on and off for debug purposes
+        //{x: 32*10,  y:params.canvasHeight-32*4, xScale: 1 , yScale: 1} //turn on and off for debug purposes
     ],
     pitglow: [{x: 10500+(32*100), y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
     enemies: [
