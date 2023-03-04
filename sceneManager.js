@@ -86,7 +86,6 @@ class SceneManager{
         for(const entry of level.enemies) {
             if(entry.name == "Uoma"){
                 this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
-
             }
             if(entry.name == "Heavy_Sentry"){
                 this.game.addEntity(new Heavy_Sentry(this.game, entry.x, entry.y));
@@ -108,9 +107,6 @@ class SceneManager{
             }
             if(entry.name == "Lightseed") {
                 this.game.addEntity(new Lightseed(this.game, entry.x, entry.y));
-            }
-            if(entry.name == "Hive_Knight"){
-                this.game.addEntity(new Hive_Knight(this.game, entry.x, entry.y));
             }
         }      
         this.game.addEntity(this.player);
