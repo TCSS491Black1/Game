@@ -1,0 +1,88 @@
+@import url(glowbutton.css) layer(glower);
+@import url(typewriter.css) layer(typer);
+
+html {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    background-color:black;
+    font-family: 'Minecraftia', serif;
+    font-size: 28px;
+    color: aquamarine;
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+canvas {
+    padding:0%;
+    margin: 0%;
+    display: block;
+    font-size: 14px;
+}
+
+#title {
+    margin: auto;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    display: grid;
+    z-index: 3;
+}
+
+#configsMenu {
+    margin: auto;
+    position: absolute;
+    top: 100px;
+    left: 250px;
+    width: 1020px;
+    height: 464px;
+    border: 3px solid aquamarine;
+    background-color: black;
+    display: none;
+    z-index: 5;
+    padding-left: 25px;
+    border-radius: 25px;
+}
+#controlsMenu {
+    margin-left: 20px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-right: 1em;
+    margin-left: 1em;
+}
+.left-child {
+    grid-column: 1/1;
+    border-bottom: 1px solid aquamarine;
+}
+.mid-child {
+    grid-column: 2/3;
+    border-bottom: 1px solid aquamarine;
+}
+.right-child {
+    grid-column: 3/3;
+}
+.subtext {
+    position:relative;
+    font-size: 18px;
+    top: -8px;
+}
+@layer glower {
+
+  /* To apply to other in-game text. */
+}
+
+@layer typer {
+
+  /* To apply to other in-game text. */
+}

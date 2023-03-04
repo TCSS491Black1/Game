@@ -1,5 +1,5 @@
 const levelOne = {
-    music: "./assets/sounds/music/intro.mp3",
+    music: "./assets/sounds/music/dream-requiem-intro.mp3",
     background: ["./assets/Overworld_Level_1_blue.png","./assets/Overworld_Level_1.png"],
     foreground: ["./assets/Level1ParallaxFlowers.png",],
     pillars: [],
@@ -123,7 +123,6 @@ const levelOne = {
         {name: "Uoma" , x: 9000, y:1350},
         {name: "Uoma" , x: 10000, y:1350},
         {name: "Uoma" , x: 3000, y:1350},
-        //{name: "Hive_Knight", x: 500, y: 400},
     ],
     powerUps:  [
         {name: "Lightseed", x: 299, y:402},
@@ -135,7 +134,7 @@ const levelOne = {
 
 }
 const levelTwo = {
-    music: "./assets/sounds/music/main-1-quiet.mp3",
+    music: "./assets/sounds/music/dream-requiem-fluteup.mp3",
     background: ["./assets/Underground_Level_2.png","./assets/Underground_Level_2.png"],
     foreground: [], //["./assets/Level2ParallaxBoulders.png",], no longer works now that floor is gone.
     pillars: [],
@@ -320,7 +319,7 @@ const levelTwo = {
 
 }
 const levelThree = {
-    music: "./assets/sounds/music/main-2-quiet.mp3",
+    music: "./assets/sounds/music/dream-requiem-sparkle.mp3",
     spawnPoint: [150 , 0],
     background: ["./assets/IceLevel_3_black.png","./assets/IceLevel3.png"],
     foreground: [],
@@ -427,6 +426,7 @@ const levelThree = {
     {name: "Heavy_Sentry" , x: 5200, y:400},
     {name: "Heavy_Sentry" , x: 6200, y:400},
     {name: "Heavy_Sentry" , x: 7200, y:400},
+    {name: "Massive_Jelly", x: 7500, y:20},
     ],
     powerUps:
     [{name: "Lightseed" , x: 800, y:400},
@@ -435,12 +435,13 @@ const levelThree = {
 }
 
 const levelFour = {
-    music: "./assets/sounds/music/drumloop.mp3",
+    music: "./assets/sounds/music/dream-requiem-strfkr.mp3",
+    spawnPoint: [150 , 0],
     background: ["./assets/HellLevel4.png"],
     foreground: [],
+    particles: ["lava"],
     pillars: [],
     worldSize: 1,
-    spawnPoint: [150 , 0],
     groundType: HellGround,
     wallType: HellWall,
     ground: [
@@ -564,7 +565,6 @@ const levelFour = {
         //{name: "Heavy_Sentry" , x: 10150, y:400},
         //{name: "Heavy_Sentry" , x: 10100, y:400},
         {name: "Hive_Knight", x: 10100, y: 400},
-        
     ],
     powerUps:  [{name: "Gathering_Swarm" , x: 9800 , y:400}]
 
