@@ -14,7 +14,7 @@ class SceneManager{
         this.player = new CharacterController(this.game,0,0);
         this.levelNum = 0;
         
-        this.loadLevel(levelTwo,0,0); 
+        this.loadLevel(levelOne,0,0); 
         //professor has a method "loadlevel1" that we should make and use instead.
         //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
 

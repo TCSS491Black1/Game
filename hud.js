@@ -65,7 +65,6 @@ class HUD {
         }
 
         for(let i = 0 ; i < gameEngine.player.damage ; i++){
-            console.log("here")
             ctx.drawImage(this.spriteSheet,0,0,436,280,80+48*i,95,48,48)
         }
 

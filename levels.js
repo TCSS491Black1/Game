@@ -8,8 +8,7 @@ const levelOne = {
     groundType: GrassGround,
     wallType: GrassWall,
     arrows: [{}],
-    wheels: [{name: "Yellow_Wheel",x:500, y:445, r:500}
-            ],
+    wheels: [],
 
     ground: [
         {x:0, y:params.canvasHeight-32+768, size: 300 }, // base flat ground
@@ -411,7 +410,7 @@ const levelThree = {
     groundType: IceGround,
     wallType: IceWall,
 
-    arrows: [{}],
+    arrows: [],
 
     ground: [{x:0, y:params.canvasHeight*2-32, size: 300 }, 
         {x:32*12, y:params.canvasHeight*2-32*5, size: 8 },
@@ -528,7 +527,7 @@ const levelFour = {
     spawnPoint: [150 , 0],
     groundType: HellGround,
     wallType: HellWall,
-    arrows: [{}],
+    arrows: [],
     ground: [
         {x:0, y:params.canvasHeight-32, size: 736 }, 
         {x:32*12, y:params.canvasHeight-32*5, size: 8 },

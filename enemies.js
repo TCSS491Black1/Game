@@ -184,7 +184,7 @@ class Heavy_Sentry extends Enemy {
 
     attackRange(){
         if(super.withinRange()){
-            console.log("within attack range");
+            //console.log("within attack range");
 
             if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 300))){
                 // console.log("true")
@@ -207,10 +207,10 @@ class Heavy_Sentry extends Enemy {
     chargeRange(){
         if(super.withinRange()){
             if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 600))){
-                console.log("true")
+                //console.log("true")
                 return true;
             }else if(this.game.player.onGround == this.onGround && ((this.facingDirection == 0 && this.x - this.game.player.x < 375))){
-                console.log("true")
+                //console.log("true")
                 return true;
             }
         }
