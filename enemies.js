@@ -670,11 +670,36 @@ class Massive_Jelly extends Enemy {
     }
     draw(ctx) {
         ctx.save();
-        ctx.fillStyle = this.tint;
-
-        super.draw(ctx);
+        if(this.state == "DEAD") { // we want to fade out on death.
+            this.alpha -= this.game.clockTick; // time delay?
+        }
+        ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
         
+        // --------------- Sprite drawing. -------------------
+        let destX = (this.x - this.game.camera.x);
+        let destY = (this.y - this.game.camera.y);
+
+        if (this.facingDirection) {// if facing right
+            ctx.scale(-1, 1);
+            destX *= -1;
+            destX -= this.animationList[this.state].width * this.scale;
+        }
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
+            destX,
+            destY);
         ctx.restore();
+        //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
+        if(this.BB) this.BB.draw(ctx);
+        // --------------- End of sprite drawing. -------------------
+
+        if(this.alpha <= 0) {
+            this.removeFromWorld = true;
+            console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
+            ctx.globalAlpha = 1;
+        }
+        
+        // need a longer delay so that the death animation of the boss plays and THEN the credits screen pops up like 4 seconds later. 
+        // comment out this if statement if we need to debug it so that it doesn't get in the way - michael
         if (this.removeFromWorld) { 
             this.game.camera.clearEntities();
             this.game.addEntity(new EndCreditsScreen(this.game));
@@ -686,6 +711,11 @@ class Massive_Jelly extends Enemy {
         this.BB = new BoundingBox(this.game, this.x + 45 * s, this.y + 35 * s, 70 * s, 90 * s, "red");
     }
     update() {
+        if (this.HP <= 0) {
+            //console.log("Boss jelly defeated!");
+            this.BB = undefined;
+            return;
+        }
         const direction = gameEngine.player.x < this.x + this.width / 2;
         if (direction) {
             this.x -= this.speed;
@@ -693,10 +723,6 @@ class Massive_Jelly extends Enemy {
             this.x += this.speed;
         }
         this.updateBB();
-        if (this.HP <= 0) {
-            console.log("Boss jelly defeated!");
-            this.removeFromWorld = true;
-        }
     }
 }
 class Pit_Glow {
