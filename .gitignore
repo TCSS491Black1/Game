@@ -6,7 +6,7 @@ package-lock.json
 # VS Code configs.
 /.vs/
 /.vscode/
-
+/assets/sheets/
 # macOS configs.
 .DS_Store
 

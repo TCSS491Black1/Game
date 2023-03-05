@@ -3,20 +3,22 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+
     <script type="text/javascript" src="./util.js"></script>
     <script type="text/javascript" src="./floatingText.js"></script>
     <script type="text/javascript" src="./enemies.js"></script>
     <script type="text/javascript" src="./powerUps.js"></script>
-    <script type="text/javascript" src="./tiles.js"></script>
     <script type="text/javascript" src="./background.js"></script>
     <script type="text/javascript" src="./blocks.js"></script>
     <script type="text/javascript" src="./levels.js"></script>
     <script type="text/javascript" src="./characterController.js"></script>
+    <script type="text/javascript" src="./hiveKnight.js"></script>
     <script type="text/javascript" src="./animator.js"></script>
     <script type="text/javascript" src="./boundingBox.js"></script>
     <script type="text/javascript" src="./hud.js"></script>
     <script type="text/javascript" src="./sceneManager.js"></script>
+    <script type="text/javascript" src="./creditsScreen.js"></script>
     <script type="text/javascript" src="./replayScreen.js"></script>
     <script type="text/javascript" src="./titleScreen.js"></script>
     <script type="text/javascript" src="./assetmanager.js"></script>
@@ -27,33 +29,48 @@
 </head>
 
 <body>
-    <!--    <div>
-
-        <h1>
-            <FONT COLOR=red> HELLΨSCAPE
-        </h1>
-    </div>
--->
-
     <canvas id="gameWorld" width="1524" height="768" style="background: black; border: 1px solid black" tabindex="0"
         autofocus></canvas>
+    <div id="title">
+        <hr />
+        <div id="titleText" class='text'>
+            <span style="--i:1">⏅</span>
+            <span style="--i:2">H</span>
+            <span style="--i:3">o</span>
+            <span style="--i:4">l</span>
+            <span style="--i:5">l</span>
+            <span style="--i:6">o</span>
+            <span style="--i:7">w</span>
+            <span style="--i:8">s</span>
+            <span style="--i:9">c</span>
+            <span style="--i:10">a</span>
+            <span style="--i:11">p</span>
+            <span style="--i:12">e</span>
+            <span style="--i:13">⏄</span>
+        </div>
+        <button id='start-btn' class='glowing-btn'>
+            <span class='glowing-txt'>
+                T<span class='glowing-txt'>S</span>ART<span class='glowing-txt'>⍦</span>
+            </span>
+        </button>
+    </div>
     <div id="configsMenu">
         Configs:
         <hr />
         <div id="soundConfigs" class="container">
             <div>
-                Master: <br/>
+                Master: <br />
                 <input type="range" id="volume" min="0" max="1" value="0.1" step="0.01">
                 <span class="subtext">Mute <input type="checkbox" id="mute">
             </div></span>
             <div>
-                Music: <br/>
-                <input type="range" id="musicVolume" min="0" max="1" value="0.1" step="0.01">
-                <span class="subtext">Mute <input type="checkbox" id="musicMute">
+                Music: <br />
+                <input type="range" id="bgvolume" min="0" max="1" value="0.1" step="0.01">
+                <span class="subtext">Mute <input type="checkbox" id="bgmute">
             </div>
             <div>SoundFX: <br />
-                <input type="range" id="FXVolume" min="0" max="1" value="0.1" step="0.01">
-                <span class="subtext">Mute <input type="checkbox" id="FXMute">
+                <input type="range" id="fxvolume" min="0" max="1" value="0.1" step="0.01">
+                <span class="subtext">Mute <input type="checkbox" id="fxmute">
             </div>
         </div>
         <hr />
@@ -71,11 +88,9 @@
             <div class="mid-child">Left Click</div>
         </div>
         <br />
-        <hr/>
+        <hr />
         Debug<input type="checkbox" id="debug">
     </div>
-    </div>
-    <div>
 </body>
 
 </html>

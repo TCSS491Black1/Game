@@ -10,18 +10,15 @@ class SceneManager{
         this.y = 0 ;
         this.score = 0;
         this.gameOver = false;
-        this.soundEngine = new SoundEngine(this.game, 0, 0);
+        this.soundEngine = new SoundEngine(this.game);
+        this.soundEngine.setVolumes(); // configure volumes to reflect configs.
+
         this.player = new CharacterController(this.game,0,0);
         this.levelNum = 0;
         
-        this.loadLevel(levelOne,0,0); 
-        //professor has a method "loadlevel1" that we should make and use instead.
-        //Professor eventually changed it to  "loadLevel()" which is on his github now. https://youtu.be/pdjvFlVs-7o?t=65 -Michael
+        this.loadLevel(levelOne,0,0);
 
         this.marker = 0;
-        // this.soundEngine.updateAudio();
-        // document.getElementById('volume').addEventListener('input', this.soundEngine.updateAudio);
-        // document.getElementById('mute').addEventListener('input', this.soundEngine.updateAudio);
     };
 
     clearEntities() {
@@ -106,10 +103,15 @@ class SceneManager{
         for(const entry of level.enemies) {
             if(entry.name == "Uoma"){
                 this.game.addEntity(new Uoma(this.game, entry.x, entry.y));
-
             }
             if(entry.name == "Heavy_Sentry"){
                 this.game.addEntity(new Heavy_Sentry(this.game, entry.x, entry.y));
+            }
+            if(entry.name == "Massive_Jelly") {
+                this.game.addEntity(new Massive_Jelly(this.game, entry.x, entry.y));
+            }
+            if(entry.name == "Hive_Knight") {
+                this.game.addEntity(new Hive_Knight(this.game, entry.x, entry.y));
             }
 
 

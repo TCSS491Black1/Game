@@ -110,10 +110,6 @@ class CharacterController {
 
 
     update() {
-        console.log(this.damage);
-     
-
-
         const MAXRUN = 600;
         
         // check if current animation is a Busy State, and clean up if necessary.
@@ -139,34 +135,7 @@ class CharacterController {
         const clockTick = this.game.clockTick;                 // time elapsed since last frame
         this.velocity.y = this.velocity.y + this.g * clockTick; // accelerate due to gravity.
 
-        //****************** */
-        // attack animation code.
-        // This section is responsible for management of attack collision and damage application.
-        
-        if (this.game.click !== undefined) {
-            this.game.click = undefined;
-
-            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
-            this.changeState("ATTACK", 141);
-
-            if (this.facingDirection == 0) {
-                this.animationList["ATTACK"].xoffset = 200 * this.scale;
-            } else {
-                this.animationList["ATTACK"].xoffset = 0;
-            }
-
-            this.updateAttackBB();
-            for (const entity of this.game.entities.filter(e => e instanceof Enemy && e.BB !== undefined)) {
-                // tell enemy class how much damage to take
-                if (this.attackBB.collide(entity.BB)) {
-                    entity.takeDamage(this.damage);
-                    if (entity.HP <= 0) entity.state = "DEAD";
-                }
-            }
-        } 
-        // end of attack code
-        // ****************
-
+   
         if (this.game.keys["d"]) {                                    // Move/accelerate character right
             if(!this.busy) {
                 this.facingDirection = 1;                             // facing the right
@@ -205,7 +174,38 @@ class CharacterController {
         // end of dash code
         // ****************
         this.x += this.velocity.x * clockTick;   // move horizontally as appropriate.
+        if(this.x <= 0) this.x = 0;
+        
         this.y += this.velocity.y * clockTick;   // calculate new Y position from velocity.
+        this.updateAttackBB();
+        //****************** */
+        // attack animation code.
+        // This section is responsible for management of attack collision and damage application.
+        
+        if (this.game.click !== undefined) {
+            this.game.click = undefined;
+
+            this.game.soundEngine.playSound("./assets/sounds/sfx/attack.wav");
+            this.changeState("ATTACK", 141);
+
+            if (this.facingDirection == 0) {
+                this.animationList["ATTACK"].xoffset = 200 * this.scale;
+            } else {
+                this.animationList["ATTACK"].xoffset = 0;
+            }
+
+            this.updateAttackBB();
+            for (const entity of this.game.entities.filter(e => e instanceof Enemy && e.BB !== undefined)) {
+                // tell enemy class how much damage to take
+                if (this.attackBB.collide(entity.BB)) {
+                    entity.takeDamage(this.damage);
+                    if (entity.HP <= 0) entity.state = "DEAD";
+                }
+            }
+        } 
+        // end of attack code
+        // ****************
+        
         //Phasing through current platform to land below
         if (this.game.keys["s"] && this.y + this.BB.height < this.game.camera.worldSize * params.canvasHeight - 32) {
             this.phase = true;
@@ -263,11 +263,13 @@ class CharacterController {
                 }
             }
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
-               if (entity instanceof Enemy) {
-                    console.log("Hornet collided with " + entity.constructor.name);
+                if (entity instanceof Enemy) {
                     const t = this.game.timer.gameTime;
                     if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
-                        console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
+                        if(this.game.debugging) {
+                            console.log("Hornet collided with " + entity.constructor.name);
+                            console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
+                        }
                         this.HP -= entity.damage;
                         
                         this.timeOfLastDamage = t;

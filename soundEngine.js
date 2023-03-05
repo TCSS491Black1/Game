@@ -4,34 +4,78 @@ class SoundEngine {
         Object.assign(this, { game, x, y });
         // this.audioCtx = new (window.audioCtx || window.webkitaudioCtx)();
 
+        // TODO: Use an AudioParamMap to apply effects instead.
+
         this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         this.game.soundEngine = this;
+
+        this.musicGainNode = this.audioCtx.createGain();
+        this.musicGainNode.gain.setValueAtTime(volume, this.audioCtx.currentTime);
+        this.effectsGainNode = this.audioCtx.createGain();
+        this.effectsGainNode.gain.setValueAtTime(volume, this.audioCtx.currentTime);
+
+        this.channelMerger = this.audioCtx.createChannelMerger();
+        this.musicGainNode.connect(this.channelMerger, 0, 1);
+        this.effectsGainNode.connect(this.channelMerger, 0, 2);
 
         this.parentGainNode = this.audioCtx.createGain();
         this.parentGainNode.gain.setValueAtTime(volume, this.audioCtx.currentTime);
 
         // AudioBuffer/SourceNode --> gain node --> destination.
+        // this.musicGainNode.connect(this.audioCtx.destination);
+        // this.effectsGainNode.connect(this.audioCtx.destination);
+        this.channelMerger.connect(this.parentGainNode);
         this.parentGainNode.connect(this.audioCtx.destination);
 
-        const vol = document.querySelector("#volume");
         const mute = document.querySelector("#mute");
-        
-        // Event listeners to handle gainNode volume changes.
+        const bgmute = document.querySelector('#bgmute');
+        const fxmute = document.querySelector('#fxmute');
+
+        const vol = document.querySelector("#volume");
+        const bgvol = document.querySelector('#bgvolume');
+        const fxvol = document.querySelector('#fxvolume');
+
+        // volume controls event handlers
         vol.onclick = () => {
-            this.parentGainNode.gain.setValueAtTime(vol.value, this.audioCtx.currentTime);
+          mute.checked = false;
+          this.setVolumes();
         };
-        mute.onclick = () => {
-            if (mute.checked) {
-              this.parentGainNode.gain.setValueAtTime(0, this.audioCtx.currentTime);
-            } else {
-              this.parentGainNode.gain.setValueAtTime(vol.value, this.audioCtx.currentTime);
-            }
+        bgvol.onclick = () => {
+          bgmute.checked = false;
+          this.setVolumes();
+        };
+        fxvol.onclick = () => {
+          fxmute.checked = false;
+          this.setVolumes();
         };
     
-        this.isPlaying = false;
-        this.isTakingDamage = false;
-    }
+        // mute controls event handlers.
+        mute.onclick = this.setVolumes.bind(this);
+        bgmute.onclick = this.setVolumes.bind(this);
+        fxmute.onclick = this.setVolumes.bind(this);
+    
+        // this.isPlaying = false;
+        // this.isTakingDamage = false;
+      }  
+      setVolumes() {
+        // configure all volumes to reflect current configuration state.
+        const mute = document.querySelector("#mute");
+        const bgmute = document.querySelector('#bgmute');
+        const fxmute = document.querySelector('#fxmute');
 
+        const vol = document.querySelector("#volume");
+        const bgvol = document.querySelector('#bgvolume');
+        const fxvol = document.querySelector('#fxvolume');
+
+        // each category is either muted(0), or the value stored in the slider.
+        const mainLevel = mute.checked ? 0 : vol.value;
+        const bgLevel = bgmute.checked ? 0 : bgvol.value;
+        const fxLevel = fxmute.checked ? 0 : fxvol.value;
+
+        this.parentGainNode.gain.setValueAtTime(mainLevel, this.audioCtx.currentTime);
+        this.musicGainNode.gain.setValueAtTime(bgLevel, this.audioCtx.currentTime);
+        this.effectsGainNode.gain.setValueAtTime(fxLevel, this.audioCtx.currentTime);
+      }
     playSound(assetName, volume = 0.4, x = 0, y = 0) {
         let panner = this.audioCtx.createPanner();
         panner.panningModel = "equalpower";
@@ -41,20 +85,30 @@ class SoundEngine {
         panner.rolloffFactor = 1;
         panner.setPosition(x, y, 0);
 
-        // Gain node for single sound.
-        //const gainNode = this.audioCtx.createGain();
-        //gainNode.value = volume;
-
         // Retrieve asset and set to AudioBuffer node.
         let source = this.audioCtx.createBufferSource();
         source.buffer = ASSET_MANAGER.getAsset(assetName);
         source.connect(panner);
-        panner.connect(this.parentGainNode);
-        // this.gainNode.connect(this.audioCtx.destination);
+        panner.connect(this.effectsGainNode);
         source.start(0);
     }
 
-    playStepSound(buffer, volume = 0.5, x = 0, y = 0) {
+    playBackgroundMusic(assetName, volume = 0.4) {
+        // Create AudioBuffer and set to AudioBufferSourceNode.
+        let audioBuffer = ASSET_MANAGER.getAsset(assetName);
+        if(this.game.options.debugging)
+          console.log("Playing audio: ", assetName);
+        this.backgroundMusicSource = this.audioCtx.createBufferSource();
+        this.backgroundMusicSource.buffer = audioBuffer;
+
+        // Connect the AudioBufferSourceNode to the gainNode.
+        this.backgroundMusicSource.connect(this.musicGainNode);
+        this.backgroundMusicSource.loop = true;
+        this.backgroundMusicSource.start(0);
+        this.isPlaying = true;
+    }
+
+    playStepSound(buffer, volume = 0.4, x = 0, y = 0) {
         let panner = this.audioCtx.createPanner();
         panner.panningModel = "equalpower";
         panner.distanceModel = "inverse";
@@ -78,20 +132,6 @@ class SoundEngine {
         source.start(0);
     }
 
-    playBackgroundMusic(assetName, volume = 0.1) {
-        // Create AudioBuffer and set to AudioBufferSourceNode.
-        let audioBuffer = ASSET_MANAGER.getAsset(assetName);
-        this.backgroundMusicSource = this.audioCtx.createBufferSource();
-        this.backgroundMusicSource.buffer = audioBuffer;
-
-        // Connect the AudioBufferSourceNode to the gainNode.
-        this.backgroundMusicSource.connect(this.parentGainNode);
-      
-        this.backgroundMusicSource.loop = true;
-        this.backgroundMusicSource.start(0);
-        this.isPlaying = true;
-    }
-
     pauseBackgroundMusic() {
         if(this.isPlaying) {
             this.backgroundMusicSource.stop();
@@ -108,7 +148,7 @@ class SoundEngine {
     }
 
     setVolume(volume) {
-        this.gainNode.value = volume;
+        this.parentGainNode.value = volume;
     }
       
 }
