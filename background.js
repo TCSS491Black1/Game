@@ -62,6 +62,19 @@ class Foreground extends ParallaxLayer {
     constructor(game, img) {
         super(img, 0, 1060);
     }
+    draw(ctx) {
+        for (var j = 0; j < this.images.length; j++) {
+            let image = this.images[j];
+            for (var i = 0; i < 5; i++) {
+                ctx.drawImage(
+                    image,
+                    this.x + i * image.width - this.game.camera.x,
+                    this.y + this.yOffset - this.game.camera.y,
+                    image.width, image.height
+                );
+            }
+        }
+    }
 }
 
 class Pillars extends ParallaxLayer {
