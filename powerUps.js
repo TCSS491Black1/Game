@@ -66,6 +66,7 @@ class Charged_Lumafly extends PowerUp {
     onCollision(entity) {
         if (this.state != "COLLECTED" && entity instanceof CharacterController) { 
             entity.HP += 2;
+            this.game.addEntity(new FloatingText("+2", this.x, this.y, "#00ff00", 1));
             this.state = "COLLECTED";
             this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
         }
@@ -135,6 +136,7 @@ class Lightseed extends PowerUp {
         if (this.state != "COLLECTED" && entity instanceof CharacterController) { 
             this.state = "COLLECTED";
             this.game.soundEngine.playSound("./assets/sounds/sfx/stab.wav", 0.5);
+            this.game.addEntity(new FloatingText("^", this.x, this.y, "#00ff00", 1));
             entity.jumpsTotal += 1;
         }
     }

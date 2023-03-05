@@ -9,7 +9,7 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Uoma.png", // enemies
 	"./assets/Heavy_Sentry.png",
 	"./assets/Hive_Knight.png",
-	"./assets/hiveknight.png", // modified version of Hive_Knight.png
+	"./assets/HiveKnight.png", // modified version of Hive_Knight.png
 
 	"./assets/Charged_Lumafly.png",// powerups
 	"./assets/Gathering_Swarm.png",
@@ -33,13 +33,27 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Pit_Glow.png",
 	
 	"./assets/sounds/music/intro.mp3", // music sound assets
-	"./assets/sounds/music/main-1-quiet.mp3",
-	"./assets/sounds/music/main-2-quiet.mp3",
-	"./assets/sounds/music/ver-1.mp3",
-	"./assets/sounds/music/ver-2.mp3",
-	"./assets/sounds/music/ver-3.mp3",
-	"./assets/sounds/music/drumloop.mp3",
-	"./assets/sounds/music/fadein.mp3",
+	// "./assets/sounds/music/main-1-quiet.mp3",
+	// "./assets/sounds/music/main-2-quiet.mp3",
+	// "./assets/sounds/music/ver-1.mp3",
+	// "./assets/sounds/music/ver-2.mp3",
+	"./assets/sounds/music/end-1.mp3",
+	"./assets/sounds/music/end-2.mp3",
+	// "./assets/sounds/music/drumloop.mp3",
+	// "./assets/sounds/music/fadein.mp3",
+	"./assets/sounds/music/dream-requiem-anticipate-heavy.mp3",
+	"./assets/sounds/music/dream-requiem-anticipate.mp3",
+	"./assets/sounds/music/dream-requiem-bridge.mp3",
+	"./assets/sounds/music/dream-requiem-fluteup.mp3",
+	"./assets/sounds/music/dream-requiem-intro.mp3",
+	"./assets/sounds/music/dream-requiem-sparkle.mp3",
+	"./assets/sounds/music/dream-requiem-strfkr.mp3",
+	// "./assets/sounds/music/ver-1.mp3",
+	// "./assets/sounds/music/ver-2.mp3",
+	"./assets/sounds/music/end-1.mp3",
+	"./assets/sounds/music/end-2.mp3",
+
+
 	"./assets/sounds/sfx/attack.wav",
 	"./assets/sounds/sfx/step.wav",
 	"./assets/sounds/sfx/collide.wav",
