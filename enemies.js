@@ -72,13 +72,15 @@ class Enemy {
     // Check for if player is close enough to focus on must be facing each other.
     withinRange(){
         //Check for distance between player and enemy 
-       //' console.log("y  "+  Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2));
+        if(this.game.debugging)
+            console.log("y  "+  Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2));
 
         if(Math.abs(this.game.player.x + this.game.player.BB.width/2 - this.x + this.BB.width/2) < 1000 &&
            (Math.abs(this.game.player.y + this.game.player.BB.height/2 - this.y + this.BB.height/2) < 200 ||  
            Math.abs(this.y + this.BB.height/2 - this.game.player.y + this.game.player.BB.height/2) < 100 )){
-            console.log("within range");
-
+            if(this.game.debugging)
+                console.log("player within range of ", this.name);
+                
             //Check for if enemy is facing player if so we can focus on player
            // if((this.game.player.x > this.x && this.facingDirection == 1)||(this.game.player.x <= this.x && this.facingDirection == 0)){
                 return true;
@@ -112,12 +114,12 @@ class Uoma extends Enemy {
 
     update() {
         // mechanics for how / where the enemy moves:
-        if(this.state == "DEAD") {  // TODO: sound on death?
+        if(this.state == "DEAD") {
             // we don't move on death, and can't do any damage, so no BB.
             this.BB = undefined;
             return;
         }
-        this.x -= (this.speed * this.game.clockTick);
+        this.x -= (this.speed * (0.25) * this.game.clockTick); // slowed them down. More "jellyfish-like". -Michael 
         // if (this.x < -200) this.x = 1500, this.y = 300;
         // if (this.x < -150 && this.y > 299) this.x = 1500, this.y = 100; // spawning allocated in levels.js now
         // end of movement code
@@ -183,14 +185,10 @@ class Heavy_Sentry extends Enemy {
     }
 
     attackRange(){
-        if(super.withinRange()){
-            //console.log("within attack range");
-
+        if(super.withinRange()) {
             if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 300))){
-                // console.log("true")
                 return true;
             }else if(this.game.player.onGround == this.onGround && ((this.facingDirection == 0 && this.x - this.game.player.x < 75))){
-                // console.log("true")
                 return true;
             }
         }
@@ -207,10 +205,8 @@ class Heavy_Sentry extends Enemy {
     chargeRange(){
         if(super.withinRange()){
             if(this.game.player.onGround == this.onGround &&  ((this.facingDirection == 1 && this.game.player.x - this.x < 600))){
-                //console.log("true")
                 return true;
             }else if(this.game.player.onGround == this.onGround && ((this.facingDirection == 0 && this.x - this.game.player.x < 375))){
-                //console.log("true")
                 return true;
             }
         }
@@ -236,7 +232,6 @@ class Heavy_Sentry extends Enemy {
             this.onGround = true;
             //Keep enemy on surface
             
-
             //Keep from falling off ledges if not in follow character mode
             //Left side stop or turn
             if(this.state != "ATTACK" && this.state != "CHARGE_END"){
@@ -289,9 +284,9 @@ class Heavy_Sentry extends Enemy {
     }
     
     update() {
-        //console.log(this.y+"  "+ this.attackTime);
-        //console.log(this.focused+" "+this.attackTime+" "+super.withinRange());
-        if(this.state == "DEAD") {  // TODO: sound on death?
+   
+        // Mechanics for how / where the enemy moves:
+        if(this.state == "DEAD") {
             this.BB = undefined;
             this.y = this.y+3;
             return;
@@ -373,24 +368,20 @@ class Heavy_Sentry extends Enemy {
                         this.turnTime = this.game.timer.gameTime;
                         this.movingDirection = 0;
                     }
-
-
-
                 }
             }else if(this.state == "ATTACK"){
-                //console.log("In update attack")
 
                 if(this.game.timer.gameTime-this.attackTime > 1.3){
                     this.animationList["ATTACK"] = new Animator(this.asset, 4, 1462, 406, 330, 12, 0.1, 0, 3,0,0,1,2,6,335);
                     
                     if(this.attackRange()){
-                        console.log("attack loop in attack");
+                        //console.log("attack loop in attack");
 
                         this.state = "ATTACK";
                         this.attackTime = this.game.timer.gameTime;
 
                     }else{
-                        console.log("EndedAttack");
+                        //console.log("EndedAttack");
                         this.attackTime = 0;
                         this.state = "RUN";
                         this.y += 60;
@@ -628,47 +619,6 @@ class Heavy_Sentry extends Enemy {
         }
     }
 }
-class Hive_Knight extends Enemy {
-    constructor(game, x, y) {
-        super(game, x, y);
-        // TODO: adjust Animator arguments for sprite sheet
-        this.animator = new Animator(this.asset, 4, 22, 172, 148, 6, 0.09, 1, 4);
-    }
-
-    onCollision(entity) {
-
-        if (entity instanceof CharacterController) {
-            //entity.dead = true;
-            //entity.HP -= this.damage;
-            //console.log(this.name + " collision with Hornet = LOSS");
-        }
-    }
-    update() {
-        // mechanics for how / where the enemy moves:
-        if(this.state == "DEAD") {  // TODO: sound on death?
-            // we don't move on death, and can't do any damage, so no BB.
-            this.BB = undefined;
-            return;
-        }
-        this.updateBB();
-        this.collisionChecks();
-    }
-    draw(ctx) {
-        ctx.save();
-        if(this.state == "DEAD") { // we want to fade out on death.
-            this.alpha -= this.game.clockTick; // time delay?
-        }
-        ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
-        super.draw(ctx);
-        ctx.restore();
-
-        if(this.alpha <= 0) {
-            this.removeFromWorld = true;
-            console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
-            ctx.globalAlpha = 1;
-        }
-    }
-}
 class Wheel{
     // FacingDir 0 goes left 1 goes right
     // r is the distance it will travel
@@ -751,14 +701,12 @@ class Wheel{
         }
     }
 }
-
-
 class Flag_Block {
     //Scalling added to allow single block to span any gap size
     constructor(game, x, y, xScale, yScale) {
         Object.assign(this, { game, x, y, xScale, yScale});
-        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/Dirt_Block.png"),
-            2, 2, 62, 62, 1, 1, 1, 1)
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./assets/block.png"),
+            1, 1, 62, 62, 1, 1, 1, 1)
 
         this.speed = 0;
         this.updateBB();
@@ -787,6 +735,80 @@ class Flag_Block {
         this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-this.game.camera.y)
         this.BB.draw(ctx);
     };
+}
+class Massive_Jelly extends Enemy {
+    constructor(game, x, y) {
+        super(game, x, y);
+        this.asset = ASSET_MANAGER.getAsset("./assets/Uoma.png");
+        this.scale = 5;
+        //(spritesheet, xStart, yStart, width, height, frameCount, frameDuration, loop, spriteBorderWidth=0, xoffset=0, yoffset=0, scale=1, rowCount=1, lineEnd, rowOffset=0) 
+        this.animationList["WALK"] = new Animator(this.asset, 4, 22, 172, 147, 6, 0.09, 1, 4, 0, 0, this.scale);
+        this.animationList["DEAD"] = new Animator(this.asset, 4, 22, 172, 147, 6, 0.09, 1, 4, 0, 0, this.scale);
+        this.speed = 2;
+        this.damage = 2;
+        this.updateBB();
+        this.HP = 10;
+        this.MAXHP = 10;
+        this.tint = `rgb(255, 0, 0)`;
+        this.width = 172 * 5;
+        this.height = 147 * 5;
+    }
+    draw(ctx) {
+        ctx.save();
+        if(this.state == "DEAD") { // we want to fade out on death.
+            this.alpha -= this.game.clockTick; // time delay?
+        }
+        ctx.globalAlpha = Math.abs(this.alpha); // abs because overshooting into negatives causes a flicker.
+        
+        // --------------- Sprite drawing. -------------------
+        let destX = (this.x - this.game.camera.x);
+        let destY = (this.y - this.game.camera.y);
+
+        if (this.facingDirection) {// if facing right
+            ctx.scale(-1, 1);
+            destX *= -1;
+            destX -= this.animationList[this.state].width * this.scale;
+        }
+        this.animationList[this.state].drawFrame(this.game.clockTick, ctx,
+            destX,
+            destY);
+        ctx.restore();
+        //ctx.drawImage(this.spritesheet, this.x ,this.y, 50, 50);
+        if(this.BB) this.BB.draw(ctx);
+        // --------------- End of sprite drawing. -------------------
+
+        if(this.alpha <= 0) {
+            this.removeFromWorld = true;
+            console.log(this.name, {x:this.x, y:this.y}, " has been removed.")
+            ctx.globalAlpha = 1;
+        }
+        
+        // need a longer delay so that the death animation of the boss plays and THEN the credits screen pops up like 4 seconds later. 
+        // comment out this if statement if we need to debug it so that it doesn't get in the way - michael
+        if (this.removeFromWorld) { 
+            this.game.camera.clearEntities();
+            this.game.addEntity(new EndCreditsScreen(this.game));
+        }
+    }
+    updateBB() {
+        this.lastBB = this.BB;
+        const s = this.scale;
+        this.BB = new BoundingBox(this.game, this.x + 45 * s, this.y + 35 * s, 70 * s, 90 * s, "red");
+    }
+    update() {
+        if (this.HP <= 0) {
+            //console.log("Boss jelly defeated!");
+            this.BB = undefined;
+            return;
+        }
+        const direction = gameEngine.player.x < this.x + this.width / 2;
+        if (direction) {
+            this.x -= this.speed;
+        } else {
+            this.x += this.speed;
+        }
+        this.updateBB();
+    }
 }
 class Pit_Glow {
     //An animation to signal the appropriate pit to jump into in order to descend to the next level.
