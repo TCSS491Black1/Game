@@ -564,7 +564,7 @@ const levelFour = {
         //{name: "Heavy_Sentry" , x: 10150, y:400},
         //{name: "Heavy_Sentry" , x: 10100, y:400},
         //{name: "Hive_Knight", x: 10100, y: 400},
-        {name: "Massive_Jelly", x: 1079, y:370},
+        {name: "Massive_Jelly", x: 10079, y:200},
     ],
     powerUps:  [{name: "Gathering_Swarm" , x: 9800 , y:400}]
 
