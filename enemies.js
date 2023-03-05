@@ -673,7 +673,12 @@ class Massive_Jelly extends Enemy {
         ctx.fillStyle = this.tint;
 
         super.draw(ctx);
+        
         ctx.restore();
+        if (this.removeFromWorld) { 
+            this.game.camera.clearEntities();
+            this.game.addEntity(new EndCreditsScreen(this.game));
+        }
     }
     updateBB() {
         this.lastBB = this.BB;
