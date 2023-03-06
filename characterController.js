@@ -18,6 +18,8 @@ class CharacterController {
         this.state = "WALK";
         
         this.damage = 1;
+
+
         this.HP = 10;
         this.maxHP = 10;
         this.timeOfLastDamage = 0;
@@ -37,7 +39,7 @@ class CharacterController {
         this.animationList["JUMP"] = new Animator(spritesheet, 4, 1626, 188, 214, 9, 0.1, 0, 3, 0, 0, this.scale);
 
         this.animationList["ATTACK"] = new Animator(this.attacksheet, 0, 0, 378, 371, 4, 0.04, 0, 0, 0, 120 * this.scale, this.scale);
-        this.animationList["DASH"] = new Animator(spritesheet, 2, 2780, 257, 135, 2, 0.2, 0, 3, 1, 0, this.scale); 
+        this.animationList["DASH"] = new Animator(spritesheet, 4, 2780, 253, 135, 2, 0.2, 0, 3, 0, 0, this.scale); 
         
         this.animationList["DEATH"] = new Animator(spritesheet, 4, 9922, 300, 225, 5, 0.1, 0, 3, 0, -10, this.scale);
         this.animationList["DEAD"] = new Animator(spritesheet, 1216, 9922, 300, 225, 1, 0.5, 1, 3, 0, -10, this.scale);
@@ -105,6 +107,8 @@ class CharacterController {
         } else 
             this.changeState("JUMP", 99);
     }
+
+
     update() {
         const MAXRUN = 600;
         
@@ -234,6 +238,30 @@ class CharacterController {
         this.wasOnGround = this.onGround;
         this.onGround = false; // assume not on ground until we detect collision w/ Ground block
         this.game.entities.forEach((entity) => {
+            if (entity instanceof Wheel && this.BB.collide(entity.BC)) {
+                console.log("Hornet collided with " + entity.constructor.name);
+                const t = this.game.timer.gameTime;
+                entity.state="DEAD"
+                if(t - this.timeOfLastDamage > this.invulnLength) { // multi-second invulnerability
+                    console.log("taking ", entity.damage, " damage ", t - this.timeOfLastDamage);
+                    this.HP -= entity.damage;
+                    
+                    this.timeOfLastDamage = t;
+                    this.game.soundEngine.playSound("./assets/sounds/sfx/laser.wav");
+
+                    // floating combat text:
+                    this.game.addEntity(new FloatingText("-" + entity.damage, this.x, this.y, "red", 1));
+                    
+                    if (this.HP <= 0) {
+                        this.changeState("DEATH")
+                        this.dead = true;
+                    }
+                    
+                } else if(t - this.timeOfLastDamage <= this.invulnLength) {
+                    // no enemy collision if we're invulnerable
+                    return;
+                }
+            }
             if (this != entity && entity.BB && this.BB.collide(entity.BB)) {
                 if (entity instanceof Enemy) {
                     const t = this.game.timer.gameTime;
@@ -271,8 +299,8 @@ class CharacterController {
                         this.x = entity.BB.left - this.BB.width;
                         this.velocity.x = -this.velocity.x;
                     }
-                }
-                else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
+               
+                }else if (entity instanceof Ground && (this.lastBB.bottom <= entity.BB.top) && !this.phase) {
                     this.y = entity.BB.top - this.BB.height;
                     this.velocity.y = 0;
                     this.jumps = 0;
@@ -299,12 +327,12 @@ class CharacterController {
                         this.x = entity.BB.left - this.BB.width - 25;
 
                     }
-                }
-                else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
+                }else if (entity instanceof Flag_Block && (this.lastBB.collide(entity.BB))) {
                     this.changeState("IDLE", 226);
                     this.game.soundEngine.playSound("./assets/sounds/sfx/flag.wav");
                     this.game.camera.loadNextLevel(0, 0);
-                }
+                }              
+                
             }
         });
         this.updateBB(); // updating BB due to collision-based movement

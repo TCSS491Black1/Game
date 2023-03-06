@@ -8,6 +8,12 @@ class BoundingBox {
     };
 
     collide(other) {
+        if(other.radius != null && other.left == null){
+            //Other == Circle
+            return (other.x > this.left-other.radius && other.x < this.right+other.radius &&
+                other.y-other.radius < this.bottom && other.y+other.radius > this.top);
+        }
+        
         return (this.right > other.left
             && this.left < other.right
             && this.top < other.bottom
@@ -20,3 +26,22 @@ class BoundingBox {
             ctx.strokeRect(this.x-this.game.camera.x, this.y-this.game.camera.y, this.width, this.height);
     }
 }
+
+class BoundingCircle {
+    constructor(game, x, y, radius,color) {
+        Object.assign(this, { game, x, y, radius, color });
+    };
+
+    //for debugging purposes
+    draw(ctx) {
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 10;
+        if(this.game.options.debugging){
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(this.x-this.game.camera.x, this.y-this.game.camera.y, this.radius, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+    }
+
+};

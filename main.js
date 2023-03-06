@@ -8,6 +8,12 @@ const ASSET_MANAGER = new AssetManager();
 	
 	"./assets/Uoma.png", // enemies
 	"./assets/Heavy_Sentry.png",
+	"./assets/Fire_Wheel.png",
+	"./assets/Purple_Wheel.png",
+	"./assets/LightPurple_Wheel.png",
+	"./assets/Yellow_Wheel.png",
+	"./assets/Blue_Wheel.png",
+	"./assets/Green_Wheel.png",
 	"./assets/Hive_Knight.png",
 	"./assets/HiveKnight.png", // modified version of Hive_Knight.png
 
@@ -28,6 +34,8 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Environmental_Blocks.png", // various blocks/ground
 	"./assets/Dirt_Block.png",
 	"./assets/lava_7.png",
+	"./assets/arrows.png",
+	"./assets/sword.png",
 	"./assets/block.png",
 	"./assets/ice-block.png",
 	"./assets/Pit_Glow.png",

@@ -7,6 +7,9 @@ const levelOne = {
     spawnPoint: [330 , 0],
     groundType: GrassGround,
     wallType: GrassWall,
+    arrows: [{}],
+    wheels: [],
+
     ground: [
        
         // FULL GROUND WITH NO PITS
@@ -167,6 +170,8 @@ const levelOne = {
     pitglow: [{x: 9350, y: params.canvasHeight*2-32*3, xScale: 1 , yScale: 1},
     ], 
 
+   
+
     enemies: [
         // Swarm of UOMA AT THE BEGINNING, "Don't stand there, run."
         {name: "Uoma" , x:32*32, y:params.canvasHeight-32*30+768},
@@ -281,6 +286,14 @@ const levelTwo = {
     spawnPoint: [350 , 1200],
     groundType: UnderGround,
     wallType: UnderWall,
+    arrows: [{name:"Down" , x:2*32, y:40*32},
+            {name:"Down" , x:2*32, y:25*32},
+            {name:"Down" , x:2*32, y:10*32},
+            {name:"Right" , x:21*32, y:33*32},
+            {name:"Right" , x:25*32, y:12*32},
+            {name:"Right" , x:75*32, y:12*32},
+            {name:"Up" ,  x: 395*32, y:30*32},
+            {name:"Left" ,  x: 386*32, y:12*32}],
     ground: [
         //Starting
         {x:32*9, y:47*32, size: 10 }, 
@@ -297,7 +310,7 @@ const levelTwo = {
         {x:32*145, y:47*32, size: 1 }, 
         {x:32*150, y:47*32, size: 1 },         
         {x:32*155, y:47*32, size: 1 }, 
-        {x:32*160, y:47*32, size: 240 }, 
+        {x:32*160, y:47*32, size: 261 }, 
       
         {x:32*20, y:44*32, size: 10 }, 
         {x:32*34, y:42*32, size: 10 }, 
@@ -423,14 +436,68 @@ const levelTwo = {
         {x:9*32, y:7*32, size: 2},
         {x:10*32, y:6*32, size: 2},
         {x:11*32, y:4*32, size: 3},
-        {x:399*32,y:40*32,size: 7},
-        {x:420*32,y:0,size: 41},
+        {x:420*32,y:0,size: 47},
         {x:221*32,y:8*32 ,size: 18}],
 
     targetblock: [{x: 0, y: 65*32, xScale: 4.5 , yScale: 3},
         //{x:32*20, y:params.canvasHeight-32*4+768, xScale: 1 , yScale: 1} //turn on and off for debug purposes
     ],
     pitglow: [{x: 64, y: 47*32, xScale: 1 , yScale: 1}],
+    wheels: [{name: "Purple_Wheel",x:176*32, y:46*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:192*32, y:46*32, r:500, f:1},
+    {name: "Purple_Wheel",x:208*32, y:46*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:224*32, y:46*32, r:500, f:1},
+    {name: "Purple_Wheel",x:240*32, y:46*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:256*32, y:46*32, r:500, f:1},
+    {name: "Purple_Wheel",x:272*32, y:46*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:288*32, y:46*32, r:500, f:1},
+    {name: "Purple_Wheel",x:304*32, y:46*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:320*32, y:46*32, r:500, f:1},
+    {name: "Purple_Wheel",x:336*32, y:46*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:352*32, y:46*32, r:500, f:1},
+    {name: "Purple_Wheel",x:368*32, y:46*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:384*32, y:46*32, r:500, f:1},
+    {name: "Purple_Wheel",x:400*32, y:46*32, r:500, f:0},
+
+    {name: "Purple_Wheel",x:194*32, y:40*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:203*32, y:40*32, r:500, f:1},
+    {name: "Purple_Wheel",x:219*32, y:40*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:237*32, y:40*32, r:500, f:1},
+    {name: "Purple_Wheel",x:251*32, y:40*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:267*32, y:40*32, r:500, f:1},
+    {name: "Purple_Wheel",x:289*32, y:40*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:309*32, y:40*32, r:500, f:1},
+    {name: "Purple_Wheel",x:318*32, y:40*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:330*32, y:40*32, r:500, f:1},
+    {name: "Purple_Wheel",x:330*32, y:40*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:363*32, y:40*32, r:500, f:1},
+    {name: "Purple_Wheel",x:380*32, y:40*32, r:500, f:0},
+    {name: "LightPurple_Wheel",x:397*32, y:40*32, r:500, f:1},
+
+    {name: "Purple_Wheel"       ,x:176*32, y:34*32, r:500, f:0},
+    {name: "LightPurple_Wheel"  ,x:192*32, y:34*32, r:500, f:1},
+    {name: "Purple_Wheel"       ,x:208*32, y:34*32, r:500, f:0},
+    {name: "LightPurple_Wheel"  ,x:224*32, y:34*32, r:500, f:1},
+    {name: "Purple_Wheel"       ,x:240*32, y:34*32, r:500, f:0},
+    {name: "LightPurple_Wheel"  ,x:256*32, y:34*32, r:500, f:1},
+    {name: "Purple_Wheel"       ,x:272*32, y:34*32, r:500, f:0},
+    {name: "LightPurple_Wheel"  ,x:288*32, y:34*32, r:500, f:1},
+    {name: "Purple_Wheel"       ,x:304*32, y:34*32, r:500, f:0},
+    {name: "LightPurple_Wheel"  ,x:320*32, y:34*32, r:500, f:1},
+    {name: "Purple_Wheel"       ,x:336*32, y:34*32, r:500, f:0},
+    {name: "LightPurple_Wheel"  ,x:352*32, y:34*32, r:500, f:1},
+    {name: "Purple_Wheel"       ,x:368*32, y:34*32, r:500, f:0},
+    {name: "LightPurple_Wheel"  ,x:384*32, y:34*32, r:500, f:1},
+    {name: "Purple_Wheel"       ,x:400*32, y:34*32, r:500, f:0},
+
+
+    {name: "Purple_Wheel",x:73*32, y:3*32, r:16*32, f:0},
+    {name: "Purple_Wheel",x:140*32, y:3*32, r:20*32, f:0},
+    {name: "Purple_Wheel",x:164*32, y:3*32, r:20*32, f:1},
+    {name: "Purple_Wheel",x:205*32, y:6*32, r:20*32, f:0},
+
+],
+
     enemies: [{name: "Heavy_Sentry" , x: 800, y:400},
         {name: "Uoma" , x: 1200, y:550},
         {name: "Uoma" , x: 1400, y:450},
@@ -453,10 +520,24 @@ const levelTwo = {
         {name: "Uoma" , x: 12500, y:290},
         {name: "Heavy_Sentry" , x: 2200, y:400},
         {name: "Heavy_Sentry" , x: 3200, y:400},
+        {name: "Heavy_Sentry" , x: 403*32, y:30*32},
+        {name: "Heavy_Sentry" , x: 411*32, y:-2*32},
+        {name: "Heavy_Sentry" , x: 352*32, y:17*32},
+        {name: "Heavy_Sentry" , x: 329*32, y:17*32},
+        {name: "Heavy_Sentry" , x: 261*32, y:17*32},
+        {name: "Heavy_Sentry" , x: 289*32, y:17*32},
+        {name: "Heavy_Sentry" , x: 229*32, y:-2*32},
+        {name: "Heavy_Sentry" , x: 250*32, y:-2*32},
+
 
     ],
     powerUps:  [{name: "Lightseed" , x: 800, y:400},
-        {name: "Charged_Lumafly" , x: 1200 , y:1000  }]
+        {name: "Charged_Lumafly" , x: 404*32, y:41*32},
+        {name: "Charged_Lumafly" , x: 410*32, y:41*32},
+        {name: "Charged_Lumafly" , x: 416*32, y:41*32},
+        {name: "Charged_Lumafly" , x: 11*32, y:29*32},
+        {name: "Charged_Lumafly" , x: 228*32, y:21*32},
+        {name: "Gathering_Swarm" , x: 222*32, y:22*32}]
 
 }
 const levelThree = {
@@ -468,6 +549,9 @@ const levelThree = {
     worldSize: 2,
     groundType: IceGround,
     wallType: IceWall,
+
+    arrows: [],
+
     ground: [
         // FULL GROUND WITH NO PITS
         // {x:0, y:params.canvasHeight*2-32, size: 300 }, 
@@ -537,6 +621,8 @@ const levelThree = {
     pitglow: [{x: 9600, y: params.canvasHeight*2-32*4, xScale: 1 , yScale: 1}
     ], 
 
+    wheels: [],
+
     enemies: [{name: "Heavy_Sentry" , x: 1200, y:550*2},
     {name: "Heavy_Sentry" , x: 2200, y:550*2},
     {name: "Heavy_Sentry" , x: 3200, y:550*2}, 
@@ -586,6 +672,7 @@ const levelFour = {
     worldSize: 1,
     groundType: HellGround,
     wallType: HellWall,
+    arrows: [],
     ground: [
         
         //{x:0, y:params.canvasHeight-32, size: 736 }, 
@@ -690,6 +777,8 @@ const levelFour = {
         //{x: 32*10,  y:params.canvasHeight-32*4, xScale: 1 , yScale: 1} //turn on and off for debug purposes
     ],
     pitglow: [{x: 10500+(32*100), y: params.canvasHeight-32*4, xScale: 1 , yScale: 1}],
+    wheels: [],
+
     enemies: [
         {name: "Heavy_Sentry" , x: 10000, y: 32*10},
         {name: "Uoma" , x: 1200, y:550},

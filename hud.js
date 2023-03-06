@@ -10,6 +10,7 @@ class HUD {
             "doubleJump": 0,
             "dash": 0,
         }
+        this.spriteSheet = ASSET_MANAGER.getAsset("./assets/sword.png");
     }
     update() {
            
@@ -63,6 +64,9 @@ class HUD {
             ctx.fillText("^", startx + 20*pip, 75 + 30);
         }
 
+        for(let i = 0 ; i < gameEngine.player.damage ; i++){
+            ctx.drawImage(this.spriteSheet,0,0,436,280,80+48*i,95,48,48)
+        }
 
         // display clocktime
         ctx.fillStyle = "white";
