@@ -647,21 +647,21 @@ class Wheel{
         // Move left within range
         if(this.state=="IDLE"){
             if(this.facingDirection == 0 && distance < this.range){
-                this.x -=5;
+                this.x -=100*this.game.clockTick;
                 //Reverse
                 if(Math.abs(this.x - this.center)>=this.range && !this.attack){
                     this.facingDirection = 1;
-                    this.x+=10;
+                    this.x+=200*this.game.clockTick;
                 }else if(this.attack && Math.abs(this.x - this.center) >= this.range){
                     this.state = "DEAD"
                 }
             // Move right within range
             }else if(this.facingDirection == 1 && distance < this.range){
-                this.x +=5;
+                this.x +=100*this.game.clockTick;
                 //Reverse
                 if(Math.abs(this.x - this.center)>=this.range && !this.attack){
                     this.facingDirection = 0;
-                    this.x-=10;
+                    this.x-=200*this.game.clockTick;
                 }else if(this.attack && Math.abs(this.x - this.center) >= this.range){
                     this.state = "DEAD"
                 }
