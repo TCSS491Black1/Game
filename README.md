@@ -1,4 +1,4 @@
-# Hollow Knight clone
+# HollowScape: a Hollow Knight clone
 
 ### Overview
 
@@ -7,7 +7,7 @@
 
 [https://tcss491black1.github.io/Game/](https://tcss491black1.github.io/Game/)
 ---
-- Hollow Knight Clone is created by [Patrick Tibbals][patrick-github], [Michael Theisen][michael-github], [Griffin Ryan][griffin-github], and [Peter Iriarte][peter-github].
+- HollowScape is created by [Patrick Tibbals][patrick-github], [Michael Theisen][michael-github], [Griffin Ryan][griffin-github], and [Peter Iriarte][peter-github].
 
 Demo Trailer
 
