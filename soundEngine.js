@@ -2,9 +2,7 @@ class SoundEngine {
 
     constructor(game, x, y, volume = 0.4) {
         Object.assign(this, { game, x, y });
-        // this.audioCtx = new (window.audioCtx || window.webkitaudioCtx)();
-
-        // TODO: Use an AudioParamMap to apply effects instead.
+        // TODO: Use an AudioParamMap to apply effects instead!!
 
         this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         this.game.soundEngine = this;
