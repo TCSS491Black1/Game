@@ -33,10 +33,10 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/Pit_Glow.png",
 	
 	"./assets/sounds/music/intro.mp3", // music sound assets
-	// "./assets/sounds/music/main-1-quiet.mp3",
-	// "./assets/sounds/music/main-2-quiet.mp3",
-	// "./assets/sounds/music/ver-1.mp3",
-	// "./assets/sounds/music/ver-2.mp3",
+	"./assets/sounds/music/main-1-quiet.mp3",
+	"./assets/sounds/music/main-2-quiet.mp3",
+	"./assets/sounds/music/ver-1.mp3",
+	"./assets/sounds/music/ver-2.mp3",
 	"./assets/sounds/music/end-1.mp3",
 	"./assets/sounds/music/end-2.mp3",
 	// "./assets/sounds/music/drumloop.mp3",
@@ -50,8 +50,6 @@ const ASSET_MANAGER = new AssetManager();
 	"./assets/sounds/music/dream-requiem-strfkr.mp3",
 	// "./assets/sounds/music/ver-1.mp3",
 	// "./assets/sounds/music/ver-2.mp3",
-	"./assets/sounds/music/end-1.mp3",
-	"./assets/sounds/music/end-2.mp3",
 
 
 	"./assets/sounds/sfx/attack.wav",
